@@ -9,9 +9,12 @@
     <h1>Bem-vindo à Imobiliária</h1>
     <p>Esta é a página inicial do site da imobiliária.</p>
 
-    
-    <table>
 
-    </table>
+     <ul>
+        <li><a href="{% url 'funcionarios' %}">Listar funcionários</a></li>
+        <li><a href="{% url 'imoveis' %}">Listar imóveis</a></li>
+        <li><a href="{% url 'clientes' %}">Listar clientes</a></li>
+        <li><a href="{% url 'reservas' %}">Listar reservas</a></li>
+    </ul>
 </body>
 </html>
