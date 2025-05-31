@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Imoveis</title>
+  </head>
+  <body>
+    <h1>Lista de Imoveis</h1>
+    <a href=" {% url 'index' %}">Voltar</a>
+    
+    <table border="1" cellpadding="5" cellspacing="3">
+      <tr>
+        <th>Nome</th>
+        <th>Tipo</th>
+        <th>Endereco</th>
+        <th>Cidade</th>
+        <th>Estado</th>
+        <th>Disponibilidade</th>
+        <th>Acoes</th>
+      </tr>
+      {% for imovel in imoveis %}
+
+      <tr>
+        <td>{{ imovel.nome }}</td>
+        <td>{{ imovel.tipo }}</td>
+        <td>{{ imovel.endereco }}</td>
+        <td>{{ imovel.cidade }}</td>
+        <td>{{ imovel.estado }}</td>
+        {% if imovel.disponivel %}
+            <td>Disponivel</td>
+            {% else %}
+            <td>Indisponivel</td>
+        {% endif %}
+        <td><a href={% url 'imoveis_cadastrar' %}>Editar</a> | <a>Desativar</a></td>
+      </tr>
+
+      {% endfor %}
+    </table>
+
+    <a href> Desativados </a>
+  </body>
+</html>

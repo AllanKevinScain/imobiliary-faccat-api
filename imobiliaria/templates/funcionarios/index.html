@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Funcionarios</title>
+  </head>
+  <body>
+    <h1>Lista de Funcionarios</h1>
+    <a href=" {% url 'index' %}">Voltar</a>
+    
+    <table border="1" cellpadding="5" cellspacing="3">
+      <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Telefone</th>
+        <th>Cargo</th>
+        <th>Acoes</th>
+      </tr>
+      {% for funcionario in funcionarios %}
+
+      <tr>
+        <td>{{ funcionario.nome }}</td>
+        <td>{{ funcionario.email }}</td>
+        <td>{{ funcionario.telefone }}</td>
+        <td>{{ funcionario.get_cargo_display }}</td>
+        <td><a href="{% url 'funcionarios_cadastrar' %}" >Editar</a> | <a>Desativar</a></td>
+      </tr>
+
+      {% endfor %}
+    </table>
+
+    <a href> Desativados </a>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Reservas</title>
+  </head>
+  <body>
+    <h1>Lista de Reservas</h1>
+    <a href=" {% url 'index' %}">Voltar</a>
+    
+    <table border="1" cellpadding="5" cellspacing="3">
+      <tr>
+        <th>Imovel</th>
+        <th>Cliente</th>
+        <th>Funcionario</th>
+        <th>Data Inicial</th>
+        <th>Data Final</th>
+        <th>Acoes</th>
+      </tr>
+      {% for reserva in reservas %}
+
+      <tr>
+        <td>{{ reserva.imovel }}</td>
+        <td>{{ reserva.cliente }}</td>
+        <td>{{ reserva.funcionario }}</td>
+        <td>{{ reserva.data_inicio|date:"d/m/Y" }}</td>
+        <td>{{ reserva.data_fim|date:"d/m/Y" }}</td>
+        <td><a href={% url 'reservas_cadastrar' %} >Editar</a> | <a>Desativar</a></td>
+      </tr>
+
+      {% endfor %}
+    </table>
+
+    <a href> Desativados </a>
+  </body>
+</html>
