@@ -100,7 +100,7 @@ def imoveis_editar(request, id):
             return redirect('imoveis')
 
     # form vai receber um formulário com os dados do imoveis selecionado.
-    form = ImovelForm(instance=imoveis)
+    form = ImovelForm(instance=imovel)
 
     # Montamos o dicionário com os dados para ser passado para o template.
     dados = {
