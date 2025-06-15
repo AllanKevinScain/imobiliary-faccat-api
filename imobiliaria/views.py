@@ -37,8 +37,28 @@ def funcionarios_cadastrar(request):
     return render(request, 'funcionarios/funcionarios_cadastrar.html', dados)
 
 
-def funcionarios_editar(request):
-    return render(request, 'funcionarios/index.html')
+def funcionarios_editar(request, id):
+    try:
+        funcionario = Funcionario.objects.get(id=id)
+    except:
+        return redirect('funcionarios')
+
+    if request.method == 'POST':
+        form = FuncionarioForm(request.POST, instance=funcionario)
+        if form.is_valid():
+            form.save()
+            return redirect('funcionarios')
+
+    # form vai receber um formulário com os dados do funcionario selecionado.
+    form = FuncionarioForm(instance=funcionario)
+
+    # Montamos o dicionário com os dados para ser passado para o template.
+    dados = {
+        'form': form,
+        'funcionario': funcionario,
+    }
+
+    return render(request, 'funcionarios/funcionarios_editar.html', dados)
 
 # IMOVEIS
 
@@ -67,8 +87,28 @@ def imoveis_cadastrar(request):
     return render(request, 'imoveis/imoveis_cadastrar.html', dados)
 
 
-def imoveis_editar(request):
-    return render(request, 'imoveis/index.html')
+def imoveis_editar(request, id):
+    try:
+        imovel = Imovel.objects.get(id=id)
+    except:
+        return redirect('imoveis')
+
+    if request.method == 'POST':
+        form = ImovelForm(request.POST, instance=imovel)
+        if form.is_valid():
+            form.save()
+            return redirect('imoveis')
+
+    # form vai receber um formulário com os dados do imoveis selecionado.
+    form = ImovelForm(instance=imoveis)
+
+    # Montamos o dicionário com os dados para ser passado para o template.
+    dados = {
+        'form': form,
+        'imovel': imovel,
+    }
+
+    return render(request, 'imoveis/imoveis_editar.html', dados)
 
 # CLIENTES
 
@@ -97,8 +137,29 @@ def clientes_cadastrar(request):
     return render(request, 'clientes/clientes_cadastrar.html', dados)
 
 
-def clientes_editar(request):
-    return render(request, 'clientes/index.html')
+def clientes_editar(request, id):
+
+    try:
+        cliente = Cliente.objects.get(id=id)
+    except:
+        return redirect('clientes')
+
+    if request.method == 'POST':
+        form = ClienteForm(request.POST, instance=cliente)
+        if form.is_valid():
+            form.save()
+            return redirect('clientes')
+
+    # form vai receber um formulário com os dados do cliente selecionado.
+    form = ClienteForm(instance=cliente)
+
+    # Montamos o dicionário com os dados para ser passado para o template.
+    dados = {
+        'form': form,
+        'cliente': cliente,
+    }
+
+    return render(request, 'clientes/clientes_editar.html', dados)
 
 # RESERVAS
 
@@ -127,5 +188,26 @@ def reservas_cadastrar(request):
     return render(request, 'reservas/reservas_cadastrar.html', dados)
 
 
-def reservas_editar(request):
-    return render(request, 'reservas/index.html')
+def reservas_editar(request, id):
+
+    try:
+        reserva = Reserva.objects.get(id=id)
+    except:
+        return redirect('reservas')
+
+    if request.method == 'POST':
+        form = ReservaForm(request.POST, instance=reserva)
+        if form.is_valid():
+            form.save()
+            return redirect('alunos')
+
+    # form vai receber um formulário com os dados da reserva selecionada.
+    form = ReservaForm(instance=reserva)
+
+    # Montamos o dicionário com os dados para ser passado para o template.
+    dados = {
+        'form': form,
+        'reserva': reserva,
+    }
+
+    return render(request, 'reservas/reserva_editar.html', dados)

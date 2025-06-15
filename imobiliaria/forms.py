@@ -15,7 +15,9 @@ class FuncionarioForm(forms.ModelForm):
 
 class ClienteForm(forms.ModelForm):
     data_nascimento = forms.DateField(
-        widget=forms.DateInput(attrs={'type': 'date'}))
+        widget=forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
+        input_formats=['%Y-%m-%d']
+    )
 
     class Meta:
         model = Cliente
@@ -46,6 +48,7 @@ class ReservaForm(forms.ModelForm):
         fields = ['imovel', 'cliente',
                   'funcionario', 'data_inicio', 'data_fim']
         widgets = {
-            'data_inicio': forms.DateInput(attrs={'type': 'date'}),
-            'data_fim': forms.DateInput(attrs={'type': 'date'}),
+            'data_inicio': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
+            'data_fim': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
         }
+        input_formats = ['%Y-%m-%d']

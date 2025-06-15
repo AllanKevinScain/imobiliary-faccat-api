@@ -2,14 +2,16 @@ from django.urls import path
 from .views import index, funcionarios, funcionarios_cadastrar, funcionarios_editar
 from .views import imoveis, imoveis_cadastrar, imoveis_editar
 from .views import clientes, clientes_cadastrar, clientes_editar
-from .views import reservas, reservas_cadastrar
+from .views import reservas, reservas_cadastrar, reservas_editar
 
 urlpatterns = [
     path('', index, name='index'),
 
     path('funcionarios/', funcionarios, name='funcionarios'),
-    path('funcionarios/cadastrar', funcionarios_cadastrar, name='funcionarios_cadastrar'),
-    path('funcionarios/<int:id>/', funcionarios_editar, name='funcionarios_editar'),
+    path('funcionarios/cadastrar', funcionarios_cadastrar,
+         name='funcionarios_cadastrar'),
+    path('funcionarios/<int:id>/', funcionarios_editar,
+         name='funcionarios_editar'),
 
     path('imoveis/', imoveis, name='imoveis'),
     path('imoveis/cadastrar', imoveis_cadastrar, name='imoveis_cadastrar'),
@@ -21,4 +23,5 @@ urlpatterns = [
 
     path('reservas/', reservas, name='reservas'),
     path('reservas/cadastrar', reservas_cadastrar, name='reservas_cadastrar'),
+    path('reservas/<int:id>/', reservas_editar, name='reservas_editar'),
 ]

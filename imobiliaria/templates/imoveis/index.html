@@ -32,7 +32,7 @@
             {% else %}
             <td>Indisponivel</td>
         {% endif %}
-        <td><a href={% url 'imoveis_cadastrar' %}>Editar</a> | <a>Desativar</a></td>
+        <td><a href={% url 'imoveis_editar' imovel.id %}>Editar</a> | <a>Desativar</a></td>
       </tr>
 
       {% endfor %}

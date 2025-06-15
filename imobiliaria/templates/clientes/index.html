@@ -26,7 +26,7 @@
         <td>{{ cliente.telefone }}</td>
         <td>{{ cliente.cpf }}</td>
         <td>{{ cliente.data_nascimento|date:"d/m/Y" }}</td>
-        <td><a href ="{% url 'clientes_cadastrar' %}">Editar</a> | <a>Desativar</a></td>
+        <td><a href ="{% url 'clientes_editar' cliente.id %}">Editar</a> | <a>Desativar</a></td>
       </tr>
 
       {% endfor %}  

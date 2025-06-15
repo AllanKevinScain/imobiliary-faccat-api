@@ -24,7 +24,7 @@
         <td>{{ funcionario.email }}</td>
         <td>{{ funcionario.telefone }}</td>
         <td>{{ funcionario.get_cargo_display }}</td>
-        <td><a href="{% url 'funcionarios_cadastrar' %}" >Editar</a> | <a>Desativar</a></td>
+        <td><a href="{% url 'funcionarios_editar' funcionario.id %}" >Editar</a> | <a>Desativar</a></td>
       </tr>
 
       {% endfor %}
