@@ -23,7 +23,7 @@
 
       <tr>
         <td>{{ imovel.nome }}</td>
-        <td>{{ imovel.tipo }}</td>
+        <td>{{ imovel.get_tipo_display }}</td>
         <td>{{ imovel.endereco }}</td>
         <td>{{ imovel.cidade }}</td>
         <td>{{ imovel.estado }}</td>
@@ -39,5 +39,7 @@
     </table>
 
     <a href> Desativados </a>
+
+    <div><a href="{% url 'imoveis_cadastrar' %}"> Cadastrar novo Imovel </a></div>
   </body>
 </html>

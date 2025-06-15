@@ -10,5 +10,13 @@
 
     <h1>Cadastrar Clientes</h1>
 
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">Cadastrar Cliente</button>
+
+    </form>
+
   </body>
 </html>

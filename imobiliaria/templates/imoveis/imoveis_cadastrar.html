@@ -10,5 +10,14 @@
 
     <h1>Cadastrar Imoveis</h1>
 
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">Cadastrar Imovel</button>
+
+    </form>
+
+
   </body>
 </html>
