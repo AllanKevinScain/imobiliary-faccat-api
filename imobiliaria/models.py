@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Funcionario(models.Model):
     CARGO_CHOICES = [
         ('GER', 'Gerente'),
@@ -119,16 +120,19 @@ class Imovel(models.Model):
 
 
 class Quarto(models.Model):
-    imovel = models.ForeignKey(Imovel, related_name='quartos', on_delete=models.RESTRICT)
+    imovel = models.ForeignKey(
+        Imovel, related_name='quartos', on_delete=models.RESTRICT)
     nome = models.CharField(max_length=50)
 
     def __str__(self):
         return self.nome
 
+
 class Reserva(models.Model):
     imovel = models.ForeignKey(Imovel, on_delete=models.CASCADE)
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    funcionario = models.ForeignKey(Funcionario, on_delete=models.SET_NULL, null=True)
+    funcionario = models.ForeignKey(
+        Funcionario, on_delete=models.SET_NULL, null=True)
     data_inicio = models.DateField()
     data_fim = models.DateField()
 
