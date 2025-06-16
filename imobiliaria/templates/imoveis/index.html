@@ -26,7 +26,7 @@
         <td>{{ imovel.get_tipo_display }}</td>
         <td>{{ imovel.endereco }}</td>
         <td>{{ imovel.cidade }}</td>
-        <td>{{ imovel.estado }}</td>
+        <td>{{ imovel.get_estado_display }}</td>
         {% if imovel.disponivel %}
             <td>Disponivel</td>
             {% else %}
