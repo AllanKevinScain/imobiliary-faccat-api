@@ -6,7 +6,11 @@
     <title>Lista de Imoveis</title>
   </head>
   <body>
-    <h1>Lista de Imoveis</h1>
+    {% if ativos %}
+        <h1>Lista de Imoveis Ativos</h1>
+    {% else %}
+        <h1>Lista de Imoveis Inativos</h1>
+    {% endif %}
 
     {% if messages %}
     <ul>
@@ -17,8 +21,6 @@
         {% endfor %}
     </ul>
     {% endif %}
-
-    <a href=" {% url 'index' %}">Voltar</a>
     
     <table border="1" cellpadding="5" cellspacing="3">
       <tr>
@@ -43,13 +45,26 @@
             {% else %}
             <td>Indisponivel</td>
         {% endif %}
-        <td><a href={% url 'imoveis_editar' imovel.id %}>Editar</a> | <a href="{% url 'desativar_imovel' imovel.id %}">Desativar</a></td>
+        <td>
+          {% if ativos %}
+                    <a href="{% url 'editar_aluno' aluno.id %}">Editar</a>
+                    <a href="{% url 'excluir_aluno' aluno.id %}">Excluir</a>
+                {% else %}
+                    <a href="{% url 'ativar_imovel' imovel.id %}">Ativar</a>
+                {% endif %}
+              </td>
       </tr>
 
       {% endfor %}
     </table>
 
-    <a href> Desativados </a>
+    <p><a href=" {% url 'index' %}">Voltar para o Menu</a></p>
+
+    {% if ativos %}
+        <p><a href="{% url 'imoveis_inativos' %}">Mostrar Inativos</a></p>
+    {% else %}
+        <p><a href="{% url 'imoveis_ativos' %}">Mostrar Ativos</a></p>
+    {% endif %}
 
     <div><a href="{% url 'imoveis_cadastrar' %}"> Cadastrar novo Imovel </a></div>
   </body>

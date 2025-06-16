@@ -6,7 +6,17 @@
     <title>Lista de Reservas</title>
   </head>
   <body>
-    <h1>Lista de Reservas</h1>
+    {% if ativos %}
+        <h1>Lista de Reservas Ativas</h1>
+    {% else %}
+        <h1>Lista de Reservas Inativas</h1>
+    {% endif %}
+
+    {% if reservas %}
+        <h2>Total de Reservas: {{ reservas|length }}</h2>
+    {% else %}
+        <h2>Nenhuma reserva encontrada.</h2>
+    {% endif %}
 
     {% if messages %}
     <ul>
@@ -17,8 +27,6 @@
         {% endfor %}
     </ul>
     {% endif %}
-
-    <a href=" {% url 'index' %}">Voltar</a>
     
     <table border="1" cellpadding="5" cellspacing="3">
       <tr>
@@ -37,13 +45,26 @@
         <td>{{ reserva.funcionario }}</td>
         <td>{{ reserva.data_inicio|date:"d/m/Y" }}</td>
         <td>{{ reserva.data_fim|date:"d/m/Y" }}</td>
-        <td><a href={% url 'reservas_editar' reserva.id %} >Editar</a> | <a href="{% url 'desativar_reserva' reserva.id %}">Desativar</a></td>
+        <td>
+          {% if ativos %}
+                <a href="{% url 'reserva_editar' resreva.id %}">Editar</a>
+                <a href="{% url 'desativar_reserva' reserva.id %}">Desativar</a>
+            {% else %}
+                <a href="{% url 'ativar_reserva' reserva.id %}">Ativar</a>
+            {% endif %}
+          </td>
       </tr>
 
       {% endfor %}
     </table>
 
-    <a href> Desativados </a>
+    <p><a href=" {% url 'index' %}">Voltar para o Menu</a></p>
+
+    {% if ativos %}
+        <p><a href="{% url 'reservas_inativas' %}">Mostrar Inativas</a></p>
+    {% else %}
+        <p><a href="{% url 'reservas_ativos' %}">Mostrar Ativas</a></p>
+    {% endif %}
 
     <div><a href="{% url 'reservas_cadastrar' %}"> Cadastrar nova Reserva </a></div>
   </body>

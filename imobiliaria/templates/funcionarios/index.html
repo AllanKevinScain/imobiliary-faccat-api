@@ -6,7 +6,12 @@
     <title>Lista de Funcionarios</title>
   </head>
   <body>
-    <h1>Lista de Funcionarios</h1>
+    {% if ativos %}
+         <h1>Lista de Alunos</h1>
+    {% else %}
+        <h1>Lista de Alunos Inativos</h1>
+    {% endif %}
+
 
     {% if messages %}
     <ul>
@@ -17,8 +22,6 @@
         {% endfor %}
     </ul>
     {% endif %}
-
-    <a href=" {% url 'index' %}">Voltar</a>
     
     <table border="1" cellpadding="5" cellspacing="3">
       <tr>
@@ -35,13 +38,28 @@
         <td>{{ funcionario.email }}</td>
         <td>{{ funcionario.telefone }}</td>
         <td>{{ funcionario.get_cargo_display }}</td>
-        <td><a href="{% url 'funcionarios_editar' funcionario.id %}" >Editar</a> | <a href="{% url 'desativar_funcionario' funcionario.id %}">Desativar</a></td>
+        <td>
+            {% if ativos %}
+                <a href="{% url 'funcionarios_editar' funcionario.id %}">Editar</a>
+                <a href="{% url 'desativar_funcionario' funcionario.id %}">Desativar</a>
+            {% else %}
+                <a href="{% url 'ativar_funcionario' funcionario.id %}">Ativar</a>
+            {% endif %}
+        </td>
       </tr>
 
       {% endfor %}
     </table>
 
-    <a href> Desativados </a>
+    <p><a href=" {% url 'index' %}">Voltar para o menu</a></p>
+    
+    {% if ativos %}
+        <p><a href="{% url 'funcionarios_inativos' %}">Mostrar Inativos</a></p>
+    {% else %}
+        <p><a href="{% url 'funcionarios_ativos' %}">Mostrar Ativos</a></p>
+    {% endif %}
+
+
 
     <div><a href="{% url 'funcionarios_cadastrar' %}"> Cadastrar novo Funcionario </a></div>
   </body>

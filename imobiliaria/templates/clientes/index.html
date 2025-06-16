@@ -6,7 +6,13 @@
     <title>Lista de Clientes</title>
   </head>
   <body>
-    <h1>Lista de Clientes</h1>
+
+    {% if ativos %}
+         <h1>Lista de Alunos</h1>
+    {% else %}
+        <h1>Lista de Alunos Inativos</h1>
+    {% endif %}
+
 
     {% if messages %}
     <ul>
@@ -17,9 +23,6 @@
         {% endfor %}
     </ul>
     {% endif %}
-
-
-    <a href=" {% url 'index' %}">Voltar</a>
     
     <table border="1" cellpadding="5" cellspacing="3">
       <tr>
@@ -38,13 +41,27 @@
         <td>{{ cliente.telefone }}</td>
         <td>{{ cliente.cpf }}</td>
         <td>{{ cliente.data_nascimento|date:"d/m/Y" }}</td>
-        <td><a href ="{% url 'clientes_editar' cliente.id %}">Editar</a> | <a href="{% url 'desativar_cliente' cliente.id %}">Desativar</a></td>
+        <td>
+            {% if ativos %}
+                <a href="{% url 'clientes_editar' cliente.id %}">Editar</a>
+                <a href="{% url 'desativar_cliente' cliente.id %}">Desativar</a>
+            {% else %}
+                <a href="{% url 'ativar_cliente' cliente.id %}">Ativar</a>
+            {% endif %}
+        </td>
       </tr>
 
       {% endfor %}  
     </table>
 
-    <a href> Desativados </a>
+    <p><a href=" {% url 'index' %}">Voltar para o Menu</a></p>
+
+    {% if ativos %}
+        <p><a href="{% url 'clientes_inativos' %}">Mostrar Inativos</a></p>
+    {% else %}
+        <p><a href="{% url 'clientes' %}">Mostrar Ativos</a></p>
+    {% endif %}
+
 
     <div><a href="{% url 'clientes_cadastrar' %}"> Cadastrar novo Cliente </a></div>
   </body>
