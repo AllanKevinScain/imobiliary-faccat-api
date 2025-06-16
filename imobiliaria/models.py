@@ -129,8 +129,8 @@ class Quarto(models.Model):
 
 
 class Reserva(models.Model):
-    imovel = models.ForeignKey(Imovel, on_delete=models.CASCADE)
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    imovel = models.ForeignKey(Imovel, on_delete=models.RESTRICT)
+    cliente = models.ForeignKey(Cliente, on_delete=models.RESTRICT)
     funcionario = models.ForeignKey(
         Funcionario, on_delete=models.SET_NULL, null=True)
     data_inicio = models.DateField()

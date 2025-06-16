@@ -7,6 +7,17 @@
   </head>
   <body>
     <h1>Lista de Funcionarios</h1>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>
+            {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <a href=" {% url 'index' %}">Voltar</a>
     
     <table border="1" cellpadding="5" cellspacing="3">
@@ -24,7 +35,7 @@
         <td>{{ funcionario.email }}</td>
         <td>{{ funcionario.telefone }}</td>
         <td>{{ funcionario.get_cargo_display }}</td>
-        <td><a href="{% url 'funcionarios_editar' funcionario.id %}" >Editar</a> | <a>Desativar</a></td>
+        <td><a href="{% url 'funcionarios_editar' funcionario.id %}" >Editar</a> | <a href="{% url 'desativar_funcionario' funcionario.id %}">Desativar</a></td>
       </tr>
 
       {% endfor %}

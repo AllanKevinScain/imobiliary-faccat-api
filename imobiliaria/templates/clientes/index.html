@@ -7,6 +7,18 @@
   </head>
   <body>
     <h1>Lista de Clientes</h1>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>
+            {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+
     <a href=" {% url 'index' %}">Voltar</a>
     
     <table border="1" cellpadding="5" cellspacing="3">
@@ -26,7 +38,7 @@
         <td>{{ cliente.telefone }}</td>
         <td>{{ cliente.cpf }}</td>
         <td>{{ cliente.data_nascimento|date:"d/m/Y" }}</td>
-        <td><a href ="{% url 'clientes_editar' cliente.id %}">Editar</a> | <a>Desativar</a></td>
+        <td><a href ="{% url 'clientes_editar' cliente.id %}">Editar</a> | <a href="{% url 'desativar_cliente' cliente.id %}">Desativar</a></td>
       </tr>
 
       {% endfor %}  

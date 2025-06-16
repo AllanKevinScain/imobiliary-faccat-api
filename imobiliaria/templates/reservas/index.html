@@ -7,6 +7,17 @@
   </head>
   <body>
     <h1>Lista de Reservas</h1>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>
+            {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <a href=" {% url 'index' %}">Voltar</a>
     
     <table border="1" cellpadding="5" cellspacing="3">
@@ -26,7 +37,7 @@
         <td>{{ reserva.funcionario }}</td>
         <td>{{ reserva.data_inicio|date:"d/m/Y" }}</td>
         <td>{{ reserva.data_fim|date:"d/m/Y" }}</td>
-        <td><a href={% url 'reservas_editar' reserva.id %} >Editar</a> | <a>Desativar</a></td>
+        <td><a href={% url 'reservas_editar' reserva.id %} >Editar</a> | <a href="{% url 'desativar_reserva' reserva.id %}">Desativar</a></td>
       </tr>
 
       {% endfor %}
