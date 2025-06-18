@@ -10,15 +10,31 @@ def index(request):
     return render(request, 'index.html')
 
 
-# FUNCIONARIOS
-def funcionarios(request):
+ORDENACAO_FUNCIONARIO_LOOKUP = {
+    'nome': 'nome',
+    'cargo': 'cargo',
+}
+# FUNCIONARIOS ------------------------------------------------------------------
+
+
+def funcionarios(request, campo):
     funcionarios = Funcionario.objects.filter(ativo=True)
+
+    if campo:
+        campo_ordenacao = ORDENACAO_FUNCIONARIO_LOOKUP.get(campo)
+        funcionarios = funcionarios.order_by(campo_ordenacao)
+
     dados = {'funcionarios': funcionarios, 'ativos': True}
     return render(request, 'funcionarios/index.html', dados)
 
 
-def funcionarios_inativos(request):
+def funcionarios_inativos(request, campo):
     funcionarios = Funcionario.objects.filter(ativo=False)
+
+    if campo:
+        campo_ordenacao = ORDENACAO_FUNCIONARIO_LOOKUP.get(campo)
+        funcionarios = funcionarios.order_by(campo_ordenacao)
+
     dados = {'funcionarios': funcionarios, 'ativos': False}
     return render(request, 'funcionarios/index.html', dados)
 
@@ -28,12 +44,11 @@ def funcionarios_cadastrar(request):
         form = FuncionarioForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('funcionarios')
+            return redirect('funcionarios', campo='nome')
     else:
         form = FuncionarioForm()
-    dados = {
-        'form': form,
-    }
+
+    dados = {'form': form}
     return render(request, 'funcionarios/funcionarios_cadastrar.html', dados)
 
 
@@ -71,7 +86,7 @@ def desativar_funcionario(request, id):
     except Funcionario.DoesNotExist:
         messages.error(request, "Funcionário não encontrado.")
 
-    return redirect('funcionarios')
+    return redirect('funcionarios', campo='nome')
 
 
 def ativar_funcionario(request, id):
@@ -79,7 +94,7 @@ def ativar_funcionario(request, id):
         funcionario = Funcionario.objects.get(id=id)
     except Funcionario.DoesNotExist:
         messages.error(request, "Funcionário não encontrado.")
-        return redirect('funcionarios_inativos')
+        return redirect('funcionarios_inativos', campo='nome')
 
     if funcionario.ativo == False:
         funcionario.ativo = True

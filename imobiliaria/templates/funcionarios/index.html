@@ -30,19 +30,26 @@
 
   <table border="1" cellpadding="5" cellspacing="3">
     <tr>
-      <th>Nome</th>
+
+      {% if ativos %}
+      <th><a href="{% url 'funcionarios' 'nome' %}">Nome</a></th>
+      <th><a href="{% url 'funcionarios' 'cargo' %}">Cargo</a></th>
+      {% else %}
+      <th><a href="{% url 'funcionarios_inativos' 'nome' %}">Nome</a></th>
+      <th><a href="{% url 'funcionarios_inativos' 'cargo' %}">Cargo</a></th>
+      {% endif %}
+
       <th>Email</th>
       <th>Telefone</th>
-      <th>Cargo</th>
       <th>Acoes</th>
     </tr>
 
     {% for funcionario in funcionarios %}
     <tr>
       <td>{{ funcionario.nome }}</td>
+      <td>{{ funcionario.get_cargo_display }}</td>
       <td>{{ funcionario.email }}</td>
       <td>{{ funcionario.telefone }}</td>
-      <td>{{ funcionario.get_cargo_display }}</td>
       <td>
         {% if ativos %}
         <a href="{% url 'funcionarios_editar' funcionario.id %}">Editar</a>
@@ -57,11 +64,10 @@
   </table>
 
   {% if ativos %}
-  <p><a href="{% url 'funcionarios_inativos' %}">Mostrar inativos</a></p>
-
+  <p><a href="{% url 'funcionarios_inativos' 'nome' %}">Mostrar inativos</a></p>
   <div><a href="{% url 'funcionarios_cadastrar' %}">Cadastrar novo funcionário</a></div>
   {% else %}
-  <p><a href="{% url 'funcionarios' %}">Mostrar ativos</a></p>
+  <p><a href="{% url 'funcionarios' 'nome' %}">Mostrar ativos</a></p>
   {% endif %}
 
 

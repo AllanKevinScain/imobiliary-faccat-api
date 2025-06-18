@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import index, funcionarios, funcionarios_cadastrar, funcionarios_editar, desativar_funcionario, ativar_funcionario, funcionarios_inativos
+from .views import index, funcionarios_cadastrar, funcionarios_editar, desativar_funcionario, ativar_funcionario, funcionarios, funcionarios_inativos
 from .views import imoveis, imoveis_cadastrar, imoveis_editar, desativar_imovel, ativar_imovel, imoveis_inativos
 from .views import clientes, clientes_cadastrar, clientes_editar, desativar_cliente, ativar_cliente, clientes_inativos
 from .views import reservas, reservas_cadastrar, reservas_editar, desativar_reserva, ativar_reserva, reservas_inativas
@@ -9,9 +9,10 @@ urlpatterns = [
     path('', index, name='index'),
     # ------------------------------------------------------------------------------------------
     # listagem funcionários
-    path('funcionarios/', funcionarios, name='funcionarios'),
-    path('funcionarios/inativos/', funcionarios_inativos,
+    path('funcionarios/<campo>/', funcionarios, name='funcionarios'),
+    path('funcionarios/inativos/<campo>/', funcionarios_inativos,
          name='funcionarios_inativos'),
+
 
     # crud funcionários
     path('funcionarios/cadastrar', funcionarios_cadastrar,
