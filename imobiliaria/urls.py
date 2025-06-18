@@ -25,8 +25,8 @@ urlpatterns = [
          desativar_funcionario, name='desativar_funcionario'),
     # ------------------------------------------------------------------------------------------
     # listagem imóveis
-    path('imoveis/', imoveis, name='imoveis'),
-    path('imoveis/inativos/', imoveis_inativos, name='imoveis_inativos'),
+    path('imoveis/<campo>/', imoveis, name='imoveis'),
+    path('imoveis/inativos/<campo>/', imoveis_inativos, name='imoveis_inativos'),
 
     # crud imóveis
     path('imoveis/cadastrar', imoveis_cadastrar, name='imoveis_cadastrar'),

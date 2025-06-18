@@ -29,12 +29,21 @@
 
   <table border="1" cellpadding="5" cellspacing="3">
     <tr>
-      <th>Nome</th>
-      <th>Tipo</th>
-      <th>Endereco</th>
-      <th>Cidade</th>
-      <th>Estado</th>
-      <th>Disponibilidade</th>
+      {% if ativos %}
+      <th><a href="{% url 'imoveis' 'nome' %}">Nome</a></th>
+      <th><a href="{% url 'imoveis' 'tipo' %}">Tipo</a></th>
+      <th><a href="{% url 'imoveis' 'endereco' %}">Endereco</a></th>
+      <th><a href="{% url 'imoveis' 'cidade' %}">Cidade</a></th>
+      <th><a href="{% url 'imoveis' 'estado' %}">Estado</a></th>
+      <th><a href="{% url 'imoveis' 'disponivel' %}">Disponibilidade</a></th>
+      {% else %}
+      <th><a href="{% url 'imoveis_inativos' 'nome' %}">Nome</a></th>
+      <th><a href="{% url 'imoveis_inativos' 'tipo' %}">Tipo</a></th>
+      <th><a href="{% url 'imoveis_inativos' 'endereco' %}">Endereco</a></th>
+      <th><a href="{% url 'imoveis_inativos' 'cidade' %}">Cidade</a></th>
+      <th><a href="{% url 'imoveis_inativos' 'estado' %}">Estado</a></th>
+      <th><a href="{% url 'imoveis_inativos' 'disponivel' %}">Disponibilidade</a></th>
+      {% endif %}
       <th>Acoes</th>
     </tr>
 
@@ -67,10 +76,10 @@
 
 
   {% if ativos %}
-  <p><a href="{% url 'imoveis_inativos' %}">Mostrar inativos</a></p>
+  <p><a href="{% url 'imoveis_inativos' 'nome' %}">Mostrar inativos</a></p>
   <div><a href="{% url 'imoveis_cadastrar' %}">Cadastrar novo imóvel</a></div>
   {% else %}
-  <p><a href="{% url 'imoveis' %}">Mostrar ativos</a></p>
+  <p><a href="{% url 'imoveis' 'nome' %}">Mostrar ativos</a></p>
   {% endif %}
 
 

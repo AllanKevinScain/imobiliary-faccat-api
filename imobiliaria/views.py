@@ -10,31 +10,27 @@ def index(request):
     return render(request, 'index.html')
 
 
+# FUNCIONARIOS ------------------------------------------------------------------
 ORDENACAO_FUNCIONARIO_LOOKUP = {
     'nome': 'nome',
     'cargo': 'cargo',
 }
-# FUNCIONARIOS ------------------------------------------------------------------
 
 
 def funcionarios(request, campo):
     funcionarios = Funcionario.objects.filter(ativo=True)
-
     if campo:
         campo_ordenacao = ORDENACAO_FUNCIONARIO_LOOKUP.get(campo)
         funcionarios = funcionarios.order_by(campo_ordenacao)
-
     dados = {'funcionarios': funcionarios, 'ativos': True}
     return render(request, 'funcionarios/index.html', dados)
 
 
 def funcionarios_inativos(request, campo):
     funcionarios = Funcionario.objects.filter(ativo=False)
-
     if campo:
         campo_ordenacao = ORDENACAO_FUNCIONARIO_LOOKUP.get(campo)
         funcionarios = funcionarios.order_by(campo_ordenacao)
-
     dados = {'funcionarios': funcionarios, 'ativos': False}
     return render(request, 'funcionarios/index.html', dados)
 
@@ -56,21 +52,14 @@ def funcionarios_editar(request, id):
     try:
         funcionario = Funcionario.objects.get(id=id)
     except:
-        return redirect('funcionarios')
-
+        return redirect('funcionarios', campo='nome')
     if request.method == 'POST':
         form = FuncionarioForm(request.POST, instance=funcionario)
         if form.is_valid():
             form.save()
-            return redirect('funcionarios')
-
+            return redirect('funcionarios', campo='nome')
     form = FuncionarioForm(instance=funcionario)
-
-    dados = {
-        'form': form,
-        'funcionario': funcionario,
-    }
-
+    dados = {'form': form, 'funcionario': funcionario}
     return render(request, 'funcionarios/funcionarios_editar.html', dados)
 
 
@@ -85,7 +74,6 @@ def desativar_funcionario(request, id):
             request, "Não é possível desativar este funcionário, pois ele está vinculado a uma reserva.")
     except Funcionario.DoesNotExist:
         messages.error(request, "Funcionário não encontrado.")
-
     return redirect('funcionarios', campo='nome')
 
 
@@ -95,29 +83,40 @@ def ativar_funcionario(request, id):
     except Funcionario.DoesNotExist:
         messages.error(request, "Funcionário não encontrado.")
         return redirect('funcionarios_inativos', campo='nome')
-
     if funcionario.ativo == False:
         funcionario.ativo = True
         funcionario.save()
         messages.success(request, "Funcionario reativado com sucesso.")
-
     else:
         messages.info(request, "O funcionário já está ativo.")
-
-    return redirect('funcionarios_inativos')
+    return redirect('funcionarios_inativos', campo='nome')
 
 
 # IMOVEIS
+ORDENACAO_IMOVEIS_LOOKUP = {
+    'nome': 'nome',
+    'tipo': 'tipo',
+    'endereco': 'endereco',
+    'cidade': 'cidade',
+    'estado': 'estado',
+    'disponivel': 'disponivel',
+}
 
 
-def imoveis(request):
+def imoveis(request, campo):
     imoveis = Imovel.objects.filter(ativo=True)
+    if campo:
+        campo_ordenacao = ORDENACAO_IMOVEIS_LOOKUP.get(campo)
+        imoveis = imoveis.order_by(campo_ordenacao)
     dados = {'imoveis': imoveis, 'ativos': True}
     return render(request, 'imoveis/index.html', dados)
 
 
-def imoveis_inativos(request):
+def imoveis_inativos(request, campo):
     imoveis = Imovel.objects.filter(ativo=False)
+    if campo:
+        campo_ordenacao = ORDENACAO_IMOVEIS_LOOKUP.get(campo)
+        imoveis = imoveis.order_by(campo_ordenacao)
     dados = {'imoveis': imoveis, 'ativos': False}
     return render(request, 'imoveis/index.html', dados)
 
@@ -127,12 +126,10 @@ def imoveis_cadastrar(request):
         form = ImovelForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('imoveis')
+            return redirect('imoveis', campo='nome')
     else:
         form = ImovelForm()
-    dados = {
-        'form': form,
-    }
+    dados = {'form': form}
     return render(request, 'imoveis/imoveis_cadastrar.html', dados)
 
 
@@ -140,21 +137,14 @@ def imoveis_editar(request, id):
     try:
         imovel = Imovel.objects.get(id=id)
     except:
-        return redirect('imoveis')
-
+        return redirect('imoveis', campo='nome')
     if request.method == 'POST':
         form = ImovelForm(request.POST, instance=imovel)
         if form.is_valid():
             form.save()
-            return redirect('imoveis')
-
+            return redirect('imoveis', campo='nome')
     form = ImovelForm(instance=imovel)
-
-    dados = {
-        'form': form,
-        'imovel': imovel,
-    }
-
+    dados = {'form': form, 'imovel': imovel}
     return render(request, 'imoveis/imoveis_editar.html', dados)
 
 
@@ -169,8 +159,7 @@ def desativar_imovel(request, id):
             request, "Não é possível desativar este imóvel, pois ele está vinculado a uma reserva.")
     except Imovel.DoesNotExist:
         messages.error(request, "Imóvel não encontrado.")
-
-    return redirect('imoveis')
+    return redirect('imoveis', campo='nome')
 
 
 def ativar_imovel(request, id):
@@ -178,17 +167,14 @@ def ativar_imovel(request, id):
         imovel = Imovel.objects.get(id=id)
     except Imovel.DoesNotExist:
         messages.error(request, "Imóvel não encontrado.")
-        return redirect('imoveis_inativos')
-
+        return redirect('imoveis_inativos', campo='nome')
     if imovel.ativo == False:
         imovel.ativo = True
         imovel.save()
         messages.success(request, "Imóvel reativado com sucesso.")
-
     else:
         messages.info(request, "O imóvel já está ativo.")
-
-    return redirect('imoveis_inativos')
+    return redirect('imoveis_inativos', campo='nome')
 
 
 # CLIENTES
