@@ -27,22 +27,29 @@
   </ul>
   {% endif %}
 
+  <p>
+  <form method="get">
+    <input type="text" name="busca" placeholder="Buscar por nome" value="{{ query|default:'' }}">
+    <button type="submit">Buscar</button>
+  </form>
+  </p>
+
   <table border="1" cellpadding="5" cellspacing="3">
     <tr>
       {% if ativos %}
-      <th><a href="{% url 'imoveis' 'nome' %}">Nome</a></th>
-      <th><a href="{% url 'imoveis' 'tipo' %}">Tipo</a></th>
-      <th><a href="{% url 'imoveis' 'endereco' %}">Endereco</a></th>
-      <th><a href="{% url 'imoveis' 'cidade' %}">Cidade</a></th>
-      <th><a href="{% url 'imoveis' 'estado' %}">Estado</a></th>
-      <th><a href="{% url 'imoveis' 'disponivel' %}">Disponibilidade</a></th>
+      <th><a href="{% url 'imoveis' 'nome' %}?busca={{ query }}">Nome</a></th>
+      <th><a href="{% url 'imoveis' 'tipo' %}?busca={{ query }}">Tipo</a></th>
+      <th><a href="{% url 'imoveis' 'endereco' %}?busca={{ query }}">Endereco</a></th>
+      <th><a href="{% url 'imoveis' 'cidade' %}?busca={{ query }}">Cidade</a></th>
+      <th><a href="{% url 'imoveis' 'estado' %}?busca={{ query }}">Estado</a></th>
+      <th><a href="{% url 'imoveis' 'disponivel' %}?busca={{ query }}">Disponibilidade</a></th>
       {% else %}
-      <th><a href="{% url 'imoveis_inativos' 'nome' %}">Nome</a></th>
-      <th><a href="{% url 'imoveis_inativos' 'tipo' %}">Tipo</a></th>
-      <th><a href="{% url 'imoveis_inativos' 'endereco' %}">Endereco</a></th>
-      <th><a href="{% url 'imoveis_inativos' 'cidade' %}">Cidade</a></th>
-      <th><a href="{% url 'imoveis_inativos' 'estado' %}">Estado</a></th>
-      <th><a href="{% url 'imoveis_inativos' 'disponivel' %}">Disponibilidade</a></th>
+      <th><a href="{% url 'imoveis_inativos' 'nome' %}?busca={{ query }}">Nome</a></th>
+      <th><a href="{% url 'imoveis_inativos' 'tipo' %}?busca={{ query }}">Tipo</a></th>
+      <th><a href="{% url 'imoveis_inativos' 'endereco' %}?busca={{ query }}">Endereco</a></th>
+      <th><a href="{% url 'imoveis_inativos' 'cidade' %}?busca={{ query }}">Cidade</a></th>
+      <th><a href="{% url 'imoveis_inativos' 'estado' %}?busca={{ query }}">Estado</a></th>
+      <th><a href="{% url 'imoveis_inativos' 'disponivel' %}?busca={{ query }}">Disponibilidade</a></th>
       {% endif %}
       <th>Acoes</th>
     </tr>

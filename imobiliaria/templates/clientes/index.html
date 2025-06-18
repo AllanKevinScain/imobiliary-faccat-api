@@ -28,14 +28,22 @@
   </ul>
   {% endif %}
 
+  <p>
+  <form method="get">
+    <input type="text" name="busca" placeholder="Buscar por nome" value="{{ query|default:'' }}">
+    <button type="submit">Buscar</button>
+  </form>
+  </p>
+
+
   <table border="1" cellpadding="5" cellspacing="3">
     <tr>
       {% if ativos %}
-      <th><a href="{% url 'clientes' 'nome' %}">Nome</a></th>
-      <th><a href="{% url 'clientes' 'data_nascimento' %}">Data Nascimento</a></th>
+      <th><a href="{% url 'clientes' 'nome' %}?busca={{ query }}">Nome</a></th>
+      <th><a href="{% url 'clientes' 'data_nascimento' %}?busca={{ query }}">Data Nascimento</a></th>
       {% else %}
-      <th><a href="{% url 'clientes_inativos' 'nome' %}">Nome</a></th>
-      <th><a href="{% url 'clientes_inativos' 'data_nascimento' %}">Data Nascimento</a></th>
+      <th><a href="{% url 'clientes_inativos' 'nome' %}?busca={{ query }}">Nome</a></th>
+      <th><a href="{% url 'clientes_inativos' 'data_nascimento' %}?busca={{ query }}">Data Nascimento</a></th>
       {% endif %}
       <th>Email</th>
       <th>Telefone</th>

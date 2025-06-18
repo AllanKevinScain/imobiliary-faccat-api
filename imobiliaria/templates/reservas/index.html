@@ -33,20 +33,27 @@
   </ul>
   {% endif %}
 
+  <p>
+  <form method="get">
+    <input type="text" name="busca" placeholder="Buscar por nome do cliente" value="{{ query|default:'' }}">
+    <button type="submit">Buscar</button>
+  </form>
+  </p>
+
   <table border="1" cellpadding="5" cellspacing="3">
     <tr>
       {% if ativos %}
-      <th><a href="{% url 'reservas' 'imovel' %}">Imóvel</a></th>
-      <th><a href="{% url 'reservas' 'cliente' %}">Cliente</a></th>
-      <th><a href="{% url 'reservas' 'funcionario' %}">Funcionário</a></th>
-      <th><a href="{% url 'reservas' 'data_inicio' %}">Data Inicial</a></th>
-      <th><a href="{% url 'reservas' 'data_fim' %}">Data Final</a></th>
+      <th><a href="{% url 'reservas' 'imovel' %}?busca={{ query }}">Imóvel</a></th>
+      <th><a href="{% url 'reservas' 'cliente' %}?busca={{ query }}">Cliente</a></th>
+      <th><a href="{% url 'reservas' 'funcionario' %}?busca={{ query }}">Funcionário</a></th>
+      <th><a href="{% url 'reservas' 'data_inicio' %}?busca={{ query }}">Data Inicial</a></th>
+      <th><a href="{% url 'reservas' 'data_fim' %}?busca={{ query }}">Data Final</a></th>
       {% else %}
-      <th><a href="{% url 'reservas_inativas' 'imovel' %}">Imóvel</a></th>
-      <th><a href="{% url 'reservas_inativas' 'cliente' %}">Cliente</a></th>
-      <th><a href="{% url 'reservas_inativas' 'funcionario' %}">Funcionário</a></th>
-      <th><a href="{% url 'reservas_inativas' 'data_inicio' %}">Data Inicial</a></th>
-      <th><a href="{% url 'reservas_inativas' 'data_fim' %}">Data Final</a></th>
+      <th><a href="{% url 'reservas_inativas' 'imovel' %}?busca={{ query }}">Imóvel</a></th>
+      <th><a href="{% url 'reservas_inativas' 'cliente' %}?busca={{ query }}">Cliente</a></th>
+      <th><a href="{% url 'reservas_inativas' 'funcionario' %}?busca={{ query }}">Funcionário</a></th>
+      <th><a href="{% url 'reservas_inativas' 'data_inicio' %}?busca={{ query }}">Data Inicial</a></th>
+      <th><a href="{% url 'reservas_inativas' 'data_fim' %}?busca={{ query }}">Data Final</a></th>
       {% endif %}
       <th>Acoes</th>
     </tr>

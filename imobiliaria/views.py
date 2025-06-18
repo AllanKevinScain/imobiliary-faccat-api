@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Funcionario, Cliente, Imovel, Quarto, Reserva
-from .forms import FuncionarioForm, ClienteForm, ImovelForm, QuartoForm, ReservaForm
+from .models import Funcionario, Cliente, Imovel, Reserva
+from .forms import FuncionarioForm, ClienteForm, ImovelForm, ReservaForm
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import RestrictedError
@@ -8,6 +8,97 @@ from django.db.models import RestrictedError
 
 def index(request):
     return render(request, 'index.html')
+
+
+# CLIENTES
+ORDENACAO_CLIENTES_LOOKUP = {
+    'nome': 'nome',
+    'data_nascimento': 'data_nascimento',
+}
+
+
+def clientes(request, campo):
+    query = request.GET.get('busca', '')
+    if campo == 'nome' and query:
+        clientes = Cliente.objects.filter(ativo=True, nome__icontains=query)
+    else:
+        clientes = Cliente.objects.filter(ativo=True)
+    if campo:
+        campo_ordenacao = ORDENACAO_CLIENTES_LOOKUP.get(campo)
+        clientes = clientes.order_by(campo_ordenacao)
+
+    dados = {'clientes': clientes, 'ativos': True, 'query': query}
+    return render(request, 'clientes/index.html', dados)
+
+
+def clientes_inativos(request, campo):
+    query = request.GET.get('busca', '')
+    if campo == 'nome' and query:
+        clientes = Cliente.objects.filter(ativo=False, nome__icontains=query)
+    else:
+        clientes = Cliente.objects.filter(ativo=False)
+    if campo:
+        campo_ordenacao = ORDENACAO_CLIENTES_LOOKUP.get(campo)
+        clientes = clientes.order_by(campo_ordenacao)
+
+    dados = {'clientes': clientes, 'ativos': False, 'query': query}
+    return render(request, 'clientes/index.html', dados)
+
+
+def clientes_cadastrar(request):
+    if request.method == 'POST':
+        form = ClienteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('clientes', campo="nome")
+    else:
+        form = ClienteForm()
+    dados = {'form': form}
+    return render(request, 'clientes/clientes_cadastrar.html', dados)
+
+
+def clientes_editar(request, id):
+    try:
+        cliente = Cliente.objects.get(id=id)
+    except:
+        return redirect('clientes', campo="nome")
+    if request.method == 'POST':
+        form = ClienteForm(request.POST, instance=cliente)
+        if form.is_valid():
+            form.save()
+            return redirect('clientes', campo="nome")
+    form = ClienteForm(instance=cliente)
+    dados = {'form': form, 'cliente': cliente}
+    return render(request, 'clientes/clientes_editar.html', dados)
+
+
+def desativar_cliente(request, id):
+    try:
+        cliente = Cliente.objects.get(id=id)
+        cliente.ativo = False
+        cliente.save()
+        messages.success(request, "Cliente desativado com sucesso.")
+    except RestrictedError:
+        messages.error(
+            request, "Não é possível desativar este cliente, pois ele está vinculado a uma reserva.")
+    except Cliente.DoesNotExist:
+        messages.error(request, "Cliente não encontrado.")
+    return redirect('clientes', campo="nome")
+
+
+def ativar_cliente(request, id):
+    try:
+        cliente = Cliente.objects.get(id=id)
+    except Cliente.DoesNotExist:
+        messages.error(request, "Cliente não encontrado.")
+        return redirect('clientes_inativos', campo="nome")
+    if cliente.ativo == False:
+        cliente.ativo = True
+        cliente.save()
+        messages.success(request, "Cliente reativado com sucesso.")
+    else:
+        messages.info(request, "O cliente já está ativo.")
+    return redirect('clientes_inativos', campo="nome")
 
 
 # FUNCIONARIOS ------------------------------------------------------------------
@@ -18,20 +109,30 @@ ORDENACAO_FUNCIONARIO_LOOKUP = {
 
 
 def funcionarios(request, campo):
-    funcionarios = Funcionario.objects.filter(ativo=True)
+    query = request.GET.get('busca', '')
+    if campo == 'nome' and query:
+        funcionarios = Funcionario.objects.filter(
+            ativo=True, nome__icontains=query)
+    else:
+        funcionarios = Funcionario.objects.filter(ativo=True)
     if campo:
         campo_ordenacao = ORDENACAO_FUNCIONARIO_LOOKUP.get(campo)
         funcionarios = funcionarios.order_by(campo_ordenacao)
-    dados = {'funcionarios': funcionarios, 'ativos': True}
+    dados = {'funcionarios': funcionarios, 'ativos': True, 'query': query}
     return render(request, 'funcionarios/index.html', dados)
 
 
 def funcionarios_inativos(request, campo):
-    funcionarios = Funcionario.objects.filter(ativo=False)
+    query = request.GET.get('busca', '')
+    if campo == 'nome' and query:
+        funcionarios = Funcionario.objects.filter(
+            ativo=False, nome__icontains=query)
+    else:
+        funcionarios = Funcionario.objects.filter(ativo=False)
     if campo:
         campo_ordenacao = ORDENACAO_FUNCIONARIO_LOOKUP.get(campo)
         funcionarios = funcionarios.order_by(campo_ordenacao)
-    dados = {'funcionarios': funcionarios, 'ativos': False}
+    dados = {'funcionarios': funcionarios, 'ativos': False, 'query': query}
     return render(request, 'funcionarios/index.html', dados)
 
 
@@ -104,7 +205,12 @@ ORDENACAO_IMOVEIS_LOOKUP = {
 
 
 def imoveis(request, campo):
-    imoveis = Imovel.objects.filter(ativo=True)
+    query = request.GET.get('busca', '')
+    if campo == 'nome' and query:
+        imoveis = Imovel.objects.filter(
+            ativo=True, nome__icontains=query)
+    else:
+        imoveis = Imovel.objects.filter(ativo=True)
     if campo:
         campo_ordenacao = ORDENACAO_IMOVEIS_LOOKUP.get(campo)
         imoveis = imoveis.order_by(campo_ordenacao)
@@ -113,7 +219,12 @@ def imoveis(request, campo):
 
 
 def imoveis_inativos(request, campo):
-    imoveis = Imovel.objects.filter(ativo=False)
+    query = request.GET.get('busca', '')
+    if campo == 'nome' and query:
+        imoveis = Imovel.objects.filter(
+            ativo=False, nome__icontains=query)
+    else:
+        imoveis = Imovel.objects.filter(ativo=False)
     if campo:
         campo_ordenacao = ORDENACAO_IMOVEIS_LOOKUP.get(campo)
         imoveis = imoveis.order_by(campo_ordenacao)
@@ -177,87 +288,6 @@ def ativar_imovel(request, id):
     return redirect('imoveis_inativos', campo='nome')
 
 
-# CLIENTES
-ORDENACAO_CLIENTES_LOOKUP = {
-    'nome': 'nome',
-    'data_nascimento': 'data_nascimento',
-}
-
-
-def clientes(request, campo):
-    clientes = Cliente.objects.filter(ativo=True)
-    if campo:
-        campo_ordenacao = ORDENACAO_CLIENTES_LOOKUP.get(campo)
-        clientes = clientes.order_by(campo_ordenacao)
-    dados = {'clientes': clientes, 'ativos': True}
-    return render(request, 'clientes/index.html', dados)
-
-
-def clientes_inativos(request, campo):
-    clientes = Cliente.objects.filter(ativo=False)
-    if campo:
-        campo_ordenacao = ORDENACAO_CLIENTES_LOOKUP.get(campo)
-        clientes = clientes.order_by(campo_ordenacao)
-    dados = {'clientes': clientes, 'ativos': False}
-    return render(request, 'clientes/index.html', dados)
-
-
-def clientes_cadastrar(request):
-    if request.method == 'POST':
-        form = ClienteForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('clientes', campo="nome")
-    else:
-        form = ClienteForm()
-    dados = {'form': form}
-    return render(request, 'clientes/clientes_cadastrar.html', dados)
-
-
-def clientes_editar(request, id):
-    try:
-        cliente = Cliente.objects.get(id=id)
-    except:
-        return redirect('clientes', campo="nome")
-    if request.method == 'POST':
-        form = ClienteForm(request.POST, instance=cliente)
-        if form.is_valid():
-            form.save()
-            return redirect('clientes', campo="nome")
-    form = ClienteForm(instance=cliente)
-    dados = {'form': form, 'cliente': cliente}
-    return render(request, 'clientes/clientes_editar.html', dados)
-
-
-def desativar_cliente(request, id):
-    try:
-        cliente = Cliente.objects.get(id=id)
-        cliente.ativo = False
-        cliente.save()
-        messages.success(request, "Cliente desativado com sucesso.")
-    except RestrictedError:
-        messages.error(
-            request, "Não é possível desativar este cliente, pois ele está vinculado a uma reserva.")
-    except Cliente.DoesNotExist:
-        messages.error(request, "Cliente não encontrado.")
-    return redirect('clientes', campo="nome")
-
-
-def ativar_cliente(request, id):
-    try:
-        cliente = Cliente.objects.get(id=id)
-    except Cliente.DoesNotExist:
-        messages.error(request, "Cliente não encontrado.")
-        return redirect('clientes_inativos', campo="nome")
-    if cliente.ativo == False:
-        cliente.ativo = True
-        cliente.save()
-        messages.success(request, "Cliente reativado com sucesso.")
-    else:
-        messages.info(request, "O cliente já está ativo.")
-    return redirect('clientes_inativos', campo="nome")
-
-
 # RESERVAS
 ORDENACAO_RESERVAS_LOOKUP = {
     'imovel': 'imovel__nome',
@@ -269,7 +299,12 @@ ORDENACAO_RESERVAS_LOOKUP = {
 
 
 def reservas(request, campo):
-    reservas = Reserva.objects.filter(ativo=True)
+    query = request.GET.get('busca', '')
+    if campo == 'cliente' and query:
+        reservas = Reserva.objects.filter(
+            ativo=True, cliente__nome__icontains=query)
+    else:
+        reservas = Reserva.objects.filter(ativo=True)
     if campo:
         campo_ordenacao = ORDENACAO_RESERVAS_LOOKUP.get(campo)
         reservas = reservas.order_by(campo_ordenacao)
@@ -278,7 +313,12 @@ def reservas(request, campo):
 
 
 def reservas_inativas(request, campo):
-    reservas = Reserva.objects.filter(ativo=False)
+    query = request.GET.get('busca', '')
+    if campo == 'cliente' and query:
+        reservas = Reserva.objects.filter(
+            ativo=False, cliente__nome__icontains=query)
+    else:
+        reservas = Reserva.objects.filter(ativo=False)
     if campo:
         campo_ordenacao = ORDENACAO_RESERVAS_LOOKUP.get(campo)
         reservas = reservas.order_by(campo_ordenacao)
