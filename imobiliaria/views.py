@@ -207,12 +207,10 @@ def clientes_cadastrar(request):
         form = ClienteForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('clientes')
+            return redirect('clientes', campo="nome")
     else:
         form = ClienteForm()
-    dados = {
-        'form': form,
-    }
+    dados = {'form': form}
     return render(request, 'clientes/clientes_cadastrar.html', dados)
 
 
@@ -220,21 +218,14 @@ def clientes_editar(request, id):
     try:
         cliente = Cliente.objects.get(id=id)
     except:
-        return redirect('clientes')
-
+        return redirect('clientes', campo="nome")
     if request.method == 'POST':
         form = ClienteForm(request.POST, instance=cliente)
         if form.is_valid():
             form.save()
-            return redirect('clientes')
-
+            return redirect('clientes', campo="nome")
     form = ClienteForm(instance=cliente)
-
-    dados = {
-        'form': form,
-        'cliente': cliente,
-    }
-
+    dados = {'form': form, 'cliente': cliente}
     return render(request, 'clientes/clientes_editar.html', dados)
 
 
@@ -249,7 +240,7 @@ def desativar_cliente(request, id):
             request, "Não é possível desativar este cliente, pois ele está vinculado a uma reserva.")
     except Cliente.DoesNotExist:
         messages.error(request, "Cliente não encontrado.")
-    return redirect('clientes')
+    return redirect('clientes', campo="nome")
 
 
 def ativar_cliente(request, id):
@@ -257,31 +248,41 @@ def ativar_cliente(request, id):
         cliente = Cliente.objects.get(id=id)
     except Cliente.DoesNotExist:
         messages.error(request, "Cliente não encontrado.")
-        return redirect('clientes_inativos')
-
+        return redirect('clientes_inativos', campo="nome")
     if cliente.ativo == False:
         cliente.ativo = True
         cliente.save()
         messages.success(request, "Cliente reativado com sucesso.")
-
     else:
         messages.info(request, "O cliente já está ativo.")
-
-    return redirect('clientes_inativos')
+    return redirect('clientes_inativos', campo="nome")
 
 
 # RESERVAS
+ORDENACAO_RESERVAS_LOOKUP = {
+    'imovel': 'imovel__nome',
+    'cliente': 'cliente__nome',
+    'funcionario': 'funcionario__nome',
+    'data_inicio': 'data_inicio',
+    'data_fim': 'data_fim',
+}
 
 
-def reservas(request):
+def reservas(request, campo):
     reservas = Reserva.objects.filter(ativo=True)
+    if campo:
+        campo_ordenacao = ORDENACAO_RESERVAS_LOOKUP.get(campo)
+        reservas = reservas.order_by(campo_ordenacao)
     dados = {'reservas': reservas, 'ativos': True}
     return render(request, 'reservas/index.html', dados)
 
 
-def reservas_inativas(request):
+def reservas_inativas(request, campo):
     reservas = Reserva.objects.filter(ativo=False)
-    dados = {'reservas': reservas, 'ativos': False, }
+    if campo:
+        campo_ordenacao = ORDENACAO_RESERVAS_LOOKUP.get(campo)
+        reservas = reservas.order_by(campo_ordenacao)
+    dados = {'reservas': reservas, 'ativos': False}
     return render(request, 'reservas/index.html', dados)
 
 
@@ -290,12 +291,10 @@ def reservas_cadastrar(request):
         form = ReservaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('reservas')
+            return redirect('reservas', campo="cliente")
     else:
         form = ReservaForm()
-    dados = {
-        'form': form,
-    }
+    dados = {'form': form}
     return render(request, 'reservas/reservas_cadastrar.html', dados)
 
 
@@ -303,21 +302,14 @@ def reservas_editar(request, id):
     try:
         reserva = Reserva.objects.get(id=id)
     except:
-        return redirect('reservas')
-
+        return redirect('reservas', campo="cliente")
     if request.method == 'POST':
         form = ReservaForm(request.POST, instance=reserva)
         if form.is_valid():
             form.save()
-            return redirect('reservas')
-
+            return redirect('reservas', campo="cliente")
     form = ReservaForm(instance=reserva)
-
-    dados = {
-        'form': form,
-        'reserva': reserva,
-    }
-
+    dados = {'form': form, 'reserva': reserva}
     return render(request, 'reservas/reserva_editar.html', dados)
 
 
@@ -332,7 +324,7 @@ def desativar_reserva(request, id):
             request, "Não é possível desativar esta reserva, pois ela está vinculada a um imóvel ou cliente.")
     except Reserva.DoesNotExist:
         messages.error(request, "Reserva não encontrada.")
-    return redirect('reservas')
+    return redirect('reservas', campo="cliente")
 
 
 def ativar_reserva(request, id):
@@ -340,14 +332,11 @@ def ativar_reserva(request, id):
         reserva = Reserva.objects.get(id=id)
     except Reserva.DoesNotExist:
         messages.error(request, "Reserva não encontrada.")
-        return redirect('reservas_inativas')
-
+        return redirect('reservas_inativas', campo="cliente")
     if reserva.ativo == False:
         reserva.ativo = True
         reserva.save()
         messages.success(request, "Reserva reativada com sucesso.")
-
     else:
         messages.info(request, "A reserva já está ativa.")
-
-    return redirect('reservas_inativas')
+    return redirect('reservas_inativas', campo="cliente")

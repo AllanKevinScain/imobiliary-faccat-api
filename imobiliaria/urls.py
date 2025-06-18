@@ -48,8 +48,9 @@ urlpatterns = [
          desativar_cliente, name='desativar_cliente'),
     # ------------------------------------------------------------------------------------------
     # listagem reservas
-    path('reservas/', reservas, name='reservas'),
-    path('reservas/inativas/', reservas_inativas, name='reservas_inativas'),
+    path('reservas/<campo>/', reservas, name='reservas'),
+    path('reservas/inativas/<campo>/',
+         reservas_inativas, name='reservas_inativas'),
 
     # crud reservas
     path('reservas/cadastrar', reservas_cadastrar, name='reservas_cadastrar'),

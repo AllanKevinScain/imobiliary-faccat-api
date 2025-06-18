@@ -35,11 +35,19 @@
 
   <table border="1" cellpadding="5" cellspacing="3">
     <tr>
-      <th>Imovel</th>
-      <th>Cliente</th>
-      <th>Funcionario</th>
-      <th>Data Inicial</th>
-      <th>Data Final</th>
+      {% if ativos %}
+      <th><a href="{% url 'reservas' 'imovel' %}">Imóvel</a></th>
+      <th><a href="{% url 'reservas' 'cliente' %}">Cliente</a></th>
+      <th><a href="{% url 'reservas' 'funcionario' %}">Funcionário</a></th>
+      <th><a href="{% url 'reservas' 'data_inicio' %}">Data Inicial</a></th>
+      <th><a href="{% url 'reservas' 'data_fim' %}">Data Final</a></th>
+      {% else %}
+      <th><a href="{% url 'reservas_inativas' 'imovel' %}">Imóvel</a></th>
+      <th><a href="{% url 'reservas_inativas' 'cliente' %}">Cliente</a></th>
+      <th><a href="{% url 'reservas_inativas' 'funcionario' %}">Funcionário</a></th>
+      <th><a href="{% url 'reservas_inativas' 'data_inicio' %}">Data Inicial</a></th>
+      <th><a href="{% url 'reservas_inativas' 'data_fim' %}">Data Final</a></th>
+      {% endif %}
       <th>Acoes</th>
     </tr>
 
@@ -64,11 +72,10 @@
   </table>
 
   {% if ativos %}
-  <p><a href="{% url 'reservas_inativas' %}">Mostrar inativas</a></p>
-
+  <p><a href="{% url 'reservas_inativas' 'cliente' %}">Mostrar inativas</a></p>
   <div><a href="{% url 'reservas_cadastrar' %}">Cadastrar nova reserva</a></div>
   {% else %}
-  <p><a href="{% url 'reservas' %}">Mostrar ativas</a></p>
+  <p><a href="{% url 'reservas' 'cliente' %}">Mostrar ativas</a></p>
   {% endif %}
 
 
