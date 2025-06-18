@@ -178,16 +178,26 @@ def ativar_imovel(request, id):
 
 
 # CLIENTES
+ORDENACAO_CLIENTES_LOOKUP = {
+    'nome': 'nome',
+    'data_nascimento': 'data_nascimento',
+}
 
 
-def clientes(request):
+def clientes(request, campo):
     clientes = Cliente.objects.filter(ativo=True)
+    if campo:
+        campo_ordenacao = ORDENACAO_CLIENTES_LOOKUP.get(campo)
+        clientes = clientes.order_by(campo_ordenacao)
     dados = {'clientes': clientes, 'ativos': True}
     return render(request, 'clientes/index.html', dados)
 
 
-def clientes_inativos(request):
+def clientes_inativos(request, campo):
     clientes = Cliente.objects.filter(ativo=False)
+    if campo:
+        campo_ordenacao = ORDENACAO_CLIENTES_LOOKUP.get(campo)
+        clientes = clientes.order_by(campo_ordenacao)
     dados = {'clientes': clientes, 'ativos': False}
     return render(request, 'clientes/index.html', dados)
 
