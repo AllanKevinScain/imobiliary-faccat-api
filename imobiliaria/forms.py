@@ -6,9 +6,8 @@ from .models import Funcionario, Cliente, Imovel, Quarto, Reserva
 
 class FuncionarioForm(forms.ModelForm):
     class Meta:
-        model = Funcionario  # Aqui vamos dizer qual modelo esse formulário vai usar
+        model = Funcionario
         fields = ['nome', 'email', 'telefone', 'cargo']
-        # Aqui vamos dizer quais campos do modelo funcionario queremos usar no formulário
 
 # Formulário para Cliente
 

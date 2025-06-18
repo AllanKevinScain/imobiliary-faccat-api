@@ -1,71 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lista de Imoveis</title>
-  </head>
-  <body>
-    {% if ativos %}
-        <h1>Lista de Imoveis Ativos</h1>
-    {% else %}
-        <h1>Lista de Imoveis Inativos</h1>
-    {% endif %}
 
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>
-            {{ message }}
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    
-    <table border="1" cellpadding="5" cellspacing="3">
-      <tr>
-        <th>Nome</th>
-        <th>Tipo</th>
-        <th>Endereco</th>
-        <th>Cidade</th>
-        <th>Estado</th>
-        <th>Disponibilidade</th>
-        <th>Acoes</th>
-      </tr>
-      {% for imovel in imoveis %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Imóveis</title>
+</head>
 
-      <tr>
-        <td>{{ imovel.nome }}</td>
-        <td>{{ imovel.get_tipo_display }}</td>
-        <td>{{ imovel.endereco }}</td>
-        <td>{{ imovel.cidade }}</td>
-        <td>{{ imovel.get_estado_display }}</td>
-        {% if imovel.disponivel %}
-            <td>Disponivel</td>
-            {% else %}
-            <td>Indisponivel</td>
+<body>
+
+  <p><a href="{% url 'index' %}">Voltar</a></p>
+
+  {% if ativos %}
+  <h1>Imóveis ativos</h1>
+  {% else %}
+  <h1>Imóveis inativos</h1>
+  {% endif %}
+
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>
+      {{ message }}
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <table border="1" cellpadding="5" cellspacing="3">
+    <tr>
+      <th>Nome</th>
+      <th>Tipo</th>
+      <th>Endereco</th>
+      <th>Cidade</th>
+      <th>Estado</th>
+      <th>Disponibilidade</th>
+      <th>Acoes</th>
+    </tr>
+
+    {% for imovel in imoveis %}
+    <tr>
+      <td>{{ imovel.nome }}</td>
+      <td>{{ imovel.get_tipo_display }}</td>
+      <td>{{ imovel.endereco }}</td>
+      <td>{{ imovel.cidade }}</td>
+      <td>{{ imovel.get_estado_display }}</td>
+
+      {% if imovel.disponivel %}
+      <td>Disponivel</td>
+      {% else %}
+      <td>Indisponivel</td>
+      {% endif %}
+
+      <td>
+        {% if ativos %}
+        <a href="{% url 'imoveis_editar' imovel.id %}">Editar</a>
+        <a href="{% url 'desativar_imovel' imovel.id %}">Desativar</a>
+        {% else %}
+        <a href="{% url 'ativar_imovel' imovel.id %}">Ativar</a>
         {% endif %}
-        <td>
-          {% if ativos %}
-                    <a href="{% url 'editar_aluno' aluno.id %}">Editar</a>
-                    <a href="{% url 'excluir_aluno' aluno.id %}">Excluir</a>
-                {% else %}
-                    <a href="{% url 'ativar_imovel' imovel.id %}">Ativar</a>
-                {% endif %}
-              </td>
-      </tr>
+      </td>
+    </tr>
+    {% endfor %}
 
-      {% endfor %}
-    </table>
+  </table>
 
-    <p><a href=" {% url 'index' %}">Voltar para o Menu</a></p>
 
-    {% if ativos %}
-        <p><a href="{% url 'imoveis_inativos' %}">Mostrar Inativos</a></p>
-    {% else %}
-        <p><a href="{% url 'imoveis_ativos' %}">Mostrar Ativos</a></p>
-    {% endif %}
+  {% if ativos %}
+  <p><a href="{% url 'imoveis_inativos' %}">Mostrar inativos</a></p>
 
-    <div><a href="{% url 'imoveis_cadastrar' %}"> Cadastrar novo Imovel </a></div>
-  </body>
+  <div><a href="{% url 'imoveis_cadastrar' %}">Cadastrar novo imóvel</a></div>
+  {% else %}
+  <p><a href="{% url 'imoveis' %}">Mostrar ativos</a></p>
+  {% endif %}
+
+
+</body>
+
 </html>

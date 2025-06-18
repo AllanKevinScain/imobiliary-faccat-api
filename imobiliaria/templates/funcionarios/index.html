@@ -1,66 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lista de Funcionarios</title>
-  </head>
-  <body>
-    {% if ativos %}
-         <h1>Lista de Alunos</h1>
-    {% else %}
-        <h1>Lista de Alunos Inativos</h1>
-    {% endif %}
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Funcionários</title>
+</head>
+
+<body>
+
+  <p><a href="{% url 'index' %}">Voltar</a></p>
+
+  {% if ativos %}
+  <h1>Funcionários ativos</h1>
+  {% else %}
+  <h1>Funcionários inativos</h1>
+  {% endif %}
 
 
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>
-            {{ message }}
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    
-    <table border="1" cellpadding="5" cellspacing="3">
-      <tr>
-        <th>Nome</th>
-        <th>Email</th>
-        <th>Telefone</th>
-        <th>Cargo</th>
-        <th>Acoes</th>
-      </tr>
-      {% for funcionario in funcionarios %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>
+      {{ message }}
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
 
-      <tr>
-        <td>{{ funcionario.nome }}</td>
-        <td>{{ funcionario.email }}</td>
-        <td>{{ funcionario.telefone }}</td>
-        <td>{{ funcionario.get_cargo_display }}</td>
-        <td>
-            {% if ativos %}
-                <a href="{% url 'funcionarios_editar' funcionario.id %}">Editar</a>
-                <a href="{% url 'desativar_funcionario' funcionario.id %}">Desativar</a>
-            {% else %}
-                <a href="{% url 'ativar_funcionario' funcionario.id %}">Ativar</a>
-            {% endif %}
-        </td>
-      </tr>
+  <table border="1" cellpadding="5" cellspacing="3">
+    <tr>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Telefone</th>
+      <th>Cargo</th>
+      <th>Acoes</th>
+    </tr>
 
-      {% endfor %}
-    </table>
+    {% for funcionario in funcionarios %}
+    <tr>
+      <td>{{ funcionario.nome }}</td>
+      <td>{{ funcionario.email }}</td>
+      <td>{{ funcionario.telefone }}</td>
+      <td>{{ funcionario.get_cargo_display }}</td>
+      <td>
+        {% if ativos %}
+        <a href="{% url 'funcionarios_editar' funcionario.id %}">Editar</a>
+        <a href="{% url 'desativar_funcionario' funcionario.id %}">Desativar</a>
+        {% else %}
+        <a href="{% url 'ativar_funcionario' funcionario.id %}">Ativar</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
 
-    <p><a href=" {% url 'index' %}">Voltar para o menu</a></p>
-    
-    {% if ativos %}
-        <p><a href="{% url 'funcionarios_inativos' %}">Mostrar Inativos</a></p>
-    {% else %}
-        <p><a href="{% url 'funcionarios_ativos' %}">Mostrar Ativos</a></p>
-    {% endif %}
+  </table>
+
+  {% if ativos %}
+  <p><a href="{% url 'funcionarios_inativos' %}">Mostrar inativos</a></p>
+
+  <div><a href="{% url 'funcionarios_cadastrar' %}">Cadastrar novo funcionário</a></div>
+  {% else %}
+  <p><a href="{% url 'funcionarios' %}">Mostrar ativos</a></p>
+  {% endif %}
 
 
+</body>
 
-    <div><a href="{% url 'funcionarios_cadastrar' %}"> Cadastrar novo Funcionario </a></div>
-  </body>
 </html>

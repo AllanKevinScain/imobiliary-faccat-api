@@ -1,0 +1,8 @@
+{
+    "editor.formatOnSave": true,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "workbench.colorTheme": "Dracula Theme",
+    "explorer.compactFolders": false,
+}

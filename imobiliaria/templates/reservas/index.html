@@ -1,71 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lista de Reservas</title>
-  </head>
-  <body>
-    {% if ativos %}
-        <h1>Lista de Reservas Ativas</h1>
-    {% else %}
-        <h1>Lista de Reservas Inativas</h1>
-    {% endif %}
 
-    {% if reservas %}
-        <h2>Total de Reservas: {{ reservas|length }}</h2>
-    {% else %}
-        <h2>Nenhuma reserva encontrada.</h2>
-    {% endif %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reservas</title>
+</head>
 
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>
-            {{ message }}
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    
-    <table border="1" cellpadding="5" cellspacing="3">
-      <tr>
-        <th>Imovel</th>
-        <th>Cliente</th>
-        <th>Funcionario</th>
-        <th>Data Inicial</th>
-        <th>Data Final</th>
-        <th>Acoes</th>
-      </tr>
-      {% for reserva in reservas %}
+<body>
 
-      <tr>
-        <td>{{ reserva.imovel }}</td>
-        <td>{{ reserva.cliente }}</td>
-        <td>{{ reserva.funcionario }}</td>
-        <td>{{ reserva.data_inicio|date:"d/m/Y" }}</td>
-        <td>{{ reserva.data_fim|date:"d/m/Y" }}</td>
-        <td>
-          {% if ativos %}
-                <a href="{% url 'reserva_editar' resreva.id %}">Editar</a>
-                <a href="{% url 'desativar_reserva' reserva.id %}">Desativar</a>
-            {% else %}
-                <a href="{% url 'ativar_reserva' reserva.id %}">Ativar</a>
-            {% endif %}
-          </td>
-      </tr>
+  <p><a href="{% url 'index' %}">Voltar</a></p>
 
-      {% endfor %}
-    </table>
+  {% if ativos %}
+  <h1>Reservas ativas</h1>
+  {% else %}
+  <h1>Reservas inativas</h1>
+  {% endif %}
 
-    <p><a href=" {% url 'index' %}">Voltar para o Menu</a></p>
+  {% if reservas %}
+  <h2>Total de Reservas: {{ reservas|length }}</h2>
+  {% else %}
+  <h2>Nenhuma reserva encontrada.</h2>
+  {% endif %}
 
-    {% if ativos %}
-        <p><a href="{% url 'reservas_inativas' %}">Mostrar Inativas</a></p>
-    {% else %}
-        <p><a href="{% url 'reservas_ativos' %}">Mostrar Ativas</a></p>
-    {% endif %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>
+      {{ message }}
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
 
-    <div><a href="{% url 'reservas_cadastrar' %}"> Cadastrar nova Reserva </a></div>
-  </body>
+  <table border="1" cellpadding="5" cellspacing="3">
+    <tr>
+      <th>Imovel</th>
+      <th>Cliente</th>
+      <th>Funcionario</th>
+      <th>Data Inicial</th>
+      <th>Data Final</th>
+      <th>Acoes</th>
+    </tr>
+
+    {% for reserva in reservas %}
+    <tr>
+      <td>{{ reserva.imovel }}</td>
+      <td>{{ reserva.cliente }}</td>
+      <td>{{ reserva.funcionario }}</td>
+      <td>{{ reserva.data_inicio|date:"d/m/Y" }}</td>
+      <td>{{ reserva.data_fim|date:"d/m/Y" }}</td>
+      <td>
+        {% if ativos %}
+        <a href="{% url 'reservas_editar' reserva.id %}">Editar</a>
+        <a href="{% url 'desativar_reserva' reserva.id %}">Desativar</a>
+        {% else %}
+        <a href="{% url 'ativar_reserva' reserva.id %}">Ativar</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+
+  </table>
+
+  {% if ativos %}
+  <p><a href="{% url 'reservas_inativas' %}">Mostrar inativas</a></p>
+
+  <div><a href="{% url 'reservas_cadastrar' %}">Cadastrar nova reserva</a></div>
+  {% else %}
+  <p><a href="{% url 'reservas' %}">Mostrar ativas</a></p>
+  {% endif %}
+
+
+</body>
+
 </html>

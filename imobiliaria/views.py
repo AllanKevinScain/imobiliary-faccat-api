@@ -5,23 +5,21 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import RestrictedError
 
-# Create your views here.
-
 
 def index(request):
     return render(request, 'index.html')
 
+
 # FUNCIONARIOS
-
-
 def funcionarios(request):
     funcionarios = Funcionario.objects.filter(ativo=True)
+    dados = {'funcionarios': funcionarios, 'ativos': True}
+    return render(request, 'funcionarios/index.html', dados)
 
-    dados = {
-        'funcionarios': funcionarios,
-        'ativos': True,  # Para indicar que estamos mostrando funcionários ativos
-    }
 
+def funcionarios_inativos(request):
+    funcionarios = Funcionario.objects.filter(ativo=False)
+    dados = {'funcionarios': funcionarios, 'ativos': False}
     return render(request, 'funcionarios/index.html', dados)
 
 
@@ -32,7 +30,6 @@ def funcionarios_cadastrar(request):
             form.save()
             return redirect('funcionarios')
     else:
-        # form vai receber um formulário FuncionarioForm que criamos no forms.py
         form = FuncionarioForm()
     dados = {
         'form': form,
@@ -52,10 +49,8 @@ def funcionarios_editar(request, id):
             form.save()
             return redirect('funcionarios')
 
-    # form vai receber um formulário com os dados do funcionario selecionado.
     form = FuncionarioForm(instance=funcionario)
 
-    # Montamos o dicionário com os dados para ser passado para o template.
     dados = {
         'form': form,
         'funcionario': funcionario,
@@ -67,7 +62,7 @@ def funcionarios_editar(request, id):
 def desativar_funcionario(request, id):
     try:
         funcionario = Funcionario.objects.get(id=id)
-        funcionario.ativo = False  # Desativa o funcionário
+        funcionario.ativo = False
         funcionario.save()
         messages.success(request, "Funcionário desativado com sucesso.")
     except RestrictedError:
@@ -97,25 +92,18 @@ def ativar_funcionario(request, id):
     return redirect('funcionarios_inativos')
 
 
-def funcionarios_inativos(request):
-    funcionarios = Funcionario.objects.filter(ativo=False)
-    dados = {
-        'funcionarios': funcionarios,
-        'ativos': False,
-    }
-    return render(request, 'funcionarios/index.html', dados)
-
 # IMOVEIS
 
 
 def imoveis(request):
     imoveis = Imovel.objects.filter(ativo=True)
+    dados = {'imoveis': imoveis, 'ativos': True}
+    return render(request, 'imoveis/index.html', dados)
 
-    dados = {
-        'imoveis': imoveis,
-        'ativos': True,  # Para indicar que estamos mostrando imóveis ativos
-    }
 
+def imoveis_inativos(request):
+    imoveis = Imovel.objects.filter(ativo=False)
+    dados = {'imoveis': imoveis, 'ativos': False}
     return render(request, 'imoveis/index.html', dados)
 
 
@@ -126,7 +114,7 @@ def imoveis_cadastrar(request):
             form.save()
             return redirect('imoveis')
     else:
-        form = ImovelForm()  # form vai receber um formulário ImovelForm que criamos no forms.py
+        form = ImovelForm()
     dados = {
         'form': form,
     }
@@ -145,10 +133,8 @@ def imoveis_editar(request, id):
             form.save()
             return redirect('imoveis')
 
-    # form vai receber um formulário com os dados do imoveis selecionado.
     form = ImovelForm(instance=imovel)
 
-    # Montamos o dicionário com os dados para ser passado para o template.
     dados = {
         'form': form,
         'imovel': imovel,
@@ -160,7 +146,7 @@ def imoveis_editar(request, id):
 def desativar_imovel(request, id):
     try:
         imovel = Imovel.objects.get(id=id)
-        imovel.ativo = False  # Desativa o imóvel
+        imovel.ativo = False
         imovel.save()
         messages.success(request, "Imóvel desativar com sucesso.")
     except RestrictedError:
@@ -190,25 +176,18 @@ def ativar_imovel(request, id):
     return redirect('imoveis_inativos')
 
 
-def imoveis_inativos(request):
-    imoveis = Imovel.objects.filter(ativo=False)
-    dados = {
-        'imoveis': imoveis,
-        'ativos': False,
-    }
-    return render(request, 'imoveis/index.html', dados)
-
 # CLIENTES
 
 
 def clientes(request):
     clientes = Cliente.objects.filter(ativo=True)
+    dados = {'clientes': clientes, 'ativos': True}
+    return render(request, 'clientes/index.html', dados)
 
-    dados = {
-        'clientes': clientes,
-        'ativos': True,  # Para indicar que estamos mostrando clientes ativos
-    }
 
+def clientes_inativos(request):
+    clientes = Cliente.objects.filter(ativo=False)
+    dados = {'clientes': clientes, 'ativos': False}
     return render(request, 'clientes/index.html', dados)
 
 
@@ -219,7 +198,7 @@ def clientes_cadastrar(request):
             form.save()
             return redirect('clientes')
     else:
-        form = ClienteForm()  # form vai receber um formulário ClienteForm que criamos no forms.py
+        form = ClienteForm()
     dados = {
         'form': form,
     }
@@ -227,7 +206,6 @@ def clientes_cadastrar(request):
 
 
 def clientes_editar(request, id):
-
     try:
         cliente = Cliente.objects.get(id=id)
     except:
@@ -239,10 +217,8 @@ def clientes_editar(request, id):
             form.save()
             return redirect('clientes')
 
-    # form vai receber um formulário com os dados do cliente selecionado.
     form = ClienteForm(instance=cliente)
 
-    # Montamos o dicionário com os dados para ser passado para o template.
     dados = {
         'form': form,
         'cliente': cliente,
@@ -254,7 +230,7 @@ def clientes_editar(request, id):
 def desativar_cliente(request, id):
     try:
         cliente = Cliente.objects.get(id=id)
-        cliente.ativo = False  # Desativa o cliente
+        cliente.ativo = False
         cliente.save()
         messages.success(request, "Cliente desativado com sucesso.")
     except RestrictedError:
@@ -283,24 +259,18 @@ def ativar_cliente(request, id):
     return redirect('clientes_inativos')
 
 
-def clientes_inativos(request):
-    clientes = Cliente.objects.filter(ativo=False)
-    dados = {
-        'clientes': clientes,
-        'ativos': False,
-    }
-    return render(request, 'clientes/index.html', dados)
 # RESERVAS
 
 
 def reservas(request):
     reservas = Reserva.objects.filter(ativo=True)
+    dados = {'reservas': reservas, 'ativos': True}
+    return render(request, 'reservas/index.html', dados)
 
-    dados = {
-        'reservas': reservas,
-        'ativos': True,  # Para indicar que estamos mostrando reservas ativas
-    }
 
+def reservas_inativas(request):
+    reservas = Reserva.objects.filter(ativo=False)
+    dados = {'reservas': reservas, 'ativos': False, }
     return render(request, 'reservas/index.html', dados)
 
 
@@ -311,7 +281,7 @@ def reservas_cadastrar(request):
             form.save()
             return redirect('reservas')
     else:
-        form = ReservaForm()  # form vai receber um formulário ReservaForm que criamos no forms.py
+        form = ReservaForm()
     dados = {
         'form': form,
     }
@@ -319,7 +289,6 @@ def reservas_cadastrar(request):
 
 
 def reservas_editar(request, id):
-
     try:
         reserva = Reserva.objects.get(id=id)
     except:
@@ -329,12 +298,10 @@ def reservas_editar(request, id):
         form = ReservaForm(request.POST, instance=reserva)
         if form.is_valid():
             form.save()
-            return redirect('alunos')
+            return redirect('reservas')
 
-    # form vai receber um formulário com os dados da reserva selecionada.
     form = ReservaForm(instance=reserva)
 
-    # Montamos o dicionário com os dados para ser passado para o template.
     dados = {
         'form': form,
         'reserva': reserva,
@@ -346,7 +313,7 @@ def reservas_editar(request, id):
 def desativar_reserva(request, id):
     try:
         reserva = Reserva.objects.get(id=id)
-        reserva.ativo = False  # Desativa a reserva
+        reserva.ativo = False
         reserva.save()
         messages.success(request, "Reserva desativada com sucesso.")
     except RestrictedError:
@@ -373,12 +340,3 @@ def ativar_reserva(request, id):
         messages.info(request, "A reserva já está ativa.")
 
     return redirect('reservas_inativas')
-
-
-def reservas_inativas(request):
-    reservas = Reserva.objects.filter(ativo=False)
-    dados = {
-        'reservas': reservas,
-        'ativos': False,
-    }
-    return render(request, 'reservas/index.html', dados)

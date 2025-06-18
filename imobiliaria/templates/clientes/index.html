@@ -1,68 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lista de Clientes</title>
-  </head>
-  <body>
 
-    {% if ativos %}
-         <h1>Lista de Alunos</h1>
-    {% else %}
-        <h1>Lista de Alunos Inativos</h1>
-    {% endif %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clientes</title>
+</head>
 
+<body>
 
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>
-            {{ message }}
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    
-    <table border="1" cellpadding="5" cellspacing="3">
-      <tr>
-        <th>Nome</th>
-        <th>Email</th>
-        <th>Telefone</th>
-        <th>CPF</th>
-        <th>Data Nascimento</th>
-        <th>Acoes</th>
-      </tr>
-      {% for cliente in clientes %}
+  <p><a href=" {% url 'index' %}">Voltar</a></p>
 
-      <tr>
-        <td>{{ cliente.nome }}</td>
-        <td>{{ cliente.email }}</td>
-        <td>{{ cliente.telefone }}</td>
-        <td>{{ cliente.cpf }}</td>
-        <td>{{ cliente.data_nascimento|date:"d/m/Y" }}</td>
-        <td>
-            {% if ativos %}
-                <a href="{% url 'clientes_editar' cliente.id %}">Editar</a>
-                <a href="{% url 'desativar_cliente' cliente.id %}">Desativar</a>
-            {% else %}
-                <a href="{% url 'ativar_cliente' cliente.id %}">Ativar</a>
-            {% endif %}
-        </td>
-      </tr>
-
-      {% endfor %}  
-    </table>
-
-    <p><a href=" {% url 'index' %}">Voltar para o Menu</a></p>
-
-    {% if ativos %}
-        <p><a href="{% url 'clientes_inativos' %}">Mostrar Inativos</a></p>
-    {% else %}
-        <p><a href="{% url 'clientes' %}">Mostrar Ativos</a></p>
-    {% endif %}
+  {% if ativos %}
+  <h1>Alunos ativos</h1>
+  {% else %}
+  <h1>Alunos inativos</h1>
+  {% endif %}
 
 
-    <div><a href="{% url 'clientes_cadastrar' %}"> Cadastrar novo Cliente </a></div>
-  </body>
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>
+      {{ message }}
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <table border="1" cellpadding="5" cellspacing="3">
+    <tr>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Telefone</th>
+      <th>CPF</th>
+      <th>Data Nascimento</th>
+      <th>Acoes</th>
+    </tr>
+
+    {% for cliente in clientes %}
+    <tr>
+      <td>{{ cliente.nome }}</td>
+      <td>{{ cliente.email }}</td>
+      <td>{{ cliente.telefone }}</td>
+      <td>{{ cliente.cpf }}</td>
+      <td>{{ cliente.data_nascimento|date:"d/m/Y" }}</td>
+      <td>
+        {% if ativos %}
+        <a href="{% url 'clientes_editar' cliente.id %}">Editar</a>
+        <a href="{% url 'desativar_cliente' cliente.id %}">Desativar</a>
+        {% else %}
+        <a href="{% url 'ativar_cliente' cliente.id %}">Ativar</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+
+  </table>
+
+
+  {% if ativos %}
+  <p><a href="{% url 'clientes_inativos' %}">Mostrar inativos</a></p>
+
+  <div><a href="{% url 'clientes_cadastrar' %}">Cadastrar novo cliente</a></div>
+  {% else %}
+  <p><a href="{% url 'clientes' %}">Mostrar ativos</a></p>
+  {% endif %}
+
+
+</body>
+
 </html>
