@@ -65,20 +65,19 @@ def cadastrar_imoveis(request):
     return render(request, 'imoveis/cadastrar.html', dados)
 
 
-""" 
-def imoveis_editar(request, id):
+def editar_imoveis(request, id):
     try:
         imovel = Imovel.objects.get(id=id)
     except:
-        return redirect('imoveis', campo='nome')
+        return redirect('imoveis:lista', campo='nome')
     if request.method == 'POST':
         form = ImovelForm(request.POST, instance=imovel)
         if form.is_valid():
             form.save()
-            return redirect('imoveis', campo='nome')
+            return redirect('imoveis:lista', campo='nome')
     form = ImovelForm(instance=imovel)
     dados = {'form': form, 'imovel': imovel}
-    return render(request, 'imoveis/imoveis_editar.html', dados) """
+    return render(request, 'imoveis/editar.html', dados)
 
 
 def desativar_imovel(request, id):
