@@ -28,10 +28,12 @@
                     <td>
                         <div class="d-flex flex-column gap-2">
                             {% if imovel.tipo == 'AP' %}
-                            <a href="{% url 'imoveis:lista_quartos' imovel.id %}">Ver quartos</a>
-                            <a href="{% url 'imoveis:lista_reservas' imovel.nome %}">Ver Reservas</a>
+                            <a href="{% url 'imoveis:lista_quartos' imovel.id %}" class="text-info">Ver quartos</a>
+                            <a href="{% url 'imoveis:lista_reservas' imovel.nome %}" class="text-primary">Ver
+                                Reservas</a>
                             {% else %}
-                            <a href="{% url 'imoveis:lista_reservas' imovel.nome %}">Ver Reservas</a>
+                            <a href="{% url 'imoveis:lista_reservas' imovel.nome %}" class="text-primary">Ver
+                                Reservas</a>
                             {% endif %}
                         </div>
                     </td>

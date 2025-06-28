@@ -5,9 +5,7 @@ import re  # É uma biblioteca de expressões regualres do python
 class Funcionario(models.Model):
     CARGO_CHOICES = [
         ('GER', 'Gerente'),
-        ('VEN', 'Vendedor'),
         ('ADM', 'Administrador'),
-        ('SUP', 'Supervisor'),
     ]
 
     nome = models.CharField(max_length=100)

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Imovel, Reserva, Quarto
-from .forms import ImovelForm, QuartoForm
+from .forms import ImovelForm, QuartoForm, ReservaForm
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import RestrictedError
@@ -49,7 +49,15 @@ def cadastrar_imoveis(request):
     if request.method == 'POST':
         form = ImovelForm(request.POST)
         if form.is_valid():
-            form.save()
+            imovel = form.save()
+            # Se o tipo do imóvel NÃO do apartamento iremos criar um quarto com este nome
+            if imovel.tipo != 'AP':
+                Quarto.objects.create(
+                    imovel=imovel,
+                    nome=imovel.nome,
+                    disponibilidade=True,
+                    ativo=True
+                )
             return redirect('imoveis:lista', campo='nome')
     else:
         form = ImovelForm()
@@ -140,18 +148,19 @@ def reservas_inativas(request, campo):
     return render(request, 'reservas/lista.html', dados)
 
 
-""" def reservas_cadastrar(request):
+def cadastrar_reservas(request):
     if request.method == 'POST':
         form = ReservaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('reservas', campo="cliente")
+            return redirect('imoveis:lista', campo="cliente")
     else:
         form = ReservaForm()
     dados = {'form': form}
-    return render(request, 'reservas/reservas_cadastrar.html', dados)
+    return render(request, 'reservas/cadastrar.html', dados)
 
 
+""" 
 def reservas_editar(request, id):
     try:
         reserva = Reserva.objects.get(id=id)

@@ -19,7 +19,6 @@ class QuartoAdmin(admin.ModelAdmin):
 
 @admin.register(Reserva)
 class ReservaAdmin(admin.ModelAdmin):
-    list_display = ('imovel', 'cliente', 'funcionario',
-                    'data_inicio', 'data_fim',)
-    search_fields = ('imovel__nome', 'cliente__nome', 'funcionario__nome')
+    list_display = ('quarto', 'cliente', 'data_inicio', 'data_fim',)
+    search_fields = ('quarto__nome', 'cliente__nome',)
     list_filter = ('data_inicio', 'data_fim')

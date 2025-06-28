@@ -1,6 +1,5 @@
 from django.db import models
 from clientes.models import Cliente
-from funcionarios.models import Funcionario
 
 
 class Imovel(models.Model):
@@ -77,16 +76,14 @@ class Quarto(models.Model):
 
 
 class Reserva(models.Model):
-    imovel = models.ForeignKey(Imovel, on_delete=models.RESTRICT)
+    quarto = models.ForeignKey(Quarto, on_delete=models.RESTRICT)
     cliente = models.ForeignKey(Cliente, on_delete=models.RESTRICT)
-    funcionario = models.ForeignKey(
-        Funcionario, on_delete=models.SET_NULL, null=True)
     data_inicio = models.DateField()
     data_fim = models.DateField()
     ativo = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"Reserva de {self.imovel} para {self.cliente}"
+        return f"Reserva de {self.quarto} ({self.quarto.imovel}) para {self.cliente}"
 
     class Meta:
-        unique_together = ('imovel', 'data_inicio', 'data_fim')
+        unique_together = ('quarto', 'data_inicio', 'data_fim')

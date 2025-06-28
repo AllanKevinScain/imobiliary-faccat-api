@@ -17,10 +17,8 @@ class QuartoForm(forms.ModelForm):
 class ReservaForm(forms.ModelForm):
     class Meta:
         model = Reserva
-        fields = ['imovel', 'cliente',
-                  'funcionario', 'data_inicio', 'data_fim']
+        fields = ['quarto', 'cliente', 'data_inicio', 'data_fim']
         widgets = {
             'data_inicio': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
             'data_fim': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
         }
-        input_formats = ['%Y-%m-%d']
