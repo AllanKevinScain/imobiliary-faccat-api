@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-sm mt-5">
+    <h1 class="h1">Lista de imóveis</h1>
+</div>
+<div class="container-sm mt-2">
+    <div class="bg-dark rounded-3 overflow-hidden">
+        <table cellpadding="5" cellspacing="1" class="table table-dark table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                    <th>Endereço</th>
+                    <th>Cidade</th>
+                    <th>Estado</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for imovel in imoveis %}
+                <tr>
+                    <td>{{ imovel.nome }}</td>
+                    <td>{{ imovel.get_tipo_display }}</td>
+                    <td>{{ imovel.endereco }}</td>
+                    <td>{{ imovel.cidade }}</td>
+                    <td>{{ imovel.get_estado_display }}</td>
+                    <td><a href="#">Ver Reservas</a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">Nenhum imóvel cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container-sm mt-5">
+    <a href="#">Cadastrar imóvel</a>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-sm mt-5">
+    <h1 class="h1">Lista de clientes</h1>
+</div>
+<div class="container-sm mt-2">
+    <div class="bg-dark rounded-3 overflow-hidden">
+        <table cellpadding="5" cellspacing="1" class="table table-dark table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>CPF</th>
+                    <th>Data Nascimento</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.nome }}</td>
+                    <td>{{ cliente.email }}</td>
+                    <td>{{ cliente.telefone }}</td>
+                    <td>{{ cliente.cpf }}</td>
+                    <td>{{ cliente.data_nascimento }}</td>
+                    <td><a href="#">Ver Reservas</a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">Nenhum cliente cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container-sm mt-5">
+    <a href="#">Cadastrar cliente</a>
+</div>
+{% endblock %}
