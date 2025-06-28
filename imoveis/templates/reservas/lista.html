@@ -9,7 +9,7 @@
         <table cellpadding="5" cellspacing="1" class="table table-dark table-striped mb-0">
             <thead>
                 <tr>
-                    <th>Imóvel</th>
+                    <th>Quarto</th>
                     <th>Cliente</th>
                     <th>Funcionário</th>
                     <th>Início</th>
@@ -21,7 +21,7 @@
             <tbody>
                 {% for reserva in reservas %}
                 <tr>
-                    <td>{{ reserva.imovel }}</td>
+                    <td>{{ reserva.quarto }}</td>
                     <td>{{ reserva.cliente }}</td>
                     <td>{{ reserva.funcionario }}</td>
                     <td>{{ reserva.data_inicio|date:"d/m/Y" }}</td>

@@ -112,7 +112,7 @@ def ativar_imovel(request, id):
 
 # RESERVAS ----------------------------------------------------------------------------------------------------RESERVAS
 ORDENACAO_RESERVAS_LOOKUP = {
-    'imovel': 'imovel__nome',
+    'imovel': 'quarto__imovel__nome',
     'cliente': 'cliente__nome',
     'funcionario': 'funcionario__nome',
     'data_inicio': 'data_inicio',
@@ -149,11 +149,13 @@ def reservas_inativas(request, campo):
 
 
 def cadastrar_reservas(request):
+    # todo precisamos validar para nao deixar cadastrar em épocas iguais
+    # todo precisamos validar as datas, para o início ser menor que o fim, sempre
     if request.method == 'POST':
         form = ReservaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('imoveis:lista', campo="cliente")
+            return redirect('imoveis:lista_reservas', campo="cliente")
     else:
         form = ReservaForm()
     dados = {'form': form}
@@ -226,6 +228,8 @@ def cadastrar_quarto(request, imovel_id):
             quarto = form.save(commit=False)
             quarto.imovel = imovel
             quarto.disponibilidade = True
+            # Junção do nome do imovel + o nome do quarto
+            quarto.nome = f'{imovel.nome} - {quarto.nome}'
             quarto.save()
             return redirect('imoveis:lista', campo='nome')
     else:
