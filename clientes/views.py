@@ -19,6 +19,7 @@ def clientes(request, campo):
     else:
         clientes = Cliente.objects.filter(ativo=True)
     if campo:
+        # Esse 'nome'                                            vv serve para garantir que nunca falte um campo, é um valor padrão
         campo_ordenacao = ORDENACAO_CLIENTES_LOOKUP.get(campo, 'nome')
         clientes = clientes.order_by(campo_ordenacao)
 

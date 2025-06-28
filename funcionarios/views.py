@@ -1,11 +1,10 @@
 from django.shortcuts import render
 from .models import Funcionario
-""" from .forms import ClienteForm """
+from .forms import FuncionarioForm
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import RestrictedError
 
-# FUNCIONARIOS ------------------------------------------------------------------
 ORDENACAO_FUNCIONARIO_LOOKUP = {
     'nome': 'nome',
     'cargo': 'cargo',
@@ -20,7 +19,8 @@ def funcionarios(request, campo):
     else:
         funcionarios = Funcionario.objects.filter(ativo=True)
     if campo:
-        campo_ordenacao = ORDENACAO_FUNCIONARIO_LOOKUP.get(campo)
+        # Esse 'nome'                                               vv serve para garantir que nunca falte um campo, é um valor padrão
+        campo_ordenacao = ORDENACAO_FUNCIONARIO_LOOKUP.get(campo, 'nome')
         funcionarios = funcionarios.order_by(campo_ordenacao)
     dados = {'funcionarios': funcionarios, 'ativos': True, 'query': query}
     return render(request, 'funcionarios/lista.html', dados)
@@ -40,19 +40,20 @@ def funcionarios_inativos(request, campo):
     return render(request, 'funcionarios/lista.html', dados)
 
 
-""" def funcionarios_cadastrar(request):
+def cadastrar_funcionarios(request):
     if request.method == 'POST':
         form = FuncionarioForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('funcionarios', campo='nome')
+            return redirect('funcionarios:lista', campo='nome')
     else:
         form = FuncionarioForm()
 
     dados = {'form': form}
-    return render(request, 'funcionarios/funcionarios_cadastrar.html', dados)
+    return render(request, 'funcionarios/cadastrar.html', dados)
 
 
+""" 
 def funcionarios_editar(request, id):
     try:
         funcionario = Funcionario.objects.get(id=id)

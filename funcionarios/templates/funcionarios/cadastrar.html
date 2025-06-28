@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<script>
+  /* Formata telefone */
+  document.addEventListener('DOMContentLoaded', function () {
+    var element = document.getElementById('telefone');
+    var maskOptions = {
+      mask: '(00) 0 0000-0000'
+    };
+    var mask = IMask(element, maskOptions);
+  });
+</script>
+
+<div class="container-sm mt-5">
+  <h1>Cadastro de funcionário</h1>
+</div>
+
+<div class="container my-3">
+  <div class="row">
+    <div class="col-6 mx-auto">
+      <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        <button type="submit" class="btn btn-success">Cadastrar</button>
+        <button type="reset" class="btn btn-info">Limpar</button>
+
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
