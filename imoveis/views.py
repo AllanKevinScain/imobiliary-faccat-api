@@ -161,22 +161,6 @@ def cadastrar_reservas(request):
     return render(request, 'reservas/cadastrar.html', dados)
 
 
-""" 
-def reservas_editar(request, id):
-    try:
-        reserva = Reserva.objects.get(id=id)
-    except:
-        return redirect('reservas', campo="cliente")
-    if request.method == 'POST':
-        form = ReservaForm(request.POST, instance=reserva)
-        if form.is_valid():
-            form.save()
-            return redirect('reservas', campo="cliente")
-    form = ReservaForm(instance=reserva)
-    dados = {'form': form, 'reserva': reserva}
-    return render(request, 'reservas/reserva_editar.html', dados) """
-
-
 def desativar_reserva(request, id):
     try:
         reserva = Reserva.objects.get(id=id)

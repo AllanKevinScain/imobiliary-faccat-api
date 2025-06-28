@@ -18,6 +18,7 @@
             </thead>
             <tbody>
                 {% for funcionario in funcionarios %}
+                <!-- todo precisamos ordenar por ativos e inativos e criar a função para ativar e desativar -->
                 <tr>
                     <td>{{ funcionario.nome }}</td>
                     <td>{{ funcionario.get_cargo_display }}</td>
