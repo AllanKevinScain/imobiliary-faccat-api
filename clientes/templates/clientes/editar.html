@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<script>
+  /* Formata telefone */
+  document.addEventListener('DOMContentLoaded', function () {
+    var element = document.getElementById('telefone');
+    var maskOptions = {
+      mask: '(00) 0 0000-0000'
+    };
+    var mask = IMask(element, maskOptions);
+  });
+  /* Formata CPF */
+  document.addEventListener('DOMContentLoaded', function () {
+    const tel = document.getElementById('telefone');
+    const cpf = document.getElementById('cpf');
+
+    if (tel) {
+      IMask(tel, {
+        mask: '(00) 0 0000-0000'
+      });
+    }
+
+    if (cpf) {
+      IMask(cpf, {
+        mask: '000.000.000-00'
+      });
+    }
+  });
+</script>
+
+<div class="container-sm mt-5">
+  <h1>Editar cliente {{ cliente.nome }}</h1>
+</div>
+
+<div class="container my-3">
+  <div class="row">
+    <div class="col-6 mx-auto">
+      <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        <button type="submit" class="btn btn-success">Editar</button>
+        <a href="{% url 'clientes:lista' 'nome' %}"><button type="button" class="btn btn-info">Cancelar</button></a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

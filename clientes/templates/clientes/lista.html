@@ -25,7 +25,7 @@
                     <td>{{ cliente.telefone }}</td>
                     <td>{{ cliente.cpf }}</td>
                     <td>{{ cliente.data_nascimento }}</td>
-                    <td><a href="#">Ver Reservas</a></td>
+                    <td><a href="{% url 'clientes:editar' cliente.id %}">Editar</a></td>
                 </tr>
                 {% empty %}
                 <tr>

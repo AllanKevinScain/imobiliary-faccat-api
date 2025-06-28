@@ -53,20 +53,19 @@ def clientes_cadastrar(request):
     return render(request, 'clientes/cadastrar.html', dados)
 
 
-""" 
-def clientes_editar(request, id):
+def editar_clientes(request, id):
     try:
         cliente = Cliente.objects.get(id=id)
     except:
-        return redirect('clientes', campo="nome")
+        return redirect('clientes:lista', campo="nome")
     if request.method == 'POST':
         form = ClienteForm(request.POST, instance=cliente)
         if form.is_valid():
             form.save()
-            return redirect('clientes', campo="nome")
+            return redirect('clientes:lista', campo="nome")
     form = ClienteForm(instance=cliente)
     dados = {'form': form, 'cliente': cliente}
-    return render(request, 'clientes/clientes_editar.html', dados) """
+    return render(request, 'clientes/editar.html', dados)
 
 
 def desativar_cliente(request, id):
