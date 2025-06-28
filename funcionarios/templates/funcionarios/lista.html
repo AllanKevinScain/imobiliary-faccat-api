@@ -23,7 +23,7 @@
                     <td>{{ funcionario.get_cargo_display }}</td>
                     <td>{{ funcionario.email }}</td>
                     <td>{{ funcionario.telefone }}</td>
-                    <td><a href="#">Ver onde trabalha</a></td>
+                    <td><a href="{% url 'funcionarios:editar' funcionario.id %}">Editar</a></td>
                 </tr>
                 {% empty %}
                 <tr>

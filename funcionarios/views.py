@@ -53,20 +53,19 @@ def cadastrar_funcionarios(request):
     return render(request, 'funcionarios/cadastrar.html', dados)
 
 
-""" 
-def funcionarios_editar(request, id):
+def editar_funcionarios(request, id):
     try:
         funcionario = Funcionario.objects.get(id=id)
     except:
-        return redirect('funcionarios', campo='nome')
+        return redirect('funcionarios:lista', campo='nome')
     if request.method == 'POST':
         form = FuncionarioForm(request.POST, instance=funcionario)
         if form.is_valid():
             form.save()
-            return redirect('funcionarios', campo='nome')
+            return redirect('funcionarios:lista', campo='nome')
     form = FuncionarioForm(instance=funcionario)
     dados = {'form': form, 'funcionario': funcionario}
-    return render(request, 'funcionarios/funcionarios_editar.html', dados) """
+    return render(request, 'funcionarios/editar.html', dados)
 
 
 def desativar_funcionario(request, id):
