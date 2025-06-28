@@ -1,15 +1,16 @@
 from django.urls import path
 from .views import reservas, cadastrar_reservas
-from .views import quartos, cadastrar_quarto
+from .views import quartos, cadastrar_quarto, editar_quartos
 from .views import imoveis, cadastrar_imoveis, editar_imoveis
 
 app_name = 'imoveis'
 
 urlpatterns = [
     # quartos
-    path('quartos/<imovel_id>/', quartos, name='lista_quartos'),
+    path('quartos/<id>/editar/', editar_quartos, name='editar_quarto'),
     path('quartos/<imovel_id>/cadastrar/',
          cadastrar_quarto, name='cadastrar_quarto'),
+    path('quartos/<imovel_id>/', quartos, name='lista_quartos'),
 
     # reservas
     path('reservas/cadastrar/', cadastrar_reservas, name='cadastrar_reserva'),

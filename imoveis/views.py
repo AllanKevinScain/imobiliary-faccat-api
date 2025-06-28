@@ -233,5 +233,22 @@ def cadastrar_quarto(request, imovel_id):
             return redirect('imoveis:lista', campo='nome')
     else:
         form = QuartoForm()
+    dados = {'form': form, 'imovel': imovel}
+    return render(request, 'quartos/cadastrar.html', dados)
 
-    return render(request, 'quartos/cadastrar.html', {'form': form, 'imovel': imovel})
+
+def editar_quartos(request, id):
+    try:
+        quarto = Quarto.objects.get(id=id)
+    except Quarto.DoesNotExist:
+        return redirect('imoveis:lista_quartos', imovel_id=1)
+
+    if request.method == 'POST':
+        form = QuartoForm(request.POST, instance=quarto)
+        if form.is_valid():
+            form.save()
+            return redirect('imoveis:lista_quartos', imovel_id=quarto.imovel.id)
+
+    form = QuartoForm(instance=quarto)
+    dados = {'form': form, 'quarto': quarto}
+    return render(request, 'quartos/editar.html', dados)

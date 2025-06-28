@@ -11,6 +11,7 @@
                 <tr>
                     <th>Nome</th>
                     <th>Disponibilidade</th>
+                    <th>Opções</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,6 +24,7 @@
                     {% else %}
                     <td>Indisponivel</td>
                     {% endif %}
+                    <td><a href="{% url 'imoveis:editar_quarto' quarto.id %}">Editar</a></td>
                 </tr>
                 {% empty %}
                 <tr>
