@@ -12,9 +12,9 @@ class ImovelAdmin(admin.ModelAdmin):
 
 @admin.register(Quarto)
 class QuartoAdmin(admin.ModelAdmin):
-    list_display = ('imovel', 'nome')
+    list_display = ('imovel', 'nome', 'disponibilidade')
     search_fields = ('imovel__nome', 'nome')
-    list_filter = ('imovel__tipo',)
+    list_filter = ('imovel__tipo', 'disponibilidade')
 
 
 @admin.register(Reserva)

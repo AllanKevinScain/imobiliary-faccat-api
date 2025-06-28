@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Imovel, Reserva
-from .forms import ImovelForm
+from .models import Imovel, Reserva, Quarto
+from .forms import ImovelForm, QuartoForm
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import RestrictedError
@@ -194,3 +194,32 @@ def ativar_reserva(request, id):
     else:
         messages.info(request, "A reserva já está ativa.")
     return redirect('reservas_inativas', campo="cliente")
+
+
+# QUARTOS -------------------------------------------
+def quartos(request, imovel_id):
+    imovel = Imovel.objects.get(id=imovel_id)
+    quartos = Quarto.objects.filter(imovel=imovel, ativo=True)
+
+    return render(request, 'quartos/lista.html', {
+        'quartos': quartos,
+        'imovel': imovel,
+    })
+
+
+def cadastrar_quarto(request, imovel_id):
+    imovel = Imovel.objects.get(id=imovel_id)
+
+    if request.method == 'POST':
+        form = QuartoForm(request.POST)
+        if form.is_valid():
+            # Sem o 'commit=False' o formulário dá erro
+            quarto = form.save(commit=False)
+            quarto.imovel = imovel
+            quarto.disponibilidade = True
+            quarto.save()
+            return redirect('imoveis:lista', campo='nome')
+    else:
+        form = QuartoForm()
+
+    return render(request, 'quartos/cadastrar.html', {'form': form, 'imovel': imovel})

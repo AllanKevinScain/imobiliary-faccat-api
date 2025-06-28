@@ -11,7 +11,6 @@
                 <tr>
                     <th>Nome</th>
                     <th>Disponibilidade</th>
-                    <th>Opções</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,8 +23,6 @@
                     {% else %}
                     <td>Indisponivel</td>
                     {% endif %}
-
-                    <td><a href="#">Reservar para</a></td>
                 </tr>
                 {% empty %}
                 <tr>
@@ -38,6 +35,6 @@
 </div>
 
 <div class="container-sm mt-5">
-    <a href="#">Cadastrar quarto</a>
+    <a href="{% url 'imoveis:cadastrar_quarto' imovel.id %}">Cadastrar novo quarto</a>
 </div>
 {% endblock %}

@@ -11,7 +11,7 @@ class ImovelForm(forms.ModelForm):
 class QuartoForm(forms.ModelForm):
     class Meta:
         model = Quarto
-        fields = ['imovel', 'nome']
+        fields = ['nome']
 
 
 class ReservaForm(forms.ModelForm):

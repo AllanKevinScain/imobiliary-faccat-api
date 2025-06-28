@@ -25,7 +25,16 @@
                     <td>{{ imovel.endereco }}</td>
                     <td>{{ imovel.cidade }}</td>
                     <td>{{ imovel.get_estado_display }}</td>
-                    <td><a href="#">Ver Reservas</a></td>
+                    <td>
+                        <div class="d-flex flex-column gap-2">
+                            {% if imovel.tipo == 'AP' %}
+                            <a href="{% url 'imoveis:lista_quartos' imovel.id %}">Ver quartos</a>
+                            <a href="{% url 'imoveis:lista_reservas' imovel.nome %}">Ver Reservas</a>
+                            {% else %}
+                            <a href="{% url 'imoveis:lista_reservas' imovel.nome %}">Ver Reservas</a>
+                            {% endif %}
+                        </div>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>

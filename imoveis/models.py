@@ -69,6 +69,7 @@ class Quarto(models.Model):
     imovel = models.ForeignKey(
         Imovel, related_name='quartos', on_delete=models.RESTRICT)
     nome = models.CharField(max_length=50)
+    disponibilidade = models.BooleanField(default=True)
     ativo = models.BooleanField(default=True)
 
     def __str__(self):
