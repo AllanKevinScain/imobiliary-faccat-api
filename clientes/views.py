@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Cliente
-""" from .forms import ClienteForm """
+from .forms import ClienteForm
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import RestrictedError
@@ -19,7 +19,7 @@ def clientes(request, campo):
     else:
         clientes = Cliente.objects.filter(ativo=True)
     if campo:
-        campo_ordenacao = ORDENACAO_CLIENTES_LOOKUP.get(campo)
+        campo_ordenacao = ORDENACAO_CLIENTES_LOOKUP.get(campo, 'nome')
         clientes = clientes.order_by(campo_ordenacao)
 
     dados = {'clientes': clientes, 'ativos': True, 'query': query}
@@ -40,18 +40,19 @@ def clientes_inativos(request, campo):
     return render(request, 'clientes/lista.html', dados)
 
 
-""" def clientes_cadastrar(request):
+def clientes_cadastrar(request):
     if request.method == 'POST':
         form = ClienteForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('clientes', campo="nome")
+            return redirect('clientes:lista', campo="nome")
     else:
         form = ClienteForm()
     dados = {'form': form}
-    return render(request, 'clientes/clientes_cadastrar.html', dados)
+    return render(request, 'clientes/cadastrar.html', dados)
 
 
+""" 
 def clientes_editar(request, id):
     try:
         cliente = Cliente.objects.get(id=id)

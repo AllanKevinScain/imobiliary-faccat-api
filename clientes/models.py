@@ -1,4 +1,5 @@
 from django.db import models
+import re  # É uma biblioteca de expressões regualres do python
 
 
 class Cliente(models.Model):
@@ -15,6 +16,10 @@ class Cliente(models.Model):
     def save(self, *args, **kwargs):
         if self.nome:
             self.nome = self.formatar_nome(self.nome)
+        if self.telefone:
+            self.telefone = self.formatar_telefone(self.telefone)
+        if self.cpf:
+            self.cpf = self.formatar_cpf(self.cpf)
         super().save(*args, **kwargs)
 
     def formatar_nome(self, nome):
@@ -25,3 +30,18 @@ class Cliente(models.Model):
             p if p in minusculas else p.capitalize()
             for p in partes
         ])
+
+    def formatar_telefone(self, telefone):
+        numeros = re.sub(r'\D', '', telefone)
+
+        if len(numeros) == 11:
+            return f"({numeros[:2]}) {numeros[2]} {numeros[3:7]}-{numeros[7:]}"
+        return telefone
+
+    def formatar_cpf(self, cpf):
+        import re
+        numeros = re.sub(r'\D', '', cpf)
+
+        if len(numeros) == 11:
+            return f"{numeros[:3]}.{numeros[3:6]}.{numeros[6:9]}-{numeros[9:]}"
+        return cpf
