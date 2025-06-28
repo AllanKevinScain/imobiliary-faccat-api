@@ -5,9 +5,9 @@ from .models import Imovel, Quarto, Reserva
 @admin.register(Imovel)
 class ImovelAdmin(admin.ModelAdmin):
     list_display = ('nome', 'tipo', 'endereco',
-                    'cidade', 'estado', 'disponivel')
-    search_fields = ('nome', 'endereco', 'cidade', 'disponivel', 'estado')
-    list_filter = ('tipo', 'disponivel')
+                    'cidade', 'estado')
+    search_fields = ('nome', 'endereco', 'cidade', 'estado')
+    list_filter = ('tipo',)
 
 
 @admin.register(Quarto)

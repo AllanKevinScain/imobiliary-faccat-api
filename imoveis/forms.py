@@ -5,7 +5,7 @@ from .models import Imovel, Quarto, Reserva
 class ImovelForm(forms.ModelForm):
     class Meta:
         model = Imovel
-        fields = ['nome', 'tipo', 'endereco', 'cidade', 'estado', 'disponivel']
+        fields = ['nome', 'tipo', 'endereco', 'cidade', 'estado']
 
 
 class QuartoForm(forms.ModelForm):

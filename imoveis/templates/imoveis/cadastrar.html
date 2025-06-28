@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container-sm mt-5">
+  <h1>Cadastro de imóvel</h1>
+</div>
+<p class="text-info">OBS:Esa tela só pode ser acessada pelo administrador do site, o correto seria nao ter ela</p>
+
+<div class="container my-3">
+  <div class="row">
+    <div class="col-6 mx-auto">
+      <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        <button type="submit" class="btn btn-success">Cadastrar</button>
+        <button type="reset" class="btn btn-info">Limpar</button>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

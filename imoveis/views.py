@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Imovel, Reserva
-""" from .forms import ClienteForm """
+from .forms import ImovelForm
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import RestrictedError
@@ -38,24 +38,26 @@ def imoveis_inativos(request, campo):
     else:
         imoveis = Imovel.objects.filter(ativo=False)
     if campo:
-        campo_ordenacao = ORDENACAO_IMOVEIS_LOOKUP.get(campo)
+        # Esse 'nome'                                           vv serve para garantir que nunca falte um campo, é um valor padrão
+        campo_ordenacao = ORDENACAO_IMOVEIS_LOOKUP.get(campo, 'nome')
         imoveis = imoveis.order_by(campo_ordenacao)
     dados = {'imoveis': imoveis, 'ativos': False}
     return render(request, 'imoveis/lista.html', dados)
 
 
-""" def imoveis_cadastrar(request):
+def cadastrar_imoveis(request):
     if request.method == 'POST':
         form = ImovelForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('imoveis', campo='nome')
+            return redirect('imoveis:lista', campo='nome')
     else:
         form = ImovelForm()
     dados = {'form': form}
-    return render(request, 'imoveis/imoveis_cadastrar.html', dados)
+    return render(request, 'imoveis/cadastrar.html', dados)
 
 
+""" 
 def imoveis_editar(request, id):
     try:
         imovel = Imovel.objects.get(id=id)
