@@ -190,7 +190,23 @@ def ativar_reserva(request, id):
     return redirect('reservas_inativas', campo="cliente")
 
 
+def reserva_quarto(request, reserva_id):
+    reserva = Reserva.objects.get(id=reserva_id)
+
+    quartos = [reserva.quarto]
+
+    data = {
+        'reserva': reserva,
+        'quartos': quartos,
+        'ativos': True
+    }
+
+    return render(request, 'reservas/lista.html', data)
+
+
 # QUARTOS -------------------------------------------
+
+
 def quartos(request, imovel_id):
     imovel = Imovel.objects.get(id=imovel_id)
     quartos = Quarto.objects.filter(imovel=imovel, ativo=True)

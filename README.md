@@ -1,4 +1,4 @@
-# Imobiliary-faccat-api
+# Imobiliary-project
 
 ## Sobre o Projeto
 Projeto com foco em aprendizado em Python e com o framework Django.
@@ -26,3 +26,8 @@ pip install -r requirements.txt
 ```py
 py manage.py runserver
 ```
+
+[biblioteca de icones](https://heroicons.com/)
+=
+
+Instalação: [<3](https://pypi.org/project/heroicons/)

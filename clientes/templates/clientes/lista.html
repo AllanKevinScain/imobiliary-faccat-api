@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load heroicons %}
+
 {% block content %}
 <div class="container-sm mt-5">
     <h1 class="h1">Lista de clientes</h1>
@@ -9,24 +11,67 @@
         <table cellpadding="5" cellspacing="1" class="table table-dark table-striped mb-0">
             <thead>
                 <tr>
-                    <th>Nome</th>
-                    <th>Email</th>
+                    <th class="d-inline">
+                        {% if campo == 'nome' %}
+                        {% heroicon_outline "bars-arrow-up" %}
+                        {% else %}
+                        {% heroicon_outline "bars-arrow-down" %}
+                        {% endif %}
+
+                        {% if ativos %}
+                        <a href="{% url 'clientes:lista' 'nome' %}">Nome</a>
+                        {% else %}
+                        <a href="{% url 'clientes:lista_inativos' 'nome' %}">Nome</a>
+                        {% endif %}
+                    </th>
+                    <th class="d-inline">
+                        {% if campo == 'email' %}
+                        {% heroicon_outline "bars-arrow-up" %}
+                        {% else %}
+                        {% heroicon_outline "bars-arrow-down" %}
+                        {% endif %}
+
+                        {% if ativos %}
+                        <a href="{% url 'clientes:lista' 'email' %}">Email</a>
+                        {% else %}
+                        <a href="{% url 'clientes:lista_inativos' 'email' %}">Email</a>
+                        {% endif %}
+                    </th>
                     <th>Telefone</th>
                     <th>CPF</th>
-                    <th>Data Nascimento</th>
+                    <th>
+                        {% if campo == 'data_nascimento' %}
+                        {% heroicon_outline "bars-arrow-up" %}
+                        {% else %}
+                        {% heroicon_outline "bars-arrow-down" %}
+                        {% endif %}
+
+                        {% if ativos %}
+                        <a href="{% url 'clientes:lista' 'data_nascimento' %}">Data Nascimento</a>
+                        {% else %}
+                        <a href="{% url 'clientes:lista_inativos' 'data_nascimento' %}">Data Nascimento</a>
+                        {% endif %}
+                    </th>
                     <th>Opções</th>
                 </tr>
             </thead>
             <tbody>
                 {% for cliente in clientes %}
-                <!-- todo precisamos ordenar por ativos e inativos e criar a função para ativar e desativar -->
                 <tr>
                     <td>{{ cliente.nome }}</td>
                     <td>{{ cliente.email }}</td>
                     <td>{{ cliente.telefone }}</td>
                     <td>{{ cliente.cpf }}</td>
                     <td>{{ cliente.data_nascimento }}</td>
-                    <td><a href="{% url 'clientes:editar' cliente.id %}">Editar</a></td>
+                    <td class="d-flex flex-column">
+                        <a href="{% url 'clientes:editar' cliente.id %}">Editar</a>
+
+                        {% if ativos %}
+                        <a href="{% url 'clientes:desativar' cliente.id %}">Desativar</a>
+                        {% else %}
+                        <a href="{% url 'clientes:ativar' cliente.id %}">Ativar</a>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
@@ -38,7 +83,13 @@
     </div>
 </div>
 
-<div class="container-sm mt-5">
+<div class="container-sm mt-5 d-flex flex-column">
+    {% if ativos %}
+    <a href="{% url 'clientes:lista_inativos' 'nome' %}">Mostrar clientes inativos</a>
+    {% else %}
+    <a href="{% url 'clientes:lista' 'nome' %}">Mostrar clientes ativos</a>
+    {% endif %}
+
     <a href="{% url 'clientes:cadastrar' %}">Cadastrar cliente</a>
 </div>
 {% endblock %}

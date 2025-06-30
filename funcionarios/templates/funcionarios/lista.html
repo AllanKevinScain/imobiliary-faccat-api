@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load heroicons %}
+
 {% block content %}
 <div class="container-sm mt-5">
     <h1 class="h1">Lista de funcionarios</h1>
@@ -9,8 +11,32 @@
         <table cellpadding="5" cellspacing="1" class="table table-dark table-striped mb-0">
             <thead>
                 <tr>
-                    <th>Nome</th>
-                    <th>Cargo</th>
+                    <th>
+                        {% if campo == 'nome' %}
+                        {% heroicon_outline "bars-arrow-up" %}
+                        {% else %}
+                        {% heroicon_outline "bars-arrow-down" %}
+                        {% endif %}
+
+                        {% if ativos %}
+                        <a href="{% url 'funcionarios:lista' 'nome' %}">Nome</a>
+                        {% else %}
+                        <a href="{% url 'funcionarios:lista_inativos' 'nome' %}">Nome</a>
+                        {% endif %}
+                    </th>
+                    <th>
+                        {% if campo == 'cargo' %}
+                        {% heroicon_outline "bars-arrow-up" %}
+                        {% else %}
+                        {% heroicon_outline "bars-arrow-down" %}
+                        {% endif %}
+
+                        {% if ativos %}
+                        <a href="{% url 'funcionarios:lista' 'cargo' %}">Cargo</a>
+                        {% else %}
+                        <a href="{% url 'funcionarios:lista_inativos' 'cargo' %}">Cargo</a>
+                        {% endif %}
+                    </th>
                     <th>Email</th>
                     <th>Telefone</th>
                     <th>Opções</th>
@@ -18,13 +44,20 @@
             </thead>
             <tbody>
                 {% for funcionario in funcionarios %}
-                <!-- todo precisamos ordenar por ativos e inativos e criar a função para ativar e desativar -->
                 <tr>
                     <td>{{ funcionario.nome }}</td>
                     <td>{{ funcionario.get_cargo_display }}</td>
                     <td>{{ funcionario.email }}</td>
                     <td>{{ funcionario.telefone }}</td>
-                    <td><a href="{% url 'funcionarios:editar' funcionario.id %}">Editar</a></td>
+                    <td class="d-flex flex-column">
+                        <a href="{% url 'funcionarios:editar' funcionario.id %}">Editar</a>
+
+                        {% if ativos %}
+                        <a href="{% url 'funcionarios:desativar' funcionario.id %}">Desativar</a>
+                        {% else %}
+                        <a href="{% url 'funcionarios:ativar' funcionario.id %}">Ativar</a>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
@@ -36,7 +69,13 @@
     </div>
 </div>
 
-<div class="container-sm mt-5">
+<div class="container-sm mt-5 d-flex flex-column">
+    {% if ativos %}
+    <a href="{% url 'funcionarios:lista_inativos' 'nome' %}">Mostrar funcionários inativos</a>
+    {% else %}
+    <a href="{% url 'funcionarios:lista' 'nome' %}">Mostrar funcionários ativos</a>
+    {% endif %}
+
     <a href="{% url 'funcionarios:cadastrar' %}">Cadastrar funcionario</a>
 </div>
 {% endblock %}

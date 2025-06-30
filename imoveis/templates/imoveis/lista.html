@@ -30,11 +30,11 @@
                             {% if imovel.tipo == 'AP' %}
                             <a href="{% url 'imoveis:editar' imovel.id %}" class="text-primary">Editar</a>
                             <a href="{% url 'imoveis:lista_quartos' imovel.id %}" class="text-info">Ver quartos</a>
-                            <a href="{% url 'imoveis:lista_reservas' 'imovel' %}" class="text-primary">Ver
+                            <a href="{% url 'imoveis:reserva_quarto' imovel.id %}" class="text-primary">Ver
                                 Reservas</a>
                             {% else %}
                             <a href="{% url 'imoveis:editar' imovel.id %}" class="text-primary">Editar</a>
-                            <a href="{% url 'imoveis:lista_reservas' 'imovel' %}" class="text-primary">Ver
+                            <a href="{% url 'imoveis:reserva_quarto' imovel.id %}" class="text-primary">Ver
                                 Reservas</a>
                             {% endif %}
                         </div>
