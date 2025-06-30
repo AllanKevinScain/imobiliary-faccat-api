@@ -31,3 +31,31 @@ py manage.py runserver
 =
 
 Instalação: [<3](https://pypi.org/project/heroicons/)
+
+# Como configurar o projeto - linux
+
+1 - Instale o pyhton na sua máquina, atualmente estamos na versão 3.12
+
+2 - No terminal crie um ambiente virtual
+com o seguinte comando:
+```bash
+python3 -m venv venv
+```
+3 - Ainda no terminal, ative o
+ambiente virtual:
+```bash
+source venv/bin/activate
+```
+4 - No terminal, verifique se está com o 
+ambiente virtual ativo:
+```bash
+(venv) user@name:~/repositorios/imobiliary_project$
+``` 
+e rode:
+```bash
+pip install -r requirements.txt
+```
+5 - Rode o projeto com:
+```bash
+python3 manage.py runserver
+```
