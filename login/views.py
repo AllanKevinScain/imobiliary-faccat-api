@@ -41,4 +41,4 @@ def cadastrar_usuario(request):
     dados = {
         'form': form
     }
-    return render(request, 'login/cadastro_usuario.html', dados)
+    return render(request, 'login/cadastro.html', dados)

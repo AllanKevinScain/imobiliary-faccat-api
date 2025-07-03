@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     # libs
     'crispy_bootstrap5',
     'crispy_forms',
+    "heroicons",
 
     # default apss
     'django.contrib.admin',

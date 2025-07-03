@@ -202,7 +202,23 @@ def ativar_reserva(request, id):
     return redirect('reservas_inativas', campo="cliente")
 
 
-# QUARTOS ------------------------------------------------------------------ QUARTOS
+@login_required
+def reservas_por_imovel(request, imovel_id):
+    imovel = Imovel.objects.get(id=imovel_id)
+
+    reservas = Reserva.objects.filter(quarto__imovel=imovel, ativo=True)
+
+    dados = {
+        'reservas': reservas,
+        'imovel': imovel,
+        'ativos': True
+    }
+
+    return render(request, 'reservas/lista.html', dados)
+
+
+# QUARTOS -------------------------------------------
+
 @login_required
 def quartos(request, imovel_id):
     imovel = Imovel.objects.get(id=imovel_id)

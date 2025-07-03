@@ -24,7 +24,8 @@ def funcionarios(request, campo):
         # Esse 'nome'                                               vv serve para garantir que nunca falte um campo, é um valor padrão
         campo_ordenacao = ORDENACAO_FUNCIONARIO_LOOKUP.get(campo, 'nome')
         funcionarios = funcionarios.order_by(campo_ordenacao)
-    dados = {'funcionarios': funcionarios, 'ativos': True, 'query': query}
+    dados = {'funcionarios': funcionarios,
+             'ativos': True, 'query': query, 'campo': campo}
     return render(request, 'funcionarios/lista.html', dados)
 
 
@@ -37,9 +38,11 @@ def funcionarios_inativos(request, campo):
     else:
         funcionarios = Funcionario.objects.filter(ativo=False)
     if campo:
-        campo_ordenacao = ORDENACAO_FUNCIONARIO_LOOKUP.get(campo)
+        # Esse 'nome'                                               vv serve para garantir que nunca falte um campo, é um valor padrão
+        campo_ordenacao = ORDENACAO_FUNCIONARIO_LOOKUP.get(campo, 'nome')
         funcionarios = funcionarios.order_by(campo_ordenacao)
-    dados = {'funcionarios': funcionarios, 'ativos': False, 'query': query}
+    dados = {'funcionarios': funcionarios,
+             'ativos': False, 'query': query, 'campo': campo}
     return render(request, 'funcionarios/lista.html', dados)
 
 
@@ -85,7 +88,7 @@ def desativar_funcionario(request, id):
             request, "Não é possível desativar este funcionário, pois ele está vinculado a uma reserva.")
     except Funcionario.DoesNotExist:
         messages.error(request, "Funcionário não encontrado.")
-    return redirect('funcionarios:lista', campo='nome')
+    return redirect('funcionarios:lista_inativos', campo='nome')
 
 
 @login_required
@@ -94,11 +97,11 @@ def ativar_funcionario(request, id):
         funcionario = Funcionario.objects.get(id=id)
     except Funcionario.DoesNotExist:
         messages.error(request, "Funcionário não encontrado.")
-        return redirect('funcionarios_inativos', campo='nome')
+        return redirect('funcionarios:lista', campo='nome')
     if funcionario.ativo == False:
         funcionario.ativo = True
         funcionario.save()
         messages.success(request, "Funcionario reativado com sucesso.")
     else:
         messages.info(request, "O funcionário já está ativo.")
-    return redirect('funcionarios_inativos', campo='nome')
+    return redirect('funcionarios:lista', campo='nome')

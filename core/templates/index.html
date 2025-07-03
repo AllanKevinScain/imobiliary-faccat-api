@@ -47,16 +47,16 @@
     <div class="h-75 w-25 d-flex flex-column gap-3 bg-dark rounded-4 p-5">
 
         <h1 class="text-center text-light">Navegue para:</h1>
-        <a href=" {% url 'clientes:lista' 'nome' %}"
+        <a href="{% url 'clientes:lista' 'nome' %}"
             class="text-center p-2 border border-light rounded-3 link-underline link-underline-opacity-0 text-light btn-gradient">Lista
             de clientes</a>
-        <a href=" {% url 'funcionarios:lista' 'nome' %}"
+        <a href="{% url 'funcionarios:lista' 'nome' %}"
             class="text-center p-2 border border-light rounded-3 link-underline link-underline-opacity-0 text-light btn-gradient">Lista
             de funcionários</a>
-        <a href=" {% url 'imoveis:lista' 'nome' %}"
+        <a href="{% url 'imoveis:lista' 'nome' %}"
             class="text-center p-2 border border-light rounded-3 link-underline link-underline-opacity-0 text-light btn-gradient">Lista
             de imóveis</a>
-        <a href=" {% url 'imoveis:lista_reservas' 'cliente' %}"
+        <a href="{% url 'imoveis:lista_reservas' 'cliente' %}"
             class="text-center p-2 border border-light rounded-3 link-underline link-underline-opacity-0 text-light btn-gradient">Lista
             de reservas</a>
     </div>

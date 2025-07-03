@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 # CLIENTES
 ORDENACAO_CLIENTES_LOOKUP = {
     'nome': 'nome',
+    'email': 'email',
     'data_nascimento': 'data_nascimento',
 }
 
@@ -25,7 +26,8 @@ def clientes(request, campo):
         campo_ordenacao = ORDENACAO_CLIENTES_LOOKUP.get(campo, 'nome')
         clientes = clientes.order_by(campo_ordenacao)
 
-    dados = {'clientes': clientes, 'ativos': True, 'query': query}
+    dados = {'clientes': clientes, 'ativos': True,
+             'query': query, 'campo': campo}
     return render(request, 'clientes/lista.html', dados)
 
 
@@ -85,7 +87,7 @@ def desativar_cliente(request, id):
             request, "Não é possível desativar este cliente, pois ele está vinculado a uma reserva.")
     except Cliente.DoesNotExist:
         messages.error(request, "Cliente não encontrado.")
-    return redirect('clientes:lista', campo="nome")
+    return redirect('clientes:lista_inativos', campo="nome")
 
 
 @login_required
@@ -94,11 +96,11 @@ def ativar_cliente(request, id):
         cliente = Cliente.objects.get(id=id)
     except Cliente.DoesNotExist:
         messages.error(request, "Cliente não encontrado.")
-        return redirect('clientes_inativos', campo="nome")
+        return redirect('clientes:lista', campo="nome")
     if cliente.ativo == False:
         cliente.ativo = True
         cliente.save()
         messages.success(request, "Cliente reativado com sucesso.")
     else:
         messages.info(request, "O cliente já está ativo.")
-    return redirect('clientes_inativos', campo="nome")
+    return redirect('clientes:lista', campo="nome")

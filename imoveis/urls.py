@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import reservas, cadastrar_reservas
+from .views import reservas, cadastrar_reservas, reservas_por_imovel
 from .views import quartos, cadastrar_quarto, editar_quartos
 from .views import imoveis, cadastrar_imoveis, editar_imoveis
 
@@ -14,6 +14,7 @@ urlpatterns = [
 
     # reservas
     path('reservas/cadastrar/', cadastrar_reservas, name='cadastrar_reserva'),
+    path('reservas/<int:imovel_id>/', reservas_por_imovel, name='reservas_por_imovel'),
     path('reservas/<campo>/', reservas, name='lista_reservas'),
 
     # imóveis
