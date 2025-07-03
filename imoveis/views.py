@@ -117,6 +117,7 @@ def ativar_imovel(request, id):
     return redirect('imoveis_inativos', campo='nome')
 
 
+@login_required
 def detalhes_imovel(request, imovel_id):
     try:
         imovel = Imovel.objects.get(id=imovel_id)
