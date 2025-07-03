@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     'funcionarios.apps.FuncionariosConfig',
     'imoveis.apps.ImoveisConfig',
     'core.apps.CoreConfig',
+    'login.apps.LoginConfig',
 
     # libs
     'crispy_bootstrap5',
@@ -97,6 +98,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # configuração bootstrap
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# URL de login
+LOGIN_URL = 'auth:login'
 
 
 # configuração stdimage/media

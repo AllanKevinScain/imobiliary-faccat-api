@@ -11,6 +11,7 @@ urlpatterns = [
     path('clientes/', include('clientes.urls')),
     path('funcionarios/', include('funcionarios.urls')),
     path('imoveis/', include('imoveis.urls')),
+    path('login/', include('login.urls')),
 ]
 
 if settings.DEBUG:

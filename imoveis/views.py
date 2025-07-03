@@ -4,6 +4,7 @@ from .forms import ImovelForm, QuartoForm, ReservaForm
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import RestrictedError
+from django.contrib.auth.decorators import login_required
 
 # IMOVEIS
 ORDENACAO_IMOVEIS_LOOKUP = {
@@ -17,6 +18,7 @@ ORDENACAO_IMOVEIS_LOOKUP = {
 }
 
 
+@login_required
 def imoveis(request, campo):
     query = request.GET.get('busca', '')
     if campo == 'nome' and query:
@@ -31,6 +33,7 @@ def imoveis(request, campo):
     return render(request, 'imoveis/lista.html', dados)
 
 
+@login_required
 def imoveis_inativos(request, campo):
     query = request.GET.get('busca', '')
     if campo == 'nome' and query:
@@ -46,6 +49,7 @@ def imoveis_inativos(request, campo):
     return render(request, 'imoveis/lista.html', dados)
 
 
+@login_required
 def cadastrar_imoveis(request):
     if request.method == 'POST':
         form = ImovelForm(request.POST, request.FILES)
@@ -66,6 +70,7 @@ def cadastrar_imoveis(request):
     return render(request, 'imoveis/cadastrar.html', dados)
 
 
+@login_required
 def editar_imoveis(request, id):
     try:
         imovel = Imovel.objects.get(id=id)
@@ -81,6 +86,7 @@ def editar_imoveis(request, id):
     return render(request, 'imoveis/editar.html', dados)
 
 
+@login_required
 def desativar_imovel(request, id):
     try:
         imovel = Imovel.objects.get(id=id)
@@ -95,6 +101,7 @@ def desativar_imovel(request, id):
     return redirect('imoveis:lista', campo='nome')
 
 
+@login_required
 def ativar_imovel(request, id):
     try:
         imovel = Imovel.objects.get(id=id)
@@ -134,6 +141,7 @@ ORDENACAO_RESERVAS_LOOKUP = {
 }
 
 
+@login_required
 def reservas(request, campo):
     query = request.GET.get('busca', '')
     if campo == 'cliente' and query:
@@ -148,6 +156,7 @@ def reservas(request, campo):
     return render(request, 'reservas/lista.html', dados)
 
 
+@login_required
 def reservas_inativas(request, campo):
     query = request.GET.get('busca', '')
     if campo == 'cliente' and query:
@@ -162,6 +171,7 @@ def reservas_inativas(request, campo):
     return render(request, 'reservas/lista.html', dados)
 
 
+@login_required
 def cadastrar_reservas(request):
     # todo precisamos validar para nao deixar cadastrar em épocas iguais
     # todo precisamos validar as datas, para o início ser menor que o fim, sempre
@@ -176,6 +186,7 @@ def cadastrar_reservas(request):
     return render(request, 'reservas/cadastrar.html', dados)
 
 
+@login_required
 def desativar_reserva(request, id):
     try:
         reserva = Reserva.objects.get(id=id)
@@ -190,6 +201,7 @@ def desativar_reserva(request, id):
     return redirect('imoveis:lista_reservas', campo="cliente")
 
 
+@login_required
 def ativar_reserva(request, id):
     try:
         reserva = Reserva.objects.get(id=id)
@@ -205,6 +217,7 @@ def ativar_reserva(request, id):
     return redirect('reservas_inativas', campo="cliente")
 
 
+@login_required
 def reservas_por_imovel(request, imovel_id):
     imovel = Imovel.objects.get(id=imovel_id)
 
@@ -221,7 +234,7 @@ def reservas_por_imovel(request, imovel_id):
 
 # QUARTOS -------------------------------------------
 
-
+@login_required
 def quartos(request, imovel_id):
     imovel = Imovel.objects.get(id=imovel_id)
     quartos = Quarto.objects.filter(imovel=imovel, ativo=True)
@@ -232,6 +245,7 @@ def quartos(request, imovel_id):
     })
 
 
+@login_required
 def cadastrar_quarto(request, imovel_id):
     imovel = Imovel.objects.get(id=imovel_id)
 
@@ -252,6 +266,7 @@ def cadastrar_quarto(request, imovel_id):
     return render(request, 'quartos/cadastrar.html', dados)
 
 
+@login_required
 def editar_quartos(request, id):
     try:
         quarto = Quarto.objects.get(id=id)

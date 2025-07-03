@@ -4,6 +4,7 @@ from .forms import FuncionarioForm
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import RestrictedError
+from django.contrib.auth.decorators import login_required
 
 ORDENACAO_FUNCIONARIO_LOOKUP = {
     'nome': 'nome',
@@ -11,6 +12,7 @@ ORDENACAO_FUNCIONARIO_LOOKUP = {
 }
 
 
+@login_required
 def funcionarios(request, campo):
     query = request.GET.get('busca', '')
     if campo == 'nome' and query:
@@ -27,6 +29,7 @@ def funcionarios(request, campo):
     return render(request, 'funcionarios/lista.html', dados)
 
 
+@login_required
 def funcionarios_inativos(request, campo):
     query = request.GET.get('busca', '')
     if campo == 'nome' and query:
@@ -43,6 +46,7 @@ def funcionarios_inativos(request, campo):
     return render(request, 'funcionarios/lista.html', dados)
 
 
+@login_required
 def cadastrar_funcionarios(request):
     if request.method == 'POST':
         form = FuncionarioForm(request.POST)
@@ -56,6 +60,7 @@ def cadastrar_funcionarios(request):
     return render(request, 'funcionarios/cadastrar.html', dados)
 
 
+@login_required
 def editar_funcionarios(request, id):
     try:
         funcionario = Funcionario.objects.get(id=id)
@@ -71,6 +76,7 @@ def editar_funcionarios(request, id):
     return render(request, 'funcionarios/editar.html', dados)
 
 
+@login_required
 def desativar_funcionario(request, id):
     try:
         funcionario = Funcionario.objects.get(id=id)
@@ -85,6 +91,7 @@ def desativar_funcionario(request, id):
     return redirect('funcionarios:lista_inativos', campo='nome')
 
 
+@login_required
 def ativar_funcionario(request, id):
     try:
         funcionario = Funcionario.objects.get(id=id)

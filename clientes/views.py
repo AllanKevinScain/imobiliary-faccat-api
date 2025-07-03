@@ -4,6 +4,7 @@ from .forms import ClienteForm
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import RestrictedError
+from django.contrib.auth.decorators import login_required
 
 # CLIENTES
 ORDENACAO_CLIENTES_LOOKUP = {
@@ -13,6 +14,7 @@ ORDENACAO_CLIENTES_LOOKUP = {
 }
 
 
+@login_required
 def clientes(request, campo):
     query = request.GET.get('busca', '')
     if campo == 'nome' and query:
@@ -29,6 +31,7 @@ def clientes(request, campo):
     return render(request, 'clientes/lista.html', dados)
 
 
+@login_required
 def clientes_inativos(request, campo):
     query = request.GET.get('busca', '')
     if campo == 'nome' and query:
@@ -43,6 +46,7 @@ def clientes_inativos(request, campo):
     return render(request, 'clientes/lista.html', dados)
 
 
+@login_required
 def clientes_cadastrar(request):
     if request.method == 'POST':
         form = ClienteForm(request.POST)
@@ -55,6 +59,7 @@ def clientes_cadastrar(request):
     return render(request, 'clientes/cadastrar.html', dados)
 
 
+@login_required
 def editar_clientes(request, id):
     try:
         cliente = Cliente.objects.get(id=id)
@@ -70,6 +75,7 @@ def editar_clientes(request, id):
     return render(request, 'clientes/editar.html', dados)
 
 
+@login_required
 def desativar_cliente(request, id):
     try:
         cliente = Cliente.objects.get(id=id)
@@ -84,6 +90,7 @@ def desativar_cliente(request, id):
     return redirect('clientes:lista_inativos', campo="nome")
 
 
+@login_required
 def ativar_cliente(request, id):
     try:
         cliente = Cliente.objects.get(id=id)
