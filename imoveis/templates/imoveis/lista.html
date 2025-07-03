@@ -20,7 +20,7 @@
             <tbody>
                 {% for imovel in imoveis %}
                 <tr>
-                    <td>{{ imovel.nome }}</td>
+                    <td><a href="{% url 'imoveis:detalhes_imovel' imovel.id %}">{{ imovel.nome }}</a></td>
                     <td>{{ imovel.get_tipo_display }}</td>
                     <td>{{ imovel.endereco }}</td>
                     <td>{{ imovel.cidade }}</td>

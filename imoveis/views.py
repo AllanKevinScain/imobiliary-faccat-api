@@ -7,6 +7,7 @@ from django.db.models import RestrictedError
 
 # IMOVEIS
 ORDENACAO_IMOVEIS_LOOKUP = {
+    'foto': 'foto',
     'nome': 'nome',
     'tipo': 'tipo',
     'endereco': 'endereco',
@@ -47,7 +48,7 @@ def imoveis_inativos(request, campo):
 
 def cadastrar_imoveis(request):
     if request.method == 'POST':
-        form = ImovelForm(request.POST)
+        form = ImovelForm(request.POST, request.FILES)
         if form.is_valid():
             imovel = form.save()
             # Se o tipo do imóvel NÃO do apartamento iremos criar um quarto com este nome
@@ -71,7 +72,7 @@ def editar_imoveis(request, id):
     except:
         return redirect('imoveis:lista', campo='nome')
     if request.method == 'POST':
-        form = ImovelForm(request.POST, instance=imovel)
+        form = ImovelForm(request.POST, instance=imovel, files=request.FILES)
         if form.is_valid():
             form.save()
             return redirect('imoveis:lista', campo='nome')
@@ -107,6 +108,20 @@ def ativar_imovel(request, id):
     else:
         messages.info(request, "O imóvel já está ativo.")
     return redirect('imoveis_inativos', campo='nome')
+
+
+def detalhes_imovel(request, imovel_id):
+    try:
+        imovel = Imovel.objects.get(id=imovel_id)
+    except Imovel.DoesNotExist:
+        messages.error(request, "Imovel não encontrado.")
+        return redirect('imoveis:lista', campo='nome')
+
+    dados = {
+        'imovel': imovel,
+    }
+
+    return render(request, 'imoveis/detalhes.html', dados)
 
 
 # RESERVAS ----------------------------------------------------------------------------------------------------RESERVAS

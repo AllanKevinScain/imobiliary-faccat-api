@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,6 +20,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'crispy_forms',
     "heroicons",
+    'stdimage',
 
     # default apss
     'django.contrib.admin',
@@ -95,3 +97,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # configuração bootstrap
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+# configuração stdimage/media
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

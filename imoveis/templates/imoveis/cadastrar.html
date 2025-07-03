@@ -12,7 +12,7 @@
 <div class="container my-3">
   <div class="row">
     <div class="col-6 mx-auto">
-      <form method="post">
+      <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
 

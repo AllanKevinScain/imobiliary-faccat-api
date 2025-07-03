@@ -1,5 +1,7 @@
+from stdimage.models import StdImageField
 from django.db import models
 from clientes.models import Cliente
+
 
 
 class Imovel(models.Model):
@@ -45,6 +47,13 @@ class Imovel(models.Model):
     cidade = models.CharField(max_length=100)
     estado = models.CharField(max_length=2, choices=ESTADO_CHOICES)
     ativo = models.BooleanField(default=True)
+    foto = StdImageField(
+        upload_to='fotos/alunos',
+        variations={'thumb': (150, 150), 'medium': (300, 300)},
+        blank=True,
+        null=True
+    )
+
 
     def __str__(self):
         return self.nome
