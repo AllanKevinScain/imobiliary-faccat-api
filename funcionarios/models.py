@@ -1,18 +1,16 @@
 from django.db import models
 import re
+from django.contrib.auth.models import User
 
 
 class Funcionario(models.Model):
-    CARGO_CHOICES = [
-        ('GER', 'Gerente'),
-        ('ADM', 'Administrador'),
-    ]
-
     nome = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     telefone = models.CharField(max_length=20, blank=True)
-    cargo = models.CharField(max_length=50, choices=CARGO_CHOICES)
     ativo = models.BooleanField(default=True)
+
+    user = models.OneToOneField(
+        User, on_delete=models.SET_NULL, null=True, blank=True)
 
     def formatar_nome(self, nome):
         partes = nome.lower().split()

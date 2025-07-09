@@ -30,19 +30,6 @@
                         <a href="{% url 'funcionarios:lista_inativos' 'nome' %}">Nome</a>
                         {% endif %}
                     </th>
-                    <th>
-                        {% if campo == 'cargo' %}
-                        {% heroicon_outline "bars-arrow-up" %}
-                        {% else %}
-                        {% heroicon_outline "bars-arrow-down" %}
-                        {% endif %}
-
-                        {% if ativos %}
-                        <a href="{% url 'funcionarios:lista' 'cargo' %}">Cargo</a>
-                        {% else %}
-                        <a href="{% url 'funcionarios:lista_inativos' 'cargo' %}">Cargo</a>
-                        {% endif %}
-                    </th>
                     <th>Email</th>
                     <th>Telefone</th>
                     <th>Opções</th>
@@ -52,7 +39,6 @@
                 {% for funcionario in funcionarios %}
                 <tr>
                     <td>{{ funcionario.nome }}</td>
-                    <td>{{ funcionario.get_cargo_display }}</td>
                     <td>{{ funcionario.email }}</td>
                     <td>{{ funcionario.telefone|format_telefone }}</td>
                     <td class="d-flex flex-column">

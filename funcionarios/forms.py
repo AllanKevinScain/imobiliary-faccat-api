@@ -8,4 +8,4 @@ class FuncionarioForm(forms.ModelForm):
 
     class Meta:
         model = Funcionario
-        fields = ['nome', 'email', 'telefone', 'cargo']
+        fields = ['nome', 'email', 'telefone']

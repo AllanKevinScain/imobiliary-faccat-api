@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 
 ORDENACAO_FUNCIONARIO_LOOKUP = {
     'nome': 'nome',
-    'cargo': 'cargo',
 }
 
 
