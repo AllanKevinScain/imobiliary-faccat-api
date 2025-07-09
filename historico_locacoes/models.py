@@ -6,8 +6,6 @@ from reservas.models import Reserva
 
 class HistoricoAcao(models.Model):
     ACOES_CHOICES = [
-        ('CRIAR_IMOVEL', 'Criou imóvel'),
-        ('EDITAR_IMOVEL', 'Editou imóvel'),
         ('RESERVAR', 'Reservou imóvel'),
         ('FINALIZAR', 'Finalizou reserva'),
         ('CANCELAR', 'Cancelou reserva'),

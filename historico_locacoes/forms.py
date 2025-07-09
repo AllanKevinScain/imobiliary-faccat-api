@@ -15,8 +15,6 @@ class HistoricoFiltroForm(forms.Form):
         required=False,
         choices=[
             ('', 'Todas'),
-            ('CRIAR_IMOVEL', 'Criou imóvel'),
-            ('EDITAR_IMOVEL', 'Editou imóvel'),
             ('RESERVAR', 'Reservou imóvel'),
             ('FINALIZAR', 'Finalizou reserva'),
             ('CANCELAR', 'Cancelou reserva'),
