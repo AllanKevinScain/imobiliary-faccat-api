@@ -35,10 +35,6 @@ def cadastrar_usuario(request):
             form.save()
             messages.success(request, 'Usuário criado com sucesso!')
             return redirect('core:index')
-    else:
-        form = UsuarioCreateForm()
-
-    dados = {
-        'form': form
-    }
+    form = UsuarioCreateForm()
+    dados = {'form': form}
     return render(request, 'login/cadastro.html', dados)

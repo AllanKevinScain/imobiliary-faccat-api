@@ -3,8 +3,7 @@ from .models import Funcionario
 from .forms import FuncionarioForm
 from django.shortcuts import redirect
 from django.contrib import messages
-from django.db.models import RestrictedError
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 
 ORDENACAO_FUNCIONARIO_LOOKUP = {
     'nome': 'nome',
@@ -15,6 +14,7 @@ ORDENACAO_FUNCIONARIO_LOOKUP = {
 @login_required
 def funcionarios(request, campo):
     if not request.user.is_superuser:
+        messages.error(request, "Voce não possui acesso a essa página.")
         return redirect('core:index')
 
     query = request.GET.get('busca', '')
@@ -35,6 +35,7 @@ def funcionarios(request, campo):
 @login_required
 def funcionarios_inativos(request, campo):
     if not request.user.is_superuser:
+        messages.error(request, "Voce não possui acesso a essa página.")
         return redirect('core:index')
 
     query = request.GET.get('busca', '')
@@ -55,16 +56,16 @@ def funcionarios_inativos(request, campo):
 @login_required
 def cadastrar_funcionarios(request):
     if not request.user.is_superuser:
+        messages.error(request, "Voce não possui acesso a essa página.")
         return redirect('core:index')
 
     if request.method == 'POST':
         form = FuncionarioForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, "Funcionário cadastrado com sucesso.")
             return redirect('funcionarios:lista', campo='nome')
-    else:
-        form = FuncionarioForm()
-
+    form = FuncionarioForm()
     dados = {'form': form}
     return render(request, 'funcionarios/cadastrar.html', dados)
 
@@ -72,16 +73,19 @@ def cadastrar_funcionarios(request):
 @login_required
 def editar_funcionarios(request, id):
     if not request.user.is_superuser:
+        messages.error(request, "Voce não possui acesso a essa página.")
         return redirect('core:index')
 
     try:
         funcionario = Funcionario.objects.get(id=id)
     except:
+        messages.error(request, "Funcionário não encontrado.")
         return redirect('funcionarios:lista', campo='nome')
     if request.method == 'POST':
         form = FuncionarioForm(request.POST, instance=funcionario)
         if form.is_valid():
             form.save()
+            messages.success(request, "Informações atualizadas com sucesso.")
             return redirect('funcionarios:lista', campo='nome')
     form = FuncionarioForm(instance=funcionario)
     dados = {'form': form, 'funcionario': funcionario}
@@ -91,16 +95,15 @@ def editar_funcionarios(request, id):
 @login_required
 def desativar_funcionario(request, id):
     if not request.user.is_superuser:
+        messages.error(request, "Voce não possui acesso a essa página.")
         return redirect('core:index')
 
     try:
         funcionario = Funcionario.objects.get(id=id)
         funcionario.ativo = False
         funcionario.save()
-        messages.success(request, "Funcionário desativado com sucesso.")
-    except RestrictedError:
-        messages.error(
-            request, "Não é possível desativar este funcionário, pois ele está vinculado a uma reserva.")
+        messages.success(request, "O funcionário " +
+                         funcionario.nome+" foi desativado.")
     except Funcionario.DoesNotExist:
         messages.error(request, "Funcionário não encontrado.")
     return redirect('funcionarios:lista_inativos', campo='nome')
@@ -109,6 +112,7 @@ def desativar_funcionario(request, id):
 @login_required
 def ativar_funcionario(request, id):
     if not request.user.is_superuser:
+        messages.error(request, "Voce não possui acesso a essa página.")
         return redirect('core:index')
 
     try:
@@ -119,7 +123,8 @@ def ativar_funcionario(request, id):
     if funcionario.ativo == False:
         funcionario.ativo = True
         funcionario.save()
-        messages.success(request, "Funcionario reativado com sucesso.")
+        messages.success(request, "O funcionário " +
+                         funcionario.nome+" foi ativado.")
     else:
         messages.info(request, "O funcionário já está ativo.")
     return redirect('funcionarios:lista', campo='nome')

@@ -51,9 +51,9 @@ def clientes_cadastrar(request):
         form = ClienteForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, "Cliente cadastrado com sucesso.")
             return redirect('clientes:lista', campo="nome")
-    else:
-        form = ClienteForm()
+    form = ClienteForm()
     dados = {'form': form}
     return render(request, 'clientes/cadastrar.html', dados)
 
@@ -63,13 +63,13 @@ def editar_clientes(request, id):
     try:
         cliente = Cliente.objects.get(id=id)
     except:
+        messages.error(request, "Cliente não encontrado.")
         return redirect('clientes:lista', campo="nome")
     if request.method == 'POST':
         form = ClienteForm(request.POST, instance=cliente)
         if form.is_valid():
             form.save()
-            messages.success(request, "Informações salvas com sucesso.")
-
+            messages.success(request, "Informações atualizadas com sucesso.")
             return redirect('clientes:lista', campo="nome")
     form = ClienteForm(instance=cliente)
     dados = {'form': form, 'cliente': cliente}
@@ -82,7 +82,7 @@ def desativar_cliente(request, id):
         cliente = Cliente.objects.get(id=id)
         cliente.ativo = False
         cliente.save()
-        messages.success(request, "Cliente desativado com sucesso.")
+        messages.success(request, "Cliente "+cliente.nome+" foi desativado.")
     except RestrictedError:
         messages.error(
             request, "Não é possível desativar este cliente, pois ele está vinculado a uma reserva.")
@@ -101,7 +101,7 @@ def ativar_cliente(request, id):
     if cliente.ativo == False:
         cliente.ativo = True
         cliente.save()
-        messages.success(request, "Cliente reativado com sucesso.")
+        messages.success(request, "Cliente "+cliente.nome+" foi ativado.")
     else:
         messages.info(request, "O cliente já está ativo.")
     return redirect('clientes:lista', campo="nome")

@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'login.apps.LoginConfig',
     'historico_locacoes.apps.HistoricoLocacoesConfig',
+    'ocorrencias.apps.OcorrenciasConfig',
 
     # libs
     'crispy_bootstrap5',
@@ -103,7 +104,14 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # URL de login
 LOGIN_URL = 'auth:login'
 
-
 # configuração stdimage/media
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Configurações de email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'meuemail44allan@gmail.com'
+EMAIL_HOST_PASSWORD = 'cxuv htqs aklz weob'

@@ -39,7 +39,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'historico_locacoes:lista' %}">Histórico</a>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'ocorrencias:registrar' %}">Registrar ocorrência</a>
+                </li>
                 {% if user.is_superuser %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'auth:cadastrar' %}">Cadastrar Usuário</a>
@@ -67,8 +69,6 @@
 
 
     <main class="container py-4">
-        {% include 'partials/_busca.html' %}
-
         {% include 'partials/_mensagem.html' %}
 
         {% block content %}{% endblock %}

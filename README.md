@@ -59,3 +59,14 @@ pip install -r requirements.txt
 ```bash
 python3 manage.py runserver
 ```
+
+6 - Emails:
+Verifique se seu email esta com a config de autenticação com duas etapas:<br></br>
+```bash
+https://myaccount.google.com/security
+```
+
+Crie um app:<br></br>
+```bash
+https://myaccount.google.com/apppasswords
+```

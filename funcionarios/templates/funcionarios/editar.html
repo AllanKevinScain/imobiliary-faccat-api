@@ -26,8 +26,10 @@
         {% csrf_token %}
         {{ form|crispy }}
 
-        <button type="submit" class="btn btn-success">Editar</button>
-        <a href="{% url 'funcionarios:lista' 'nome' %}"><button type="button" class="btn btn-info">Cancelar</button></a>
+        <div class="d-flex flex-column gap-4 mt-5">
+          <button type="submit" class="btn btn-success">Editar</button>
+          <a href="{% url 'funcionarios:lista' 'nome' %}" class="btn btn-info">Cancelar</a>
+        </div>
       </form>
     </div>
   </div>

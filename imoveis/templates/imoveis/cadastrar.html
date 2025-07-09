@@ -15,8 +15,10 @@
         {% csrf_token %}
         {{ form|crispy }}
 
-        <button type="submit" class="btn btn-success">Cadastrar</button>
-        <button type="reset" class="btn btn-info">Limpar</button>
+        <div class="d-flex flex-column gap-4 mt-5">
+          <button type="submit" class="btn btn-success">Cadastrar</button>
+          <button type="reset" class="btn btn-info">Limpar</button>
+        </div>
       </form>
     </div>
   </div>
