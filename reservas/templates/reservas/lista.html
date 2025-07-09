@@ -28,7 +28,6 @@
                 <tr>
                     <th>Imóvel</th>
                     <th>Cliente</th>
-                    <th>Funcionário</th>
                     <th>Início</th>
                     <th>Fim</th>
                     {% if reserva.ativo %}
@@ -41,7 +40,6 @@
                 <tr>
                     <td>{{ reserva.imovel }}</td>
                     <td>{{ reserva.cliente }}</td>
-                    <td>{{ reserva.funcionario }}</td>
                     <td>{{ reserva.data_inicio|date:"d/m/Y" }}</td>
                     <td>{{ reserva.data_fim|date:"d/m/Y" }}</td>
 

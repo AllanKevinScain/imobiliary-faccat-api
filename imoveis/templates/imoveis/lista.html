@@ -28,6 +28,7 @@
                     <th>Nome</th>
                     <th>Tipo</th>
                     <th>Endereço</th>
+                    <th>Preço</th>
                     <th>Número de quartos</th>
                     <th>Disponibilidade</th>
                     <th>Opções</th>
@@ -39,6 +40,7 @@
                     <td>{{ imovel.nome }}</td>
                     <td>{{ imovel.get_tipo_display }}</td>
                     <td>{{ imovel.endereco }}</td>
+                    <td>{{ imovel.preco }}</td>
                     <td>{{ imovel.qtyQuartos }}</td>
                     <td>
                         {% if imovel.disponibilidade %}

@@ -16,7 +16,7 @@ def registrar_ocorrencia(request):
                 message=f"Imóvel: {ocorrencia.imovel.nome}\n\n{ocorrencia.descricao}",
                 from_email='meuemail44allan@gmail.com',
                 recipient_list=['allankevin@sou.faccat.br',
-                                'vitorotto@sou.faccat.br', 'fabiomnascimento@sou.faccat.br'],
+                                'vitorotto@sou.faccat.br', 'fabiomnascimento@sou.faccat.br', 'luancustodio@sou.faccat.br'],
                 fail_silently=False,
             )
 
@@ -24,7 +24,7 @@ def registrar_ocorrencia(request):
             ocorrencia.save()
             messages.success(
                 request, "Ocorrência enviada para a equipe de assistência.")
-            return redirect('imoveis:lista', campo="cliente")
+            return redirect('imoveis:lista', campo="nome")
     form = OcorrenciaForm()
     dados = {'form': form}
     return render(request, 'ocorrencias/registrar.html', dados)

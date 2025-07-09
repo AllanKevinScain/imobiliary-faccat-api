@@ -12,6 +12,3 @@ class Reserva(models.Model):
 
     def __str__(self):
         return f"Reserva de {self.imovel} ({self.imovel.imovel}) para {self.cliente}"
-
-    class Meta:
-        unique_together = ('imovel', 'data_inicio', 'data_fim')

@@ -25,7 +25,7 @@ def imoveis(request, campo):
     if campo:
         campo_ordenacao = ORDENACAO_IMOVEIS_LOOKUP.get(campo)
         imoveis = imoveis.order_by(campo_ordenacao)
-    dados = {'imoveis': imoveis, 'ativos': True}
+    dados = {'imoveis': imoveis, 'ativos': True, 'query': query}
     return render(request, 'imoveis/lista.html', dados)
 
 

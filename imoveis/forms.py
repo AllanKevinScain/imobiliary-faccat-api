@@ -19,7 +19,7 @@ class ImovelForm(forms.ModelForm):
 class FiltroImovelForm(forms.Form):
     nome = forms.CharField(label='Nome', required=False)
     endereco = forms.CharField(label='Endereço', required=False)
-    preco = forms.DecimalField(max_digits=10, decimal_places=2)
+    preco = forms.DecimalField(max_digits=10, decimal_places=2, required=False)
     disponibilidade = forms.ChoiceField(
         label='Disponibilidade',
         required=False,

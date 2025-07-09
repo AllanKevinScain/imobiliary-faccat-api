@@ -65,8 +65,7 @@ def cadastrar_reservas(request):
             )
 
             return redirect('reservas:lista', campo="cliente")
-    else:
-        form = ReservaForm()
+    form = ReservaForm()
     dados = {'form': form}
     return render(request, 'reservas/cadastrar.html', dados)
 
