@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'login.apps.LoginConfig',
     'historico_locacoes.apps.HistoricoLocacoesConfig',
     'ocorrencias.apps.OcorrenciasConfig',
+    'reservas.apps.ReservasConfig',
 
     # libs
     'crispy_bootstrap5',

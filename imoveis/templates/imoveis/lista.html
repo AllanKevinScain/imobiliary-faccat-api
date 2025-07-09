@@ -47,7 +47,7 @@
                         {% endif %}
                     </td>
                     <td class="d-flex gap-2 align-items-center">
-                        <a href="{% url 'imoveis:detalhes_imovel' imovel.id %}" class="text-info">
+                        <a href="{% url 'imoveis:detalhes' imovel.id %}" class="text-info">
                             {% heroicon_outline "eye" %}
                         </a>
                         <a href="{% url 'imoveis:editar' imovel.id %}" class="text-warning">

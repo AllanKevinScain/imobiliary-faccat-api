@@ -12,11 +12,11 @@
 
     <div class="d-flex gap-4">
         {% if ativos %}
-        <a href="{% url 'imoveis:lista_reservas_encerrados' 'cliente' %}" class="btn btn-light">Locações encerradas</a>
-        <a href="{% url 'imoveis:cadastrar_reserva' %}" class="btn btn-light">{% heroicon_outline "key" %} Criar
+        <a href="{% url 'reservas:lista_encerrados' 'cliente' %}" class="btn btn-light">Locações encerradas</a>
+        <a href="{% url 'reservas:cadastrar' %}" class="btn btn-light">{% heroicon_outline "key" %} Criar
             Locação</a>
         {% else %}
-        <a href="{% url 'imoveis:lista_reservas' 'cliente' %}" class="btn btn-light">Locações em aberto</a>
+        <a href="{% url 'reservas:lista' 'cliente' %}" class="btn btn-light">Locações em aberto</a>
         {% endif %}
     </div>
 </div>
@@ -47,8 +47,8 @@
 
                     {% if reserva.ativo %}
                     <td class="d-flex flex-column gap-2">
-                        <a href="{% url 'imoveis:finalizar' reserva.id %}">Finalizar</a>
-                        <a href="{% url 'imoveis:cancelar' reserva.id %}">Cancelar reserva</a>
+                        <a href="{% url 'reservas:finalizar' reserva.id %}">Finalizar</a>
+                        <a href="{% url 'reservas:cancelar' reserva.id %}">Cancelar reserva</a>
                     </td>
                     {% endif %}
                 </tr>

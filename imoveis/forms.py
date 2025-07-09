@@ -1,5 +1,5 @@
 from django import forms
-from .models import Imovel, Reserva
+from .models import Imovel
 
 
 class ImovelForm(forms.ModelForm):
@@ -13,18 +13,3 @@ class ImovelForm(forms.ModelForm):
             'endereco': 'Endereço',
             'qtyQuartos': 'Número de quartos',
         }
-
-
-class ReservaForm(forms.ModelForm):
-    class Meta:
-        model = Reserva
-        fields = ['imovel', 'cliente', 'data_inicio', 'data_fim']
-        widgets = {
-            'data_inicio': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
-            'data_fim': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['imovel'].queryset = Imovel.objects.filter(
-            disponibilidade=True, ativo=True)

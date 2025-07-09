@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from imoveis.models import Imovel, Reserva
+from imoveis.models import Imovel
+from reservas.models import Reserva
 
 
 class HistoricoAcao(models.Model):
