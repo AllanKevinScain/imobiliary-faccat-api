@@ -5,12 +5,13 @@ from .models import Imovel
 class ImovelForm(forms.ModelForm):
     class Meta:
         model = Imovel
-        fields = ['foto', 'nome', 'tipo', 'endereco', 'qtyQuartos']
+        fields = ['foto', 'nome', 'tipo', 'endereco', 'qtyQuartos', 'preco']
         labels = {
             'foto': 'Foto de perfil',
             'nome': 'Nome da locação',
             'tipo': 'Tipo de locação',
             'endereco': 'Endereço',
+            'preco': 'Preço',
             'qtyQuartos': 'Número de quartos',
         }
 
@@ -18,6 +19,7 @@ class ImovelForm(forms.ModelForm):
 class FiltroImovelForm(forms.Form):
     nome = forms.CharField(label='Nome', required=False)
     endereco = forms.CharField(label='Endereço', required=False)
+    preco = forms.DecimalField(max_digits=10, decimal_places=2)
     disponibilidade = forms.ChoiceField(
         label='Disponibilidade',
         required=False,

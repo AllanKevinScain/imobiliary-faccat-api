@@ -109,6 +109,7 @@ def filtrar_imoveis(request):
     if form.is_valid():
         nome = form.cleaned_data.get('nome')
         endereco = form.cleaned_data.get('endereco')
+        preco = form.cleaned_data.get('preco')
         disponibilidade = form.cleaned_data.get('disponibilidade')
         quartos_min = form.cleaned_data.get('quartos_min')
         quartos_max = form.cleaned_data.get('quartos_max')
@@ -117,6 +118,8 @@ def filtrar_imoveis(request):
             imoveis = imoveis.filter(nome__icontains=nome)
         if endereco:
             imoveis = imoveis.filter(endereco__icontains=endereco)
+        if preco:
+            imoveis = imoveis.filter(preco__icontains=preco)
         if disponibilidade == 'disponivel':
             imoveis = imoveis.filter(disponibilidade=True)
         elif disponibilidade == 'indisponivel':
