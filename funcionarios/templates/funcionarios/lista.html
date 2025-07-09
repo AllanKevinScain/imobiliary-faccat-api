@@ -8,8 +8,22 @@
 
 {% include 'partials/_busca.html' %}
 
-<div class="container-sm mt-5">
+
+<div class="container-sm mt-5 d-flex justify-content-between align-items-center">
     <h1 class="h1">Lista de funcionarios</h1>
+
+    <div class="d-flex gap-4">
+        {% if ativos %}
+        <a href="{% url 'funcionarios:lista_inativos' 'nome' %}" class="btn btn-light">Mostrar funcionários inativos</a>
+        {% else %}
+        <a href="{% url 'funcionarios:lista' 'nome' %}" class="btn btn-light">Mostrar
+            funcionários ativos</a>
+        {% endif %}
+
+        <a href="{% url 'funcionarios:cadastrar' %}" class="btn btn-light">{% heroicon_outline "pencil-square" %}
+            Cadastrar
+            funcionário</a>
+    </div>
 </div>
 
 <div class="container-sm mt-2">
@@ -17,19 +31,7 @@
         <table cellpadding="5" cellspacing="1" class="table table-dark table-striped mb-0">
             <thead>
                 <tr>
-                    <th>
-                        {% if campo == 'nome' %}
-                        {% heroicon_outline "bars-arrow-up" %}
-                        {% else %}
-                        {% heroicon_outline "bars-arrow-down" %}
-                        {% endif %}
-
-                        {% if ativos %}
-                        <a href="{% url 'funcionarios:lista' 'nome' %}">Nome</a>
-                        {% else %}
-                        <a href="{% url 'funcionarios:lista_inativos' 'nome' %}">Nome</a>
-                        {% endif %}
-                    </th>
+                    <th>Nome</th>
                     <th>Email</th>
                     <th>Telefone</th>
                     <th>Opções</th>
@@ -41,13 +43,19 @@
                     <td>{{ funcionario.nome }}</td>
                     <td>{{ funcionario.email }}</td>
                     <td>{{ funcionario.telefone|format_telefone }}</td>
-                    <td class="d-flex flex-column">
-                        <a href="{% url 'funcionarios:editar' funcionario.id %}">Editar</a>
+                    <td class="d-flex gap-4">
+                        <a href="{% url 'funcionarios:editar' funcionario.id %}" class="text-warning">
+                            {% heroicon_outline "pencil-square" %}
+                        </a>
 
                         {% if ativos %}
-                        <a href="{% url 'funcionarios:desativar' funcionario.id %}">Desativar</a>
+                        <a href="{% url 'funcionarios:desativar' funcionario.id %}" class="text-danger">
+                            {% heroicon_outline "lock-closed" %}
+                        </a>
                         {% else %}
-                        <a href="{% url 'funcionarios:ativar' funcionario.id %}">Ativar</a>
+                        <a href="{% url 'funcionarios:ativar' funcionario.id %}" class="text-success">
+                            {% heroicon_outline "lock-open" %}
+                        </a>
                         {% endif %}
                     </td>
                 </tr>
@@ -59,15 +67,5 @@
             </tbody>
         </table>
     </div>
-</div>
-
-<div class="container-sm mt-5 d-flex flex-column">
-    {% if ativos %}
-    <a href="{% url 'funcionarios:lista_inativos' 'nome' %}">Mostrar funcionários inativos</a>
-    {% else %}
-    <a href="{% url 'funcionarios:lista' 'nome' %}">Mostrar funcionários ativos</a>
-    {% endif %}
-
-    <a href="{% url 'funcionarios:cadastrar' %}">Cadastrar funcionario</a>
 </div>
 {% endblock %}

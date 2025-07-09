@@ -1,8 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UsuarioCreateForm
-from django.contrib.auth.decorators import login_required
 
 
 def login_view(request):
@@ -25,16 +23,3 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('auth:login')
-
-
-@login_required
-def cadastrar_usuario(request):
-    if request.method == 'POST':
-        form = UsuarioCreateForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Usuário criado com sucesso!')
-            return redirect('core:index')
-    form = UsuarioCreateForm()
-    dados = {'form': form}
-    return render(request, 'login/cadastro.html', dados)

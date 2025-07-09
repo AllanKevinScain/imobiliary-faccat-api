@@ -39,12 +39,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'historico_locacoes:lista' %}">Histórico</a>
                 </li>
-                {% if user.is_superuser %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'auth:cadastrar' %}">Cadastrar Usuário</a>
-                </li>
-                {% endif %}
-
             </ul>
         </div>
 
