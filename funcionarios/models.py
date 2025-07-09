@@ -1,5 +1,5 @@
 from django.db import models
-import re  # É uma biblioteca de expressões regualres do python
+import re
 
 
 class Funcionario(models.Model):
@@ -14,16 +14,6 @@ class Funcionario(models.Model):
     cargo = models.CharField(max_length=50, choices=CARGO_CHOICES)
     ativo = models.BooleanField(default=True)
 
-    def __str__(self):
-        return self.nome
-
-    def save(self, *args, **kwargs):
-        if self.nome:
-            self.nome = self.formatar_nome(self.nome)
-        if self.telefone:
-            self.telefone = self.formatar_telefone(self.telefone)
-        super().save(*args, **kwargs)
-
     def formatar_nome(self, nome):
         partes = nome.lower().split()
         minusculas = ['da', 'de', 'do', 'das', 'dos', 'e']
@@ -33,9 +23,12 @@ class Funcionario(models.Model):
             for p in partes
         ])
 
-    def formatar_telefone(self, telefone):
-        numeros = re.sub(r'\D', '', telefone)
+    def __str__(self):
+        return self.nome
 
-        if len(numeros) == 11:
-            return f"({numeros[:2]}) {numeros[2]} {numeros[3:7]}-{numeros[7:]}"
-        return telefone
+    def save(self, *args, **kwargs):
+        if self.nome:
+            self.nome = self.formatar_nome(self.nome)
+        if self.telefone:
+            self.telefone = re.sub(r'\D', '', self.telefone)
+        super().save(*args, **kwargs)

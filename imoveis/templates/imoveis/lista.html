@@ -16,6 +16,7 @@
         </a>
 
         <a href="{% url 'ocorrencias:registrar' %}" class="btn btn-light">Registrar Ocorrência</a>
+        <a href="{% url 'imoveis:lista_filtro' %}" class="btn btn-light">{% heroicon_outline "funnel" %}</a>
     </div>
 </div>
 
@@ -56,11 +57,11 @@
 
                         {% if user.is_superuser %}
                         {% if imovel.ativo %}
-                        <a href="{% url 'imoveis:indisponibilizar' imovel.id %}" class="text-danger">
+                        <a href="{% url 'reservas:indisponibilizar' imovel.id %}" class="text-danger">
                             {% heroicon_outline "x-mark" %}
                         </a>
                         {% else %}
-                        <a href="{% url 'imoveis:disponibilizar' imovel.id %}" class="text-success">
+                        <a href="{% url 'reservas:disponibilizar' imovel.id %}" class="text-success">
                             {% heroicon_outline "check" %}
                         </a>
                         {% endif %}

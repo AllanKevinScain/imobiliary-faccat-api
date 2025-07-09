@@ -39,9 +39,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'historico_locacoes:lista' %}">Histórico</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'ocorrencias:registrar' %}">Registrar ocorrência</a>
-                </li>
                 {% if user.is_superuser %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'auth:cadastrar' %}">Cadastrar Usuário</a>
@@ -78,6 +75,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
         crossorigin="anonymous"></script>
+    <!-- IMask -->
+    <script src="https://unpkg.com/imask"></script>
 </body>
 
 </html>

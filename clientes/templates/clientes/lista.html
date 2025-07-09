@@ -2,6 +2,8 @@
 
 {% load heroicons %}
 
+{% load format_filters %}
+
 {% block content %}
 
 {% include 'partials/_busca.html' %}
@@ -55,8 +57,8 @@
                 {% for cliente in clientes %}
                 <tr>
                     <td>{{ cliente.nome }}</td>
-                    <td>{{ cliente.telefone }}</td>
-                    <td>{{ cliente.cpf }}</td>
+                    <td>{{ cliente.telefone|format_telefone }}</td>
+                    <td>{{ cliente.cpf|format_cpf }}</td>
                     <td>{{ cliente.data_nascimento }}</td>
                     <td class="d-flex gap-4">
                         <a href="{% url 'clientes:editar' cliente.id %}" class="text-warning">

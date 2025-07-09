@@ -5,18 +5,19 @@
 {% block content %}
 
 <script>
-  /* Formata telefone */
   document.addEventListener('DOMContentLoaded', function () {
-    var element = document.getElementById('telefone');
-    var maskOptions = {
-      mask: '(00) 0 0000-0000'
-    };
-    var mask = IMask(element, maskOptions);
+    const telefoneInput = document.querySelector('input[name="telefone"]');
+
+    if (telefoneInput) {
+      IMask(telefoneInput, {
+        mask: '(00) 00000-0000'
+      });
+    }
   });
 </script>
 
 <div class="container-sm mt-5">
-  <h1>Editar funcionário {{ funcionario.nome }}</h1>
+  <h1 class="text-center">Editar funcionário {{ funcionario.nome }}</h1>
 </div>
 
 <div class="container my-3">

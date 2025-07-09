@@ -2,6 +2,8 @@
 
 {% load heroicons %}
 
+{% load format_filters %}
+
 {% block content %}
 
 {% include 'partials/_busca.html' %}
@@ -52,7 +54,7 @@
                     <td>{{ funcionario.nome }}</td>
                     <td>{{ funcionario.get_cargo_display }}</td>
                     <td>{{ funcionario.email }}</td>
-                    <td>{{ funcionario.telefone }}</td>
+                    <td>{{ funcionario.telefone|format_telefone }}</td>
                     <td class="d-flex flex-column">
                         <a href="{% url 'funcionarios:editar' funcionario.id %}">Editar</a>
 

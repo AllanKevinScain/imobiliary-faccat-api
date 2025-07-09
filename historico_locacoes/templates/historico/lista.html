@@ -6,12 +6,24 @@
 
 {% include 'partials/_busca.html' %}
 
+<style>
+    @media (max-width: 875px) {
+        #container {
+            flex-direction: column;
+        }
+
+        #filtro {
+            width: 100% !important;
+        }
+    }
+</style>
+
 <div class="container-sm mt-5">
-    <h1 class="h1">Histórico de Ações</h1>
+    <h1 class="h1">Histórico de locações</h1>
 </div>
 
-<div class="container-sm mt-5 d-flex gap-5">
-    <aside class="w-25">
+<div id="container" class="container-sm mt-5 d-flex gap-5">
+    <aside id="filtro" class="w-25">
         <form method="get">
             {% crispy form %}
 
@@ -24,8 +36,8 @@
         </form>
     </aside>
 
-    <main class="d-flex flex-grow-1">
-        <table cellpadding="5" cellspacing="1" class="table table-dark table-striped mb-0">
+    <div class="table-responsive w-100">
+        <table class="table table-dark table-striped table-sm mb-0">
             <thead>
                 <tr>
                     <th>Data</th>
@@ -78,6 +90,6 @@
                 {% endfor %}
             </tbody>
         </table>
-    </main>
+    </div>
 </div>
 {% endblock %}

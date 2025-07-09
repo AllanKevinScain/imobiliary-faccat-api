@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Imovel
-from .forms import ImovelForm
+from .forms import ImovelForm, FiltroImovelForm
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import RestrictedError
@@ -103,3 +103,34 @@ def detalhes_imovel(request, imovel_id):
     }
 
     return render(request, 'imoveis/detalhes.html', dados)
+
+
+@login_required
+def filtrar_imoveis(request):
+    form = FiltroImovelForm(request.GET or None)
+    imoveis = Imovel.objects.all()
+
+    if form.is_valid():
+        nome = form.cleaned_data.get('nome')
+        endereco = form.cleaned_data.get('endereco')
+        disponibilidade = form.cleaned_data.get('disponibilidade')
+        quartos_min = form.cleaned_data.get('quartos_min')
+        quartos_max = form.cleaned_data.get('quartos_max')
+
+        if nome:
+            imoveis = imoveis.filter(nome__icontains=nome)
+        if endereco:
+            imoveis = imoveis.filter(endereco__icontains=endereco)
+        if disponibilidade == 'disponivel':
+            imoveis = imoveis.filter(disponibilidade=True)
+        elif disponibilidade == 'indisponivel':
+            imoveis = imoveis.filter(disponibilidade=False)
+        if quartos_min is not None:
+            imoveis = imoveis.filter(qtyQuartos__gte=quartos_min)
+        if quartos_max is not None:
+            imoveis = imoveis.filter(qtyQuartos__lte=quartos_max)
+
+    return render(request, 'imoveis/filtro.html', {
+        'form': form,
+        'imoveis': imoveis
+    })

@@ -5,35 +5,26 @@
 {% block content %}
 
 <script>
-  /* Formata telefone */
   document.addEventListener('DOMContentLoaded', function () {
-    var element = document.getElementById('telefone');
-    var maskOptions = {
-      mask: '(00) 0 0000-0000'
-    };
-    var mask = IMask(element, maskOptions);
-  });
-  /* Formata CPF */
-  document.addEventListener('DOMContentLoaded', function () {
-    const tel = document.getElementById('telefone');
-    const cpf = document.getElementById('cpf');
+    const cpfInput = document.querySelector('input[name="cpf"]');
+    const telefoneInput = document.querySelector('input[name="telefone"]');
 
-    if (tel) {
-      IMask(tel, {
-        mask: '(00) 0 0000-0000'
+    if (cpfInput) {
+      IMask(cpfInput, {
+        mask: '000.000.000-00'
       });
     }
 
-    if (cpf) {
-      IMask(cpf, {
-        mask: '000.000.000-00'
+    if (telefoneInput) {
+      IMask(telefoneInput, {
+        mask: '(00) 00000-0000'
       });
     }
   });
 </script>
 
 <div class="container-sm mt-5">
-  <h1>Editar cliente {{ cliente.nome }}</h1>
+  <h1 class="text-center">Editar cliente {{ cliente.nome }}</h1>
 </div>
 
 <div class="container my-3">

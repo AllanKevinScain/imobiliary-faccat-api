@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<style>
+    @media (max-width: 875px) {
+        #container {
+            flex-direction: column;
+        }
+
+        #filtro {
+            width: 100% !important;
+        }
+    }
+</style>
+
+<div class="container-sm mt-5">
+    <h1 class="h1">Filtro de imóveis</h1>
+</div>
+
+<div id="container" class="container-sm mt-5 d-flex gap-5">
+    <aside id="filtro" class="w-25">
+        <form method="get">
+            {% crispy form %}
+
+            <div class="d-flex flex-column gap-1">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+                <a href="{% url 'imoveis:lista' 'cliente' %}" class="btn btn-primary">
+                    Limpar filtros
+                </a>
+            </div>
+        </form>
+    </aside>
+
+    <div class="table-responsive w-100">
+        <table class="table table-dark table-striped table-sm mb-0">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Endereço</th>
+                    <th>Quartos</th>
+                    <th>Disponibilidade</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for imovel in imoveis %}
+                <tr>
+                    <td>{{ imovel.nome }}</td>
+                    <td>{{ imovel.endereco }}</td>
+                    <td>{{ imovel.qtyQuartos }}</td>
+                    <td>
+                        {% if imovel.disponibilidade %}
+                        <strong class="badge bg-success">Disponível</strong>
+                        {% else %}
+                        <strong class="badge bg-warning">Indisponível</strong>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">Nenhum imóvel encontrado com os filtros aplicados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
