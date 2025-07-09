@@ -56,6 +56,11 @@
         <a href="{% url 'funcionarios:lista' 'nome' %}"
             class="text-center p-2 border border-light rounded-3 link-underline link-underline-opacity-0 text-light btn-gradient">Gerenciar
             Funcionários</a>
+
+        <a href="{% url 'admin:index' %}"
+            class="text-center p-2 border border-light rounded-3 link-underline link-underline-opacity-0 text-light btn-gradient">
+            Painel Admin
+        </a>
         {% endif %}
 
         <a href="{% url 'imoveis:lista' 'nome' %}"

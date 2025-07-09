@@ -23,11 +23,12 @@
 <div id="container" class="container-sm mt-5 d-flex gap-5">
     <aside id="filtro" class="w-25">
         <form method="get">
-            {% crispy form %}
+            {% csrf_token %}
+            {{ form|crispy }}
 
             <div class="d-flex flex-column gap-1">
                 <button type="submit" class="btn btn-primary">Filtrar</button>
-                <a href="{% url 'imoveis:lista' 'cliente' %}" class="btn btn-primary">
+                <a href="{% url 'imoveis:lista_filtro' %}" class="btn btn-primary">
                     Limpar filtros
                 </a>
             </div>

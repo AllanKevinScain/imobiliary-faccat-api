@@ -80,11 +80,11 @@ def ativar_imovel(request, id):
     try:
         imovel = Imovel.objects.get(id=id)
         imovel.ativo = True
-        messages.success(request, "Imóvel desativado com sucesso.")
+        messages.success(request, "Imóvel ativado com sucesso.")
         imovel.save()
     except RestrictedError:
         messages.error(
-            request, "Não é possível desativar este imóvel, pois ele está vinculado a uma reserva.")
+            request, "Não é possível ativado este imóvel, pois ele está vinculado a uma reserva.")
     except Imovel.DoesNotExist:
         messages.error(request, "Imóvel não encontrado.")
     return redirect('imoveis:lista', campo='nome')
@@ -97,11 +97,7 @@ def detalhes_imovel(request, imovel_id):
     except Imovel.DoesNotExist:
         messages.error(request, "Imovel não encontrado.")
         return redirect('imoveis:lista', campo='nome')
-
-    dados = {
-        'imovel': imovel,
-    }
-
+    dados = {'imovel': imovel}
     return render(request, 'imoveis/detalhes.html', dados)
 
 

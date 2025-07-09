@@ -25,7 +25,8 @@
 <div id="container" class="container-sm mt-5 d-flex gap-5">
     <aside id="filtro" class="w-25">
         <form method="get">
-            {% crispy form %}
+            {% csrf_token %}
+            {{ form|crispy }}
 
             <div class="d-flex flex-column gap-1">
                 <button type="submit" class="btn btn-primary">Filtrar</button>
