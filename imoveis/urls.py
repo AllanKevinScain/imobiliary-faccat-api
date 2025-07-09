@@ -1,21 +1,21 @@
 from django.urls import path
-from .views import reservas, cadastrar_reservas, reservas_por_imovel
-from .views import quartos, cadastrar_quarto, editar_quartos
-from .views import imoveis, cadastrar_imoveis, editar_imoveis, detalhes_imovel
+from .views import reservas, cadastrar_reservas, cancelar_reserva, finalizar_reserva, reservas_inativas
+from .views import imoveis, cadastrar_imoveis, editar_imoveis, detalhes_imovel, desativar_imovel, ativar_imovel
 
 app_name = 'imoveis'
 
 urlpatterns = [
-    # quartos
-    path('quartos/<id>/editar/', editar_quartos, name='editar_quarto'),
-    path('quartos/<imovel_id>/cadastrar/',
-         cadastrar_quarto, name='cadastrar_quarto'),
-    path('quartos/<imovel_id>/', quartos, name='lista_quartos'),
-
     # reservas
     path('reservas/cadastrar/', cadastrar_reservas, name='cadastrar_reserva'),
-    path('reservas/<int:imovel_id>/',
-         reservas_por_imovel, name='reservas_por_imovel'),
+    path('reservas/cancelar/<id>', cancelar_reserva, name='cancelar'),
+    path('reservas/finalizar/<id>', finalizar_reserva, name='finalizar'),
+    path('reservas/indisponibilizar/<id>',
+         desativar_imovel, name='indisponibilizar'),
+    path('reservas/disponibilizar/<id>', ativar_imovel, name='disponibilizar'),
+
+
+    path('reservas/encerrados/<campo>/', reservas_inativas,
+         name='lista_reservas_encerrados'),
     path('reservas/<campo>/', reservas, name='lista_reservas'),
 
     # imóveis

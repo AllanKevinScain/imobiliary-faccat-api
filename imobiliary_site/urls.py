@@ -11,9 +11,10 @@ urlpatterns = [
     path('clientes/', include('clientes.urls')),
     path('funcionarios/', include('funcionarios.urls')),
     path('imoveis/', include('imoveis.urls')),
+    path('historico-locacoes/', include('historico_locacoes.urls')),
     path('login/', include('login.urls')),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

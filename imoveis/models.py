@@ -3,7 +3,6 @@ from django.db import models
 from clientes.models import Cliente
 
 
-
 class Imovel(models.Model):
     TIPO_CHOICES = [
         ('AP', 'Apartamento'),
@@ -11,49 +10,21 @@ class Imovel(models.Model):
         ('SC', 'Sala Comercial'),
     ]
 
-    ESTADO_CHOICES = [
-        # ('AC', 'Acre'),
-        # ('AL', 'Alagoas'),
-        # ('AP', 'Amapá'),
-        # ('AM', 'Amazonas'),
-        # ('BA', 'Bahia'),
-        # ('CE', 'Ceará'),
-        # ('DF', 'Distrito Federal'),
-        # ('ES', 'Espírito Santo'),
-        # ('GO', 'Goiás'),
-        # ('MA', 'Maranhão'),
-        # ('MT', 'Mato Grosso'),
-        # ('MS', 'Mato Grosso do Sul'),
-        # ('MG', 'Minas Gerais'),
-        # ('PA', 'Pará'),
-        # ('PB', 'Paraíba'),
-        # ('PR', 'Paraná'),
-        # ('PE', 'Pernambuco'),
-        # ('PI', 'Piauí'),
-        # ('RJ', 'Rio de Janeiro'),
-        # ('RN', 'Rio Grande do Norte'),
-        ('RS', 'Rio Grande do Sul'),
-        # ('RO', 'Rondônia'),
-        # ('RR', 'Roraima'),
-        ('SC', 'Santa Catarina'),
-        ('SP', 'São Paulo'),
-        # ('SE', 'Sergipe'),
-        # ('TO', 'Tocantins'),
-    ]
+    tipo = models.CharField(max_length=2, choices=TIPO_CHOICES)
 
     nome = models.CharField(max_length=100)
-    tipo = models.CharField(max_length=2, choices=TIPO_CHOICES)
     endereco = models.CharField(max_length=255)
-    cidade = models.CharField(max_length=100)
-    estado = models.CharField(max_length=2, choices=ESTADO_CHOICES)
-    ativo = models.BooleanField(default=True)
+
+    qtyQuartos = models.IntegerField()
     foto = StdImageField(
-        upload_to='fotos/alunos',
+        upload_to='fotos/imoveis',
         variations={'thumb': (150, 150), 'medium': (300, 300)},
         blank=True,
         null=True
     )
 
+    disponibilidade = models.BooleanField(default=True)
+    ativo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nome
@@ -73,26 +44,15 @@ class Imovel(models.Model):
         ])
 
 
-class Quarto(models.Model):
-    imovel = models.ForeignKey(
-        Imovel, related_name='quartos', on_delete=models.RESTRICT)
-    nome = models.CharField(max_length=50)
-    disponibilidade = models.BooleanField(default=True)
-    ativo = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.nome
-
-
 class Reserva(models.Model):
-    quarto = models.ForeignKey(Quarto, on_delete=models.RESTRICT)
+    imovel = models.ForeignKey(Imovel, on_delete=models.RESTRICT)
     cliente = models.ForeignKey(Cliente, on_delete=models.RESTRICT)
     data_inicio = models.DateField()
     data_fim = models.DateField()
     ativo = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"Reserva de {self.quarto} ({self.quarto.imovel}) para {self.cliente}"
+        return f"Reserva de {self.imovel} ({self.imovel.imovel}) para {self.cliente}"
 
     class Meta:
-        unique_together = ('quarto', 'data_inicio', 'data_fim')
+        unique_together = ('imovel', 'data_inicio', 'data_fim')

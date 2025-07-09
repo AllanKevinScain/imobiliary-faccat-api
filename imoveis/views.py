@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from .models import Imovel, Reserva, Quarto
-from .forms import ImovelForm, QuartoForm, ReservaForm
-from django.shortcuts import redirect
+from .models import Imovel, Reserva
+from .forms import ImovelForm, ReservaForm
+from historico_locacoes.models import HistoricoAcao
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from django.db.models import RestrictedError
 from django.contrib.auth.decorators import login_required
@@ -12,9 +13,6 @@ ORDENACAO_IMOVEIS_LOOKUP = {
     'nome': 'nome',
     'tipo': 'tipo',
     'endereco': 'endereco',
-    'cidade': 'cidade',
-    'estado': 'estado',
-    'disponivel': 'disponivel',
 }
 
 
@@ -22,10 +20,9 @@ ORDENACAO_IMOVEIS_LOOKUP = {
 def imoveis(request, campo):
     query = request.GET.get('busca', '')
     if campo == 'nome' and query:
-        imoveis = Imovel.objects.filter(
-            ativo=True, nome__icontains=query)
+        imoveis = Imovel.objects.filter(nome__icontains=query)
     else:
-        imoveis = Imovel.objects.filter(ativo=True)
+        imoveis = Imovel.objects.filter()
     if campo:
         campo_ordenacao = ORDENACAO_IMOVEIS_LOOKUP.get(campo)
         imoveis = imoveis.order_by(campo_ordenacao)
@@ -34,35 +31,11 @@ def imoveis(request, campo):
 
 
 @login_required
-def imoveis_inativos(request, campo):
-    query = request.GET.get('busca', '')
-    if campo == 'nome' and query:
-        imoveis = Imovel.objects.filter(
-            ativo=False, nome__icontains=query)
-    else:
-        imoveis = Imovel.objects.filter(ativo=False)
-    if campo:
-        # Esse 'nome'                                           vv serve para garantir que nunca falte um campo, é um valor padrão
-        campo_ordenacao = ORDENACAO_IMOVEIS_LOOKUP.get(campo, 'nome')
-        imoveis = imoveis.order_by(campo_ordenacao)
-    dados = {'imoveis': imoveis, 'ativos': False}
-    return render(request, 'imoveis/lista.html', dados)
-
-
-@login_required
 def cadastrar_imoveis(request):
     if request.method == 'POST':
         form = ImovelForm(request.POST, request.FILES)
         if form.is_valid():
-            imovel = form.save()
-            # Se o tipo do imóvel NÃO do apartamento iremos criar um quarto com este nome
-            if imovel.tipo != 'AP':
-                Quarto.objects.create(
-                    imovel=imovel,
-                    nome=imovel.nome,
-                    disponibilidade=True,
-                    ativo=True
-                )
+            form.save()
             return redirect('imoveis:lista', campo='nome')
     else:
         form = ImovelForm()
@@ -80,6 +53,8 @@ def editar_imoveis(request, id):
         form = ImovelForm(request.POST, instance=imovel, files=request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, "Informações salvas com sucesso.")
+
             return redirect('imoveis:lista', campo='nome')
     form = ImovelForm(instance=imovel)
     dados = {'form': form, 'imovel': imovel}
@@ -91,8 +66,8 @@ def desativar_imovel(request, id):
     try:
         imovel = Imovel.objects.get(id=id)
         imovel.ativo = False
+        messages.success(request, "Imóvel desativado com sucesso.")
         imovel.save()
-        messages.success(request, "Imóvel desativar com sucesso.")
     except RestrictedError:
         messages.error(
             request, "Não é possível desativar este imóvel, pois ele está vinculado a uma reserva.")
@@ -105,16 +80,15 @@ def desativar_imovel(request, id):
 def ativar_imovel(request, id):
     try:
         imovel = Imovel.objects.get(id=id)
+        imovel.ativo = True
+        messages.success(request, "Imóvel desativado com sucesso.")
+        imovel.save()
+    except RestrictedError:
+        messages.error(
+            request, "Não é possível desativar este imóvel, pois ele está vinculado a uma reserva.")
     except Imovel.DoesNotExist:
         messages.error(request, "Imóvel não encontrado.")
-        return redirect('imoveis_inativos', campo='nome')
-    if imovel.ativo == False:
-        imovel.ativo = True
-        imovel.save()
-        messages.success(request, "Imóvel reativado com sucesso.")
-    else:
-        messages.info(request, "O imóvel já está ativo.")
-    return redirect('imoveis_inativos', campo='nome')
+    return redirect('imoveis:lista', campo='nome')
 
 
 @login_required
@@ -134,7 +108,7 @@ def detalhes_imovel(request, imovel_id):
 
 # RESERVAS ----------------------------------------------------------------------------------------------------RESERVAS
 ORDENACAO_RESERVAS_LOOKUP = {
-    'imovel': 'quarto__imovel__nome',
+    'imovel': 'imovel__nome',
     'cliente': 'cliente__nome',
     'funcionario': 'funcionario__nome',
     'data_inicio': 'data_inicio',
@@ -174,12 +148,24 @@ def reservas_inativas(request, campo):
 
 @login_required
 def cadastrar_reservas(request):
-    # todo precisamos validar para nao deixar cadastrar em épocas iguais
-    # todo precisamos validar as datas, para o início ser menor que o fim, sempre
     if request.method == 'POST':
         form = ReservaForm(request.POST)
         if form.is_valid():
-            form.save()
+            reserva = form.save(commit=False)
+
+            imovel = reserva.imovel
+            imovel.disponibilidade = False
+            imovel.save()
+            reserva.save()
+
+            HistoricoAcao.objects.create(
+                usuario=request.user,
+                imovel=imovel,
+                reserva=reserva,
+                acao='RESERVAR',
+                descricao=f"Reserva de {imovel.nome} para {reserva.cliente}"
+            )
+
             return redirect('imoveis:lista_reservas', campo="cliente")
     else:
         form = ReservaForm()
@@ -188,98 +174,46 @@ def cadastrar_reservas(request):
 
 
 @login_required
-def desativar_reserva(request, id):
-    try:
-        reserva = Reserva.objects.get(id=id)
+def cancelar_reserva(request, id):
+    reserva = get_object_or_404(Reserva, id=id)
+
+    if reserva.ativo:
         reserva.ativo = False
         reserva.save()
-        messages.success(request, "Reserva desativada com sucesso.")
-    except RestrictedError:
-        messages.error(
-            request, "Não é possível desativar esta reserva, pois ela está vinculada a um imóvel ou cliente.")
-    except Reserva.DoesNotExist:
-        messages.error(request, "Reserva não encontrada.")
+
+        imovel = reserva.imovel
+        imovel.disponibilidade = True
+        imovel.save()
+
+        HistoricoAcao.objects.create(
+            usuario=request.user,
+            imovel=imovel,
+            reserva=reserva,
+            acao='CANCELAR',
+            descricao=f"Reserva de {imovel.nome} para {reserva.cliente} foi cancelada."
+        )
+
     return redirect('imoveis:lista_reservas', campo="cliente")
 
 
 @login_required
-def ativar_reserva(request, id):
-    try:
-        reserva = Reserva.objects.get(id=id)
-    except Reserva.DoesNotExist:
-        messages.error(request, "Reserva não encontrada.")
-        return redirect('reservas_inativas', campo="cliente")
-    if reserva.ativo == False:
-        reserva.ativo = True
+def finalizar_reserva(request, id):
+    reserva = get_object_or_404(Reserva, id=id)
+
+    if reserva.ativo:
+        reserva.ativo = False
         reserva.save()
-        messages.success(request, "Reserva reativada com sucesso.")
-    else:
-        messages.info(request, "A reserva já está ativa.")
-    return redirect('reservas_inativas', campo="cliente")
 
+        imovel = reserva.imovel
+        imovel.disponibilidade = True
+        imovel.save()
 
-@login_required
-def reservas_por_imovel(request, imovel_id):
-    imovel = Imovel.objects.get(id=imovel_id)
+        HistoricoAcao.objects.create(
+            usuario=request.user,
+            imovel=imovel,
+            reserva=reserva,
+            acao='FINALIZAR',
+            descricao=f"Reserva de {imovel.nome} para {reserva.cliente} foi finalizada."
+        )
 
-    reservas = Reserva.objects.filter(quarto__imovel=imovel, ativo=True)
-
-    dados = {
-        'reservas': reservas,
-        'imovel': imovel,
-        'ativos': True
-    }
-
-    return render(request, 'reservas/lista.html', dados)
-
-
-# QUARTOS -------------------------------------------
-
-@login_required
-def quartos(request, imovel_id):
-    imovel = Imovel.objects.get(id=imovel_id)
-    quartos = Quarto.objects.filter(imovel=imovel, ativo=True)
-
-    return render(request, 'quartos/lista.html', {
-        'quartos': quartos,
-        'imovel': imovel,
-    })
-
-
-@login_required
-def cadastrar_quarto(request, imovel_id):
-    imovel = Imovel.objects.get(id=imovel_id)
-
-    if request.method == 'POST':
-        form = QuartoForm(request.POST)
-        if form.is_valid():
-            # Sem o 'commit=False' o formulário dá erro
-            quarto = form.save(commit=False)
-            quarto.imovel = imovel
-            quarto.disponibilidade = True
-            # Junção do nome do imovel + o nome do quarto
-            quarto.nome = f'{imovel.nome} - {quarto.nome}'
-            quarto.save()
-            return redirect('imoveis:lista', campo='nome')
-    else:
-        form = QuartoForm()
-    dados = {'form': form, 'imovel': imovel}
-    return render(request, 'quartos/cadastrar.html', dados)
-
-
-@login_required
-def editar_quartos(request, id):
-    try:
-        quarto = Quarto.objects.get(id=id)
-    except Quarto.DoesNotExist:
-        return redirect('imoveis:lista_quartos', imovel_id=1)
-
-    if request.method == 'POST':
-        form = QuartoForm(request.POST, instance=quarto)
-        if form.is_valid():
-            form.save()
-            return redirect('imoveis:lista_quartos', imovel_id=quarto.imovel.id)
-
-    form = QuartoForm(instance=quarto)
-    dados = {'form': form, 'quarto': quarto}
-    return render(request, 'quartos/editar.html', dados)
+    return redirect('imoveis:lista_reservas', campo="cliente")

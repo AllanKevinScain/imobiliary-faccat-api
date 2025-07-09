@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container-sm mt-5">
+    <h1 class="h1">Histórico de Ações</h1>
+</div>
+
+<div class="container-sm mt-5 d-flex gap-5">
+    <aside class="w-25">
+        <form method="get">
+            {% crispy form %}
+
+            <div class="d-flex flex-column gap-1">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+                <a href="{% url 'historico_locacoes:lista' %}" class="btn btn-primary">
+                    Limpar filtros
+                </a>
+            </div>
+        </form>
+    </aside>
+
+    <main class="d-flex flex-grow-1">
+        <table cellpadding="5" cellspacing="1" class="table table-dark table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Usuário</th>
+                    <th>Ação</th>
+                    <th>Imóvel</th>
+                    <th>Reserva</th>
+                    <th>Descrição</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in historico %}
+                <tr>
+                    <td>{{ item.data|date:"d/m/Y H:i" }}</td>
+                    <td>{{ item.usuario }}</td>
+                    <td>
+                        {% if item.acao == "CANCELAR" %}
+                        <strong class="badge bg-danger">{{ item.get_acao_display }}</strong>
+                        {% endif %}
+                        {% if item.acao == "FINALIZAR" %}
+                        <strong class="badge bg-success">{{ item.get_acao_display }}</strong>
+                        {% endif %}
+                        {% if item.acao == "RESERVAR" %}
+                        <strong class="badge bg-warning">{{ item.get_acao_display }}</strong>
+                        {% endif %}
+                        {% if item.acao == "EDITAR_IMOVEL" %}
+                        <strong class="badge bg-warning">{{ item.get_acao_display }}</strong>
+                        {% endif %}
+                        {% if item.acao == "CRIAR_IMOVEL" %}
+                        <strong class="badge bg-warning">{{ item.get_acao_display }}</strong>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.imovel %}
+                        {{ item.imovel.nome }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.reserva %}
+                        {{ item.reserva.cliente }}<br>
+                        {{ item.reserva.data_inicio|date:"d/m/Y" }} a {{ item.reserva.data_fim|date:"d/m/Y" }}
+                        {% endif %}
+                    </td>
+                    <td>{{ item.descricao }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">Nenhuma ação registrada.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</div>
+{% endblock %}

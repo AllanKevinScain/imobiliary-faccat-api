@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 
+{% load heroicons %}
+
 {% block content %}
-<div class="container-sm mt-5">
+<div class="container-sm mt-5 d-flex justify-content-between align-items-center">
     <h1 class="h1">Lista de imóveis</h1>
+
+    <a href="{% url 'imoveis:cadastrar' %}" class="btn btn-light">{% heroicon_outline "key" %} Cadastrar
+        imóvel</a>
 </div>
+
 <div class="container-sm mt-2">
     <div class="bg-dark rounded-3 overflow-hidden">
         <table cellpadding="5" cellspacing="1" class="table table-dark table-striped mb-0">
@@ -12,32 +18,44 @@
                     <th>Nome</th>
                     <th>Tipo</th>
                     <th>Endereço</th>
-                    <th>Cidade</th>
-                    <th>Estado</th>
+                    <th>Número de quartos</th>
+                    <th>Disponibilidade</th>
                     <th>Opções</th>
                 </tr>
             </thead>
             <tbody>
                 {% for imovel in imoveis %}
                 <tr>
-                    <td><a href="{% url 'imoveis:detalhes_imovel' imovel.id %}">{{ imovel.nome }}</a></td>
+                    <td>{{ imovel.nome }}</td>
                     <td>{{ imovel.get_tipo_display }}</td>
                     <td>{{ imovel.endereco }}</td>
-                    <td>{{ imovel.cidade }}</td>
-                    <td>{{ imovel.get_estado_display }}</td>
+                    <td>{{ imovel.qtyQuartos }}</td>
                     <td>
-                        <div class="d-flex flex-column gap-2">
-                            {% if imovel.tipo == 'AP' %}
-                            <a href="{% url 'imoveis:editar' imovel.id %}" class="text-primary">Editar</a>
-                            <a href="{% url 'imoveis:lista_quartos' imovel.id %}" class="text-info">Ver quartos</a>
-                            <a href="{% url 'imoveis:reservas_por_imovel' imovel.id %}" class="text-primary">Ver
-                                Reservas</a>
-                            {% else %}
-                            <a href="{% url 'imoveis:editar' imovel.id %}" class="text-primary">Editar</a>
-                            <a href="{% url 'imoveis:reservas_por_imovel' imovel.id %}" class="text-primary">Ver
-                                Reservas</a>
-                            {% endif %}
-                        </div>
+                        {% if imovel.disponibilidade %}
+                        <strong class="badge bg-success">Disponível</strong>
+                        {% else %}
+                        <strong class="badge bg-info">Alugado</strong>
+                        {% endif %}
+                    </td>
+                    <td class="d-flex gap-2 align-items-center">
+                        <a href="{% url 'imoveis:detalhes_imovel' imovel.id %}" class="text-info">
+                            {% heroicon_outline "eye" %}
+                        </a>
+                        <a href="{% url 'imoveis:editar' imovel.id %}" class="text-warning">
+                            {% heroicon_outline "pencil-square" %}
+                        </a>
+
+                        {% if user.is_superuser %}
+                        {% if imovel.ativo %}
+                        <a href="{% url 'imoveis:indisponibilizar' imovel.id %}" class="text-danger">
+                            {% heroicon_outline "x-mark" %}
+                        </a>
+                        {% else %}
+                        <a href="{% url 'imoveis:disponibilizar' imovel.id %}" class="text-success">
+                            {% heroicon_outline "check" %}
+                        </a>
+                        {% endif %}
+                        {% endif %}
                     </td>
                 </tr>
                 {% empty %}
@@ -48,9 +66,5 @@
             </tbody>
         </table>
     </div>
-</div>
-
-<div class="container-sm mt-5">
-    <a href="{% url 'imoveis:cadastrar' %}">Cadastrar imóvel</a>
 </div>
 {% endblock %}

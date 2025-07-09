@@ -4,7 +4,6 @@ import re  # É uma biblioteca de expressões regualres do python
 
 class Cliente(models.Model):
     nome = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
     telefone = models.CharField(max_length=20)
     cpf = models.CharField(max_length=14, unique=True)
     data_nascimento = models.DateField(null=True, blank=True)

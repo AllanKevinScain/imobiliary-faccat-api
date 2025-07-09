@@ -1,39 +1,53 @@
 {% extends 'base.html' %}
 
+{% load heroicons %}
+
 {% block content %}
-<div class="container-sm mt-5">
+<div class="container-sm mt-5 d-flex justify-content-between align-items-center">
     <h1 class="h1">Lista de reservas</h1>
+
+
+    <div class="d-flex gap-4">
+        {% if ativos %}
+        <a href="{% url 'imoveis:lista_reservas_encerrados' 'cliente' %}" class="btn btn-light">Locações encerradas</a>
+        <a href="{% url 'imoveis:cadastrar_reserva' %}" class="btn btn-light">{% heroicon_outline "key" %} Criar
+            Locação</a>
+        {% else %}
+        <a href="{% url 'imoveis:lista_reservas' 'cliente' %}" class="btn btn-light">Locações em aberto</a>
+        {% endif %}
+    </div>
 </div>
+
 <div class="container-sm mt-2">
     <div class="bg-dark rounded-3 overflow-hidden">
         <table cellpadding="5" cellspacing="1" class="table table-dark table-striped mb-0">
             <thead>
                 <tr>
-                    <th>Quarto</th>
+                    <th>Imóvel</th>
                     <th>Cliente</th>
                     <th>Funcionário</th>
                     <th>Início</th>
                     <th>Fim</th>
-                    <th>Finalizadou</th>
+                    {% if reserva.ativo %}
                     <th>Opções</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
                 {% for reserva in reservas %}
                 <tr>
-                    <td>{{ reserva.quarto }}</td>
+                    <td>{{ reserva.imovel }}</td>
                     <td>{{ reserva.cliente }}</td>
                     <td>{{ reserva.funcionario }}</td>
                     <td>{{ reserva.data_inicio|date:"d/m/Y" }}</td>
                     <td>{{ reserva.data_fim|date:"d/m/Y" }}</td>
 
-                    {% if imovel.disponivel %}
-                    <td>Disponivel</td>
-                    {% else %}
-                    <td>Indisponivel</td>
+                    {% if reserva.ativo %}
+                    <td class="d-flex flex-column gap-2">
+                        <a href="{% url 'imoveis:finalizar' reserva.id %}">Finalizar</a>
+                        <a href="{% url 'imoveis:cancelar' reserva.id %}">Cancelar reserva</a>
+                    </td>
                     {% endif %}
-
-                    <td><a href="#">Cancelar reserva</a></td>
                 </tr>
                 {% empty %}
                 <tr>
@@ -45,7 +59,4 @@
     </div>
 </div>
 
-<div class="container-sm mt-5">
-    <a href="{% url 'imoveis:cadastrar_reserva' %}">Cadastrar reserva</a>
-</div>
 {% endblock %}

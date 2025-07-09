@@ -9,7 +9,6 @@ from django.contrib.auth.decorators import login_required
 # CLIENTES
 ORDENACAO_CLIENTES_LOOKUP = {
     'nome': 'nome',
-    'email': 'email',
     'data_nascimento': 'data_nascimento',
 }
 
@@ -69,6 +68,8 @@ def editar_clientes(request, id):
         form = ClienteForm(request.POST, instance=cliente)
         if form.is_valid():
             form.save()
+            messages.success(request, "Informações salvas com sucesso.")
+
             return redirect('clientes:lista', campo="nome")
     form = ClienteForm(instance=cliente)
     dados = {'form': form, 'cliente': cliente}

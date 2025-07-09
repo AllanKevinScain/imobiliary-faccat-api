@@ -4,7 +4,7 @@ from .forms import FuncionarioForm
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import RestrictedError
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 ORDENACAO_FUNCIONARIO_LOOKUP = {
     'nome': 'nome',
@@ -14,6 +14,9 @@ ORDENACAO_FUNCIONARIO_LOOKUP = {
 
 @login_required
 def funcionarios(request, campo):
+    if not request.user.is_superuser:
+        return redirect('core:index')
+
     query = request.GET.get('busca', '')
     if campo == 'nome' and query:
         funcionarios = Funcionario.objects.filter(
@@ -31,6 +34,9 @@ def funcionarios(request, campo):
 
 @login_required
 def funcionarios_inativos(request, campo):
+    if not request.user.is_superuser:
+        return redirect('core:index')
+
     query = request.GET.get('busca', '')
     if campo == 'nome' and query:
         funcionarios = Funcionario.objects.filter(
@@ -48,6 +54,9 @@ def funcionarios_inativos(request, campo):
 
 @login_required
 def cadastrar_funcionarios(request):
+    if not request.user.is_superuser:
+        return redirect('core:index')
+
     if request.method == 'POST':
         form = FuncionarioForm(request.POST)
         if form.is_valid():
@@ -62,6 +71,9 @@ def cadastrar_funcionarios(request):
 
 @login_required
 def editar_funcionarios(request, id):
+    if not request.user.is_superuser:
+        return redirect('core:index')
+
     try:
         funcionario = Funcionario.objects.get(id=id)
     except:
@@ -78,6 +90,9 @@ def editar_funcionarios(request, id):
 
 @login_required
 def desativar_funcionario(request, id):
+    if not request.user.is_superuser:
+        return redirect('core:index')
+
     try:
         funcionario = Funcionario.objects.get(id=id)
         funcionario.ativo = False
@@ -93,6 +108,9 @@ def desativar_funcionario(request, id):
 
 @login_required
 def ativar_funcionario(request, id):
+    if not request.user.is_superuser:
+        return redirect('core:index')
+
     try:
         funcionario = Funcionario.objects.get(id=id)
     except Funcionario.DoesNotExist:

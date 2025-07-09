@@ -3,53 +3,48 @@
 {% load heroicons %}
 
 {% block content %}
-<div class="container-sm mt-5">
+<div class="container-sm mt-5 d-flex justify-content-between align-items-center">
     <h1 class="h1">Lista de clientes</h1>
+
+    <div class="d-flex gap-4">
+        {% if ativos %}
+        <a href="{% url 'clientes:lista_inativos' 'nome' %}" class="btn btn-light">Mostrar clientes inativos</a>
+        {% else %}
+        <a href="{% url 'clientes:lista' 'nome' %}" class="btn btn-light">Mostrar
+            clientes ativos</a>
+        {% endif %}
+
+        <a href="{% url 'clientes:cadastrar' %}" class="btn btn-light">{% heroicon_outline "pencil-square" %} Cadastrar
+            cliente</a>
+    </div>
 </div>
+
+
+
 <div class="container-sm mt-2">
     <div class="bg-dark rounded-3 overflow-hidden">
         <table cellpadding="5" cellspacing="1" class="table table-dark table-striped mb-0">
             <thead>
                 <tr>
-                    <th class="d-inline">
-                        {% if campo == 'nome' %}
-                        {% heroicon_outline "bars-arrow-up" %}
-                        {% else %}
-                        {% heroicon_outline "bars-arrow-down" %}
-                        {% endif %}
-
+                    <th>
                         {% if ativos %}
-                        <a href="{% url 'clientes:lista' 'nome' %}">Nome</a>
+                        <a href="{% url 'clientes:lista' 'nome' %}" class="text-decoration-none text-white">
+                            {% include "clientes/partials/link_nome.html" %}</a>
                         {% else %}
-                        <a href="{% url 'clientes:lista_inativos' 'nome' %}">Nome</a>
-                        {% endif %}
-                    </th>
-                    <th class="d-inline">
-                        {% if campo == 'email' %}
-                        {% heroicon_outline "bars-arrow-up" %}
-                        {% else %}
-                        {% heroicon_outline "bars-arrow-down" %}
-                        {% endif %}
-
-                        {% if ativos %}
-                        <a href="{% url 'clientes:lista' 'email' %}">Email</a>
-                        {% else %}
-                        <a href="{% url 'clientes:lista_inativos' 'email' %}">Email</a>
+                        <a href="{% url 'clientes:lista_inativos' 'nome' %}" class="text-decoration-none text-white">
+                            {% include "clientes/partials/link_nome.html" %}</a>
                         {% endif %}
                     </th>
                     <th>Telefone</th>
                     <th>CPF</th>
                     <th>
-                        {% if campo == 'data_nascimento' %}
-                        {% heroicon_outline "bars-arrow-up" %}
-                        {% else %}
-                        {% heroicon_outline "bars-arrow-down" %}
-                        {% endif %}
-
                         {% if ativos %}
-                        <a href="{% url 'clientes:lista' 'data_nascimento' %}">Data Nascimento</a>
+                        <a href="{% url 'clientes:lista' 'data_nascimento' %}" class="text-decoration-none text-white">
+                            {% include "clientes/partials/link_data.html" %}</a>
                         {% else %}
-                        <a href="{% url 'clientes:lista_inativos' 'data_nascimento' %}">Data Nascimento</a>
+                        <a href="{% url 'clientes:lista_inativos' 'data_nascimento' %}"
+                            class="text-decoration-none text-white">
+                            {% include "clientes/partials/link_data.html" %}</a>
                         {% endif %}
                     </th>
                     <th>Opções</th>
@@ -59,17 +54,22 @@
                 {% for cliente in clientes %}
                 <tr>
                     <td>{{ cliente.nome }}</td>
-                    <td>{{ cliente.email }}</td>
                     <td>{{ cliente.telefone }}</td>
                     <td>{{ cliente.cpf }}</td>
                     <td>{{ cliente.data_nascimento }}</td>
-                    <td class="d-flex flex-column">
-                        <a href="{% url 'clientes:editar' cliente.id %}">Editar</a>
+                    <td class="d-flex gap-4">
+                        <a href="{% url 'clientes:editar' cliente.id %}" class="text-warning">
+                            {% heroicon_outline "pencil-square" %}
+                        </a>
 
                         {% if ativos %}
-                        <a href="{% url 'clientes:desativar' cliente.id %}">Desativar</a>
+                        <a href="{% url 'clientes:desativar' cliente.id %}" class="text-danger">
+                            {% heroicon_outline "lock-closed" %}
+                        </a>
                         {% else %}
-                        <a href="{% url 'clientes:ativar' cliente.id %}">Ativar</a>
+                        <a href="{% url 'clientes:ativar' cliente.id %}" class="text-success">
+                            {% heroicon_outline "lock-open" %}
+                        </a>
                         {% endif %}
                     </td>
                 </tr>
@@ -81,15 +81,5 @@
             </tbody>
         </table>
     </div>
-</div>
-
-<div class="container-sm mt-5 d-flex flex-column">
-    {% if ativos %}
-    <a href="{% url 'clientes:lista_inativos' 'nome' %}">Mostrar clientes inativos</a>
-    {% else %}
-    <a href="{% url 'clientes:lista' 'nome' %}">Mostrar clientes ativos</a>
-    {% endif %}
-
-    <a href="{% url 'clientes:cadastrar' %}">Cadastrar cliente</a>
 </div>
 {% endblock %}

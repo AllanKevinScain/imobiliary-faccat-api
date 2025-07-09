@@ -3,23 +3,23 @@
 {% block content %}
 <div class="container my-3">
     <div class="card mx-auto" style="width: 18rem;">
+
         {% if imovel.foto %}
-            <img src="{{ imovel.foto.thumb.url }}" class="card-img-top" alt="Foto de {{ imovel.nome }}">
+        <img src="{{ imovel.foto.thumb.url }}" class="card-img-top" alt="Foto de {{ imovel.nome }}">
         {% else %}
-            <img src="" class="card-img-top" alt="Sem foto {{ imovel.nome }} ">
+        <img src="" class="card-img-top" alt="Sem foto {{ imovel.nome }} ">
         {% endif %}
+
         <div class="card-body">
             <h5 class="card-title">{{ imovel.nome }}</h5>
             <p class="card-text"><strong>Tipo:</strong> {{ imovel.tipo }}</p>
             <p class="card-text"><strong>Endereço:</strong> {{ imovel.endereco }}</p>
-            <p class="card-text"><strong>Cidade:</strong> R$ {{ imovel.cidade }}</p>
-            <p class="card-text"><strong>Estado:</strong> {{ imovel.estado }}</p>
-            <p class="card-text"><strong>Disponível:</strong>
-            {% if imovel.ativo == true %}
-                <span class="badge bg-success">Sim</span>
-            {% else %}
-                <span class="badge bg-danger">Não</span>
-            {% endif %}
+            <p class="card-text">
+                {% if imovel.disponibilidade %}
+                <strong class="badge bg-success">Disponível</strong>
+                {% else %}
+                <strong class="badge bg-info">Alugado</strong>
+                {% endif %}
             </p>
         </div>
     </div>
@@ -28,8 +28,8 @@
 <div class="container my-3">
     <div class="row">
         <div class="col text-center">
-            <a href="{% url 'imoveis:lista' 'nome' %}" class="btn btn-primary"> Lista de imoveis</a>
-            <a href="{% url 'imoveis:editar' imovel.id %}" class="btn btn-info">Editar Imovel</a>
+            <a href="{% url 'imoveis:lista' 'nome' %}" class="btn btn-light"> Lista de imoveis</a>
+            <a href="{% url 'imoveis:editar' imovel.id %}" class="btn btn-warning">Editar Imovel</a>
         </div>
     </div>
 </div>

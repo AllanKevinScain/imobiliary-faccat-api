@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'imoveis.apps.ImoveisConfig',
     'core.apps.CoreConfig',
     'login.apps.LoginConfig',
+    'historico_locacoes.apps.HistoricoLocacoesConfig',
 
     # libs
     'crispy_bootstrap5',
